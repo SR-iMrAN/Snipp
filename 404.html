@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Redirecting...</title>
+</head>
+<body>
+  <script>
+    const path = window.location.pathname.replace(/^\//, '').replace(/\/$/, '');
+    if (path && path !== '404.html') {
+      window.location.replace('/index.html#' + encodeURIComponent(path));
+    } else {
+      window.location.replace('/');
+    }
+  </script>
+</body>
+</html>
