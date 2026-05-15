@@ -467,7 +467,7 @@
       👆 Click <strong>Open Link</strong> to redirect — SNIPP will open your destination URL in a new tab.
     </div>
     <div class="actions">
-      <button class="btn-sm bcopy" onclick="copyRes()">⧉ Copy</button>
+      <button class="btn-sm bcopy" onclick="copyShort()">⧉ Copy</button>
       <button class="btn-sm bopen" onclick="openRes()">↗ Open Link</button>
       <button class="btn-sm bqr" id="qrBtn" onclick="toggleQR()">▦ QR Code</button>
       <button class="btn-sm bdownload" id="downloadQRBtn" style="display:none;" onclick="downloadQR()">⤓ Save QR</button>
@@ -625,7 +625,7 @@ function showResult(code, url) {
 function copyRes() {
   if (!curCode) return;
   const entry = getLinks().find(l=>l.shortCode===curCode);
-  if (entry) doCopy(getActualUrl(curCode, entry.originalUrl));
+  if (entry) doCopy(getCleanUrl(curCode));
 }
 function doCopy(t) {
   try {
@@ -640,6 +640,14 @@ function fbCopy(t) {
   el.value=t; el.style.position='fixed'; el.style.opacity='0';
   document.body.appendChild(el); el.focus(); el.select();
   document.execCommand('copy'); document.body.removeChild(el);
+}
+
+// Copy button: copy the full working link (includes encoded destination) so shared links work across devices
+function copyShort() {
+  if (!curCode) return;
+  const entry = getLinks().find(l=>l.shortCode===curCode);
+  if (entry) doCopy(getCleanUrl(curCode));
+  else doCopy(getCleanUrl(curCode));
 }
 
 // ─── OPEN / REDIRECT ───────────────────
@@ -689,7 +697,8 @@ function toggleQR() {
     if (downloadBtn) downloadBtn.style.display = 'inline-flex';
     if (curCode) {
       const entry = getLinks().find(l=>l.shortCode===curCode);
-      const text = encodeURIComponent(getActualUrl(curCode, entry ? entry.originalUrl : ''));
+      // Use the visible short URL for QR so scans show the short link
+      const text = encodeURIComponent(getCleanUrl(curCode));
       const src = `https://api.qrserver.com/v1/create-qr-code/?size=160x160&data=${text}&color=080a0c&bgcolor=ffffff&qzone=2&format=png`;
       const img = document.getElementById('qrImg');
       img.src = '';
