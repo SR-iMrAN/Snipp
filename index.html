@@ -602,90 +602,173 @@
   }
 
   /* ── TAB BAR ── */
-  /* ── APPLE GLASS STYLE TAB BAR CAPSULE ── */
-  .tab-bar {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    background: rgba(222, 226, 234, 0.48);
-    backdrop-filter: blur(28px) saturate(190%);
-    -webkit-backdrop-filter: blur(28px) saturate(190%);
-    padding: 6px;
-    border-radius: var(--radius-full);
-    margin-bottom: 24px;
-    border: 1.5px solid rgba(255, 255, 255, 0.85);
-    box-shadow: inset 0 1.5px 2px rgba(0, 0, 0, 0.03), 0 6px 20px rgba(0, 0, 0, 0.04);
+  /* ── LIQUID GLASS TAB BAR (Matching Reference Caustics) ── */
+  .tab-liquid-wrapper {
     position: relative;
+    width: 100%;
+    margin-bottom: 24px;
   }
-  [data-theme="dark"] .tab-bar {
-    background: rgba(18, 22, 30, 0.55);
-    border-color: rgba(255, 255, 255, 0.09);
-    box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.35), 0 6px 20px rgba(0, 0, 0, 0.25);
+  .tab-ambient-caustics {
+    position: absolute;
+    inset: -26px -32px;
+    width: calc(100% + 64px);
+    height: calc(100% + 52px);
+    pointer-events: none;
+    z-index: 1;
+    overflow: visible;
+  }
+  [data-theme="dark"] .tab-ambient-caustics path {
+    stroke: rgba(255, 255, 255, 0.22) !important;
   }
 
-  /* 3 Individual Floating Glass Bubbles */
+  /* Outer Liquid Glass Capsule Tray */
+  .tab-bar {
+    position: relative;
+    z-index: 2;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 8px 10px;
+    height: 74px;
+    border-radius: var(--radius-full);
+    background: rgba(246, 248, 252, 0.58);
+    backdrop-filter: blur(32px) saturate(200%);
+    -webkit-backdrop-filter: blur(32px) saturate(200%);
+    border: 2px solid rgba(255, 255, 255, 0.95);
+    box-shadow: 
+      0 24px 50px -10px rgba(0, 0, 0, 0.08),
+      0 4px 16px rgba(0, 0, 0, 0.03),
+      inset 0 2.5px 3.5px rgba(255, 255, 255, 1),
+      inset 0 -2.5px 4.5px rgba(255, 255, 255, 0.8),
+      inset 0 0 22px rgba(255, 255, 255, 0.55);
+    margin-bottom: 0;
+  }
+  [data-theme="dark"] .tab-bar {
+    background: rgba(18, 24, 34, 0.65);
+    border-color: rgba(255, 255, 255, 0.12);
+    box-shadow: 
+      0 26px 55px -10px rgba(0, 0, 0, 0.5),
+      inset 0 1.5px 2px rgba(255, 255, 255, 0.15),
+      inset 0 -1.5px 2px rgba(0, 0, 0, 0.4);
+  }
+
+  /* Liquid Tab Button */
   .tab-btn {
+    position: relative;
     flex: 1;
+    height: 56px;
+    border-radius: var(--radius-full);
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    gap: 9px;
-    height: 48px;
-    padding: 0 20px;
-    border-radius: var(--radius-full);
-    border: 1px solid rgba(255, 255, 255, 0.85);
-    background: rgba(255, 255, 255, 0.65);
-    color: var(--text-dim);
-    font-size: 14.5px;
+    cursor: pointer;
+    border: 1.5px solid rgba(255, 255, 255, 0.95);
+    outline: none;
+    overflow: hidden;
+    user-select: none;
+    transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+    background: linear-gradient(180deg, rgba(255, 255, 255, 0.88) 0%, rgba(240, 244, 252, 0.52) 50%, rgba(255, 255, 255, 0.82) 100%);
+    color: #111827;
+    font-size: 15px;
     font-weight: 600;
     font-family: var(--font-sans);
-    cursor: pointer;
-    transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
-    backdrop-filter: blur(14px) saturate(180%);
-    -webkit-backdrop-filter: blur(14px) saturate(180%);
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.03), inset 0 1.5px 1.5px rgba(255, 255, 255, 0.95);
-    user-select: none;
+    box-shadow: 
+      0 3px 10px rgba(0, 0, 0, 0.03),
+      inset 0 2px 3.5px rgba(255, 255, 255, 1),
+      inset 0 -2px 4px rgba(255, 255, 255, 0.85);
   }
   [data-theme="dark"] .tab-btn {
-    background: rgba(255, 255, 255, 0.06);
-    border-color: rgba(255, 255, 255, 0.08);
+    background: linear-gradient(180deg, rgba(255, 255, 255, 0.08) 0%, rgba(255, 255, 255, 0.03) 50%, rgba(255, 255, 255, 0.06) 100%);
+    border-color: rgba(255, 255, 255, 0.1);
     color: #94a3b8;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.25), inset 0 1px 1px rgba(255, 255, 255, 0.1);
+    box-shadow: 
+      0 2px 8px rgba(0, 0, 0, 0.3),
+      inset 0 1px 1.5px rgba(255, 255, 255, 0.15);
   }
-  .tab-btn svg {
-    width: 18px !important;
-    height: 18px !important;
+  .tab-btn:hover:not(.active) {
+    transform: translateY(-1.5px);
+    background: linear-gradient(180deg, rgba(255, 255, 255, 0.96) 0%, rgba(246, 249, 255, 0.72) 50%, rgba(255, 255, 255, 0.92) 100%);
+    box-shadow: 
+      0 6px 18px rgba(0, 0, 0, 0.05),
+      inset 0 2.5px 3.5px rgba(255, 255, 255, 1),
+      inset 0 -2px 4px rgba(255, 255, 255, 0.95);
+    color: var(--text);
+  }
+  [data-theme="dark"] .tab-btn:hover:not(.active) {
+    background: rgba(255, 255, 255, 0.12);
+    border-color: rgba(255, 255, 255, 0.18);
+    color: #ffffff;
+  }
+
+  /* Active Luminous Liquid Emerald Gem */
+  .tab-btn.active {
+    background: linear-gradient(180deg, #1b7344 0%, #156239 42%, #104f2d 100%);
+    border: 1.5px solid rgba(255, 255, 255, 0.55);
+    color: #ffffff;
+    box-shadow: 
+      0 12px 32px rgba(18, 95, 54, 0.45),
+      0 2px 8px rgba(18, 95, 54, 0.25),
+      inset 0 2px 3.5px rgba(255, 255, 255, 0.85),
+      inset 0 -2px 4.5px rgba(110, 231, 183, 0.65);
+    transform: translateY(-0.5px);
+  }
+  [data-theme="dark"] .tab-btn.active {
+    box-shadow: 
+      0 12px 32px rgba(22, 101, 52, 0.55),
+      inset 0 2px 3.5px rgba(255, 255, 255, 0.8),
+      inset 0 -2px 4.5px rgba(110, 231, 183, 0.65);
+  }
+  .tab-btn.active:hover {
+    transform: translateY(-0.5px);
+    box-shadow: 
+      0 14px 38px rgba(18, 95, 54, 0.55),
+      inset 0 2.5px 3.5px rgba(255, 255, 255, 0.95),
+      inset 0 -2px 4.5px rgba(110, 231, 183, 0.75);
+  }
+
+  /* Internal SVG Wave Layers */
+  .tab-liquid-svg {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: 1;
+  }
+  .tab-btn .wave-active { display: none; }
+  .tab-btn .wave-inactive { display: block; }
+  .tab-btn.active .wave-active { display: block; }
+  .tab-btn.active .wave-inactive { display: none; }
+
+  /* Liquid Wave Opacity tuning for Dark Theme */
+  [data-theme="dark"] .tab-btn:not(.active) .wave-inactive path[fill] {
+    opacity: 0.16;
+  }
+  [data-theme="dark"] .tab-btn:not(.active) .wave-inactive path[stroke] {
+    stroke: rgba(255, 255, 255, 0.42);
+  }
+  [data-theme="dark"] .tab-btn:not(.active) {
+    color: #e2e8f0;
+  }
+
+  /* Content Label */
+  .tab-btn-content {
+    position: relative;
+    z-index: 3;
+    display: inline-flex;
+    align-items: center;
+    gap: 9px;
+    font-size: 15px;
+    font-weight: 600;
+  }
+  .tab-btn-content svg {
+    width: 19px !important;
+    height: 19px !important;
     stroke-width: 2.2 !important;
     flex-shrink: 0;
     transition: transform 0.2s ease;
   }
-  .tab-btn:hover:not(.active) {
-    background: rgba(255, 255, 255, 0.92);
-    border-color: rgba(255, 255, 255, 1);
-    color: var(--text);
-    transform: translateY(-1px);
-    box-shadow: 0 6px 16px -2px rgba(0, 0, 0, 0.06), inset 0 1.5px 1.5px rgba(255, 255, 255, 1);
-  }
-  [data-theme="dark"] .tab-btn:hover:not(.active) {
-    background: rgba(255, 255, 255, 0.12);
-    border-color: rgba(255, 255, 255, 0.15);
-    color: #ffffff;
-    box-shadow: 0 6px 16px -2px rgba(0, 0, 0, 0.4);
-  }
-
-  /* Active One is Lustrous Greenish Glass Bubble */
-  .tab-btn.active {
-    background: linear-gradient(180deg, #187747 0%, #115e37 100%);
-    color: #ffffff;
-    border: 1px solid rgba(255, 255, 255, 0.42);
-    box-shadow: 0 6px 18px rgba(18, 107, 63, 0.42), inset 0 1.5px 2px rgba(255, 255, 255, 0.45);
-    transform: translateY(-0.5px);
-  }
-  .tab-btn.active:hover {
-    background: linear-gradient(180deg, #1b854f 0%, #136a3e 100%);
-    box-shadow: 0 8px 24px rgba(18, 107, 63, 0.5), inset 0 1.5px 2px rgba(255, 255, 255, 0.55);
-  }
-  .tab-btn.active svg {
+  .tab-btn.active .tab-btn-content svg {
     color: #ffffff;
   }
 
@@ -2209,20 +2292,204 @@
         <!-- Top Shimmer Progress Bar (Tab Transition Loader) -->
         <div class="tab-loader-bar" id="tabLoaderBar"></div>
 
-        <!-- Tab Bar (Mockup) -->
-        <div class="tab-bar" role="tablist">
-          <button class="tab-btn active" id="tab-link" role="tab" onclick="switchTab('link')" aria-selected="true">
-            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>
-            Link
-          </button>
-          <button class="tab-btn" id="tab-file" role="tab" onclick="switchTab('file')" aria-selected="false">
-            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
-            File
-          </button>
-          <button class="tab-btn" id="tab-note" role="tab" onclick="switchTab('note')" aria-selected="false">
-            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
-            Note
-          </button>
+        <!-- ── LIQUID GLASS TAB BAR WRAPPER ── -->
+        <div class="tab-liquid-wrapper">
+          <!-- Ambient Liquid Caustic Wave Ribbons behind the Tab Bar -->
+          <svg class="tab-ambient-caustics" viewBox="0 0 800 150" fill="none" preserveAspectRatio="none">
+            <path d="M 30 70 C 80 15, 200 8, 380 38 C 540 68, 680 12, 770 55" stroke="rgba(255, 255, 255, 0.9)" stroke-width="3.5" filter="drop-shadow(0 4px 10px rgba(0,0,0,0.04))"/>
+            <path d="M 60 105 C 180 145, 380 90, 540 135 C 680 175, 750 125, 790 120" stroke="rgba(255, 255, 255, 0.92)" stroke-width="3.8" filter="drop-shadow(0 6px 14px rgba(0,0,0,0.05))"/>
+          </svg>
+
+          <!-- Outer Liquid Glass Capsule Tray -->
+          <div class="tab-bar" role="tablist">
+            
+            <!-- ══ TAB 1: LINK ══ -->
+            <button class="tab-btn active" id="tab-link" role="tab" onclick="switchTab('link')" aria-selected="true">
+              <!-- Inactive Clear Liquid Wave -->
+              <svg class="tab-liquid-svg wave-inactive" viewBox="0 0 300 95" fill="none" preserveAspectRatio="none">
+                <defs>
+                  <linearGradient id="inactWhiteWaveLink" x1="0%" y1="0%" x2="100%" y2="80%">
+                    <stop offset="0%" stop-color="#ffffff" stop-opacity="0.95"/>
+                    <stop offset="40%" stop-color="#ffffff" stop-opacity="0.8"/>
+                    <stop offset="85%" stop-color="#ffffff" stop-opacity="0.3"/>
+                    <stop offset="100%" stop-color="#ffffff" stop-opacity="0"/>
+                  </linearGradient>
+                  <linearGradient id="inactRightWaveLink" x1="0%" y1="100%" x2="100%" y2="0%">
+                    <stop offset="0%" stop-color="#ffffff" stop-opacity="0.2"/>
+                    <stop offset="60%" stop-color="#ffffff" stop-opacity="0.8"/>
+                    <stop offset="100%" stop-color="#ffffff" stop-opacity="0.95"/>
+                  </linearGradient>
+                  <linearGradient id="inactTopDepthLink" x1="50%" y1="0%" x2="50%" y2="100%">
+                    <stop offset="0%" stop-color="#94a3b8" stop-opacity="0.18"/>
+                    <stop offset="100%" stop-color="#ffffff" stop-opacity="0"/>
+                  </linearGradient>
+                </defs>
+                <path d="M 25 15 C 75 34, 135 34, 185 28 C 230 22, 260 15, 275 18 L 275 0 L 25 0 Z" fill="url(#inactTopDepthLink)"/>
+                <path d="M 28 20 C 75 36, 135 36, 185 29 C 230 23, 260 16, 275 19" stroke="rgba(255, 255, 255, 0.95)" stroke-width="2" stroke-linecap="round"/>
+                <path d="M 8 68 C 18 82, 38 94, 75 94 C 115 94, 145 92, 170 90 C 145 74, 115 54, 85 54 C 52 54, 25 62, 8 68 Z" fill="url(#inactWhiteWaveLink)"/>
+                <path d="M 10 70 C 32 60, 56 54, 85 54 C 118 54, 146 74, 172 90" stroke="rgba(255, 255, 255, 1)" stroke-width="2.5" stroke-linecap="round"/>
+                <path d="M 195 91 C 225 86, 255 76, 280 50 C 290 65, 282 82, 262 90 C 242 94, 218 93, 195 91 Z" fill="url(#inactRightWaveLink)"/>
+                <path d="M 198 90 C 228 85, 258 75, 282 48" stroke="rgba(255, 255, 255, 1)" stroke-width="2.2" stroke-linecap="round"/>
+              </svg>
+
+              <!-- Active Glowing Emerald Liquid Wave -->
+              <svg class="tab-liquid-svg wave-active" viewBox="0 0 300 95" fill="none" preserveAspectRatio="none">
+                <defs>
+                  <linearGradient id="actMintWaveLink" x1="0%" y1="0%" x2="100%" y2="80%">
+                    <stop offset="0%" stop-color="#a7f3d0" stop-opacity="0.95"/>
+                    <stop offset="40%" stop-color="#4ade80" stop-opacity="0.8"/>
+                    <stop offset="85%" stop-color="#22c55e" stop-opacity="0.25"/>
+                    <stop offset="100%" stop-color="#15803d" stop-opacity="0"/>
+                  </linearGradient>
+                  <linearGradient id="actMintRightLink" x1="0%" y1="100%" x2="100%" y2="0%">
+                    <stop offset="0%" stop-color="#22c55e" stop-opacity="0.2"/>
+                    <stop offset="60%" stop-color="#4ade80" stop-opacity="0.75"/>
+                    <stop offset="100%" stop-color="#86efac" stop-opacity="0.95"/>
+                  </linearGradient>
+                  <linearGradient id="actTopDepthLink" x1="50%" y1="0%" x2="50%" y2="100%">
+                    <stop offset="0%" stop-color="#0a381f" stop-opacity="0.55"/>
+                    <stop offset="100%" stop-color="#156239" stop-opacity="0"/>
+                  </linearGradient>
+                </defs>
+                <path d="M 25 15 C 75 34, 135 34, 185 28 C 230 22, 260 15, 275 18 L 275 0 L 25 0 Z" fill="url(#actTopDepthLink)"/>
+                <path d="M 28 20 C 75 36, 135 36, 185 29 C 230 23, 260 16, 275 19" stroke="rgba(255, 255, 255, 0.85)" stroke-width="1.8" stroke-linecap="round"/>
+                <path d="M 8 68 C 18 82, 38 94, 75 94 C 115 94, 145 92, 170 90 C 145 74, 115 54, 85 54 C 52 54, 25 62, 8 68 Z" fill="url(#actMintWaveLink)"/>
+                <path d="M 10 70 C 32 60, 58 54, 85 54 C 118 54, 146 74, 172 90" stroke="rgba(255, 255, 255, 0.9)" stroke-width="2.2" stroke-linecap="round"/>
+                <path d="M 195 91 C 225 86, 255 76, 280 50 C 290 65, 282 82, 262 90 C 242 94, 218 93, 195 91 Z" fill="url(#actMintRightLink)"/>
+                <path d="M 198 90 C 228 85, 258 75, 282 48" stroke="rgba(255, 255, 255, 0.95)" stroke-width="2" stroke-linecap="round"/>
+              </svg>
+
+              <span class="tab-btn-content">
+                <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>
+                Link
+              </span>
+            </button>
+
+            <!-- ══ TAB 2: FILE ══ -->
+            <button class="tab-btn" id="tab-file" role="tab" onclick="switchTab('file')" aria-selected="false">
+              <!-- Inactive Clear Liquid Wave -->
+              <svg class="tab-liquid-svg wave-inactive" viewBox="0 0 300 95" fill="none" preserveAspectRatio="none">
+                <defs>
+                  <linearGradient id="inactWhiteWaveFile" x1="0%" y1="0%" x2="100%" y2="80%">
+                    <stop offset="0%" stop-color="#ffffff" stop-opacity="0.95"/>
+                    <stop offset="40%" stop-color="#ffffff" stop-opacity="0.8"/>
+                    <stop offset="85%" stop-color="#ffffff" stop-opacity="0.3"/>
+                    <stop offset="100%" stop-color="#ffffff" stop-opacity="0"/>
+                  </linearGradient>
+                  <linearGradient id="inactRightWaveFile" x1="0%" y1="100%" x2="100%" y2="0%">
+                    <stop offset="0%" stop-color="#ffffff" stop-opacity="0.2"/>
+                    <stop offset="60%" stop-color="#ffffff" stop-opacity="0.8"/>
+                    <stop offset="100%" stop-color="#ffffff" stop-opacity="0.95"/>
+                  </linearGradient>
+                  <linearGradient id="inactTopDepthFile" x1="50%" y1="0%" x2="50%" y2="100%">
+                    <stop offset="0%" stop-color="#94a3b8" stop-opacity="0.18"/>
+                    <stop offset="100%" stop-color="#ffffff" stop-opacity="0"/>
+                  </linearGradient>
+                </defs>
+                <path d="M 25 15 C 75 34, 135 34, 185 28 C 230 22, 260 15, 275 18 L 275 0 L 25 0 Z" fill="url(#inactTopDepthFile)"/>
+                <path d="M 28 20 C 75 36, 135 36, 185 29 C 230 23, 260 16, 275 19" stroke="rgba(255, 255, 255, 0.95)" stroke-width="2" stroke-linecap="round"/>
+                <path d="M 8 68 C 18 82, 38 94, 75 94 C 115 94, 145 92, 170 90 C 145 74, 115 54, 85 54 C 52 54, 25 62, 8 68 Z" fill="url(#inactWhiteWaveFile)"/>
+                <path d="M 10 70 C 32 60, 56 54, 85 54 C 118 54, 146 74, 172 90" stroke="rgba(255, 255, 255, 1)" stroke-width="2.5" stroke-linecap="round"/>
+                <path d="M 195 91 C 225 86, 255 76, 280 50 C 290 65, 282 82, 262 90 C 242 94, 218 93, 195 91 Z" fill="url(#inactRightWaveFile)"/>
+                <path d="M 198 90 C 228 85, 258 75, 282 48" stroke="rgba(255, 255, 255, 1)" stroke-width="2.2" stroke-linecap="round"/>
+              </svg>
+
+              <!-- Active Glowing Emerald Liquid Wave -->
+              <svg class="tab-liquid-svg wave-active" viewBox="0 0 300 95" fill="none" preserveAspectRatio="none">
+                <defs>
+                  <linearGradient id="actMintWaveFile" x1="0%" y1="0%" x2="100%" y2="80%">
+                    <stop offset="0%" stop-color="#a7f3d0" stop-opacity="0.95"/>
+                    <stop offset="40%" stop-color="#4ade80" stop-opacity="0.8"/>
+                    <stop offset="85%" stop-color="#22c55e" stop-opacity="0.25"/>
+                    <stop offset="100%" stop-color="#15803d" stop-opacity="0"/>
+                  </linearGradient>
+                  <linearGradient id="actMintRightFile" x1="0%" y1="100%" x2="100%" y2="0%">
+                    <stop offset="0%" stop-color="#22c55e" stop-opacity="0.2"/>
+                    <stop offset="60%" stop-color="#4ade80" stop-opacity="0.75"/>
+                    <stop offset="100%" stop-color="#86efac" stop-opacity="0.95"/>
+                  </linearGradient>
+                  <linearGradient id="actTopDepthFile" x1="50%" y1="0%" x2="50%" y2="100%">
+                    <stop offset="0%" stop-color="#0a381f" stop-opacity="0.55"/>
+                    <stop offset="100%" stop-color="#156239" stop-opacity="0"/>
+                  </linearGradient>
+                </defs>
+                <path d="M 25 15 C 75 34, 135 34, 185 28 C 230 22, 260 15, 275 18 L 275 0 L 25 0 Z" fill="url(#actTopDepthFile)"/>
+                <path d="M 28 20 C 75 36, 135 36, 185 29 C 230 23, 260 16, 275 19" stroke="rgba(255, 255, 255, 0.85)" stroke-width="1.8" stroke-linecap="round"/>
+                <path d="M 8 68 C 18 82, 38 94, 75 94 C 115 94, 145 92, 170 90 C 145 74, 115 54, 85 54 C 52 54, 25 62, 8 68 Z" fill="url(#actMintWaveFile)"/>
+                <path d="M 10 70 C 32 60, 58 54, 85 54 C 118 54, 146 74, 172 90" stroke="rgba(255, 255, 255, 0.9)" stroke-width="2.2" stroke-linecap="round"/>
+                <path d="M 195 91 C 225 86, 255 76, 280 50 C 290 65, 282 82, 262 90 C 242 94, 218 93, 195 91 Z" fill="url(#actMintRightFile)"/>
+                <path d="M 198 90 C 228 85, 258 75, 282 48" stroke="rgba(255, 255, 255, 0.95)" stroke-width="2" stroke-linecap="round"/>
+              </svg>
+
+              <span class="tab-btn-content">
+                <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg>
+                File
+              </span>
+            </button>
+
+            <!-- ══ TAB 3: NOTE ══ -->
+            <button class="tab-btn" id="tab-note" role="tab" onclick="switchTab('note')" aria-selected="false">
+              <!-- Inactive Clear Liquid Wave -->
+              <svg class="tab-liquid-svg wave-inactive" viewBox="0 0 300 95" fill="none" preserveAspectRatio="none">
+                <defs>
+                  <linearGradient id="inactWhiteWaveNote" x1="0%" y1="0%" x2="100%" y2="80%">
+                    <stop offset="0%" stop-color="#ffffff" stop-opacity="0.95"/>
+                    <stop offset="40%" stop-color="#ffffff" stop-opacity="0.8"/>
+                    <stop offset="85%" stop-color="#ffffff" stop-opacity="0.3"/>
+                    <stop offset="100%" stop-color="#ffffff" stop-opacity="0"/>
+                  </linearGradient>
+                  <linearGradient id="inactRightWaveNote" x1="0%" y1="100%" x2="100%" y2="0%">
+                    <stop offset="0%" stop-color="#ffffff" stop-opacity="0.2"/>
+                    <stop offset="60%" stop-color="#ffffff" stop-opacity="0.8"/>
+                    <stop offset="100%" stop-color="#ffffff" stop-opacity="0.95"/>
+                  </linearGradient>
+                  <linearGradient id="inactTopDepthNote" x1="50%" y1="0%" x2="50%" y2="100%">
+                    <stop offset="0%" stop-color="#94a3b8" stop-opacity="0.18"/>
+                    <stop offset="100%" stop-color="#ffffff" stop-opacity="0"/>
+                  </linearGradient>
+                </defs>
+                <path d="M 25 15 C 75 34, 135 34, 185 28 C 230 22, 260 15, 275 18 L 275 0 L 25 0 Z" fill="url(#inactTopDepthNote)"/>
+                <path d="M 28 20 C 75 36, 135 36, 185 29 C 230 23, 260 16, 275 19" stroke="rgba(255, 255, 255, 0.95)" stroke-width="2" stroke-linecap="round"/>
+                <path d="M 8 68 C 18 82, 38 94, 75 94 C 115 94, 145 92, 170 90 C 145 74, 115 54, 85 54 C 52 54, 25 62, 8 68 Z" fill="url(#inactWhiteWaveNote)"/>
+                <path d="M 10 70 C 32 60, 56 54, 85 54 C 118 54, 146 74, 172 90" stroke="rgba(255, 255, 255, 1)" stroke-width="2.5" stroke-linecap="round"/>
+                <path d="M 195 91 C 225 86, 255 76, 280 50 C 290 65, 282 82, 262 90 C 242 94, 218 93, 195 91 Z" fill="url(#inactRightWaveNote)"/>
+                <path d="M 198 90 C 228 85, 258 75, 282 48" stroke="rgba(255, 255, 255, 1)" stroke-width="2.2" stroke-linecap="round"/>
+              </svg>
+
+              <!-- Active Glowing Emerald Liquid Wave -->
+              <svg class="tab-liquid-svg wave-active" viewBox="0 0 300 95" fill="none" preserveAspectRatio="none">
+                <defs>
+                  <linearGradient id="actMintWaveNote" x1="0%" y1="0%" x2="100%" y2="80%">
+                    <stop offset="0%" stop-color="#a7f3d0" stop-opacity="0.95"/>
+                    <stop offset="40%" stop-color="#4ade80" stop-opacity="0.8"/>
+                    <stop offset="85%" stop-color="#22c55e" stop-opacity="0.25"/>
+                    <stop offset="100%" stop-color="#15803d" stop-opacity="0"/>
+                  </linearGradient>
+                  <linearGradient id="actMintRightNote" x1="0%" y1="100%" x2="100%" y2="0%">
+                    <stop offset="0%" stop-color="#22c55e" stop-opacity="0.2"/>
+                    <stop offset="60%" stop-color="#4ade80" stop-opacity="0.75"/>
+                    <stop offset="100%" stop-color="#86efac" stop-opacity="0.95"/>
+                  </linearGradient>
+                  <linearGradient id="actTopDepthNote" x1="50%" y1="0%" x2="50%" y2="100%">
+                    <stop offset="0%" stop-color="#0a381f" stop-opacity="0.55"/>
+                    <stop offset="100%" stop-color="#156239" stop-opacity="0"/>
+                  </linearGradient>
+                </defs>
+                <path d="M 25 15 C 75 34, 135 34, 185 28 C 230 22, 260 15, 275 18 L 275 0 L 25 0 Z" fill="url(#actTopDepthNote)"/>
+                <path d="M 28 20 C 75 36, 135 36, 185 29 C 230 23, 260 16, 275 19" stroke="rgba(255, 255, 255, 0.85)" stroke-width="1.8" stroke-linecap="round"/>
+                <path d="M 8 68 C 18 82, 38 94, 75 94 C 115 94, 145 92, 170 90 C 145 74, 115 54, 85 54 C 52 54, 25 62, 8 68 Z" fill="url(#actMintWaveNote)"/>
+                <path d="M 10 70 C 32 60, 58 54, 85 54 C 118 54, 146 74, 172 90" stroke="rgba(255, 255, 255, 0.9)" stroke-width="2.2" stroke-linecap="round"/>
+                <path d="M 195 91 C 225 86, 255 76, 280 50 C 290 65, 282 82, 262 90 C 242 94, 218 93, 195 91 Z" fill="url(#actMintRightNote)"/>
+                <path d="M 198 90 C 228 85, 258 75, 282 48" stroke="rgba(255, 255, 255, 0.95)" stroke-width="2" stroke-linecap="round"/>
+              </svg>
+
+              <span class="tab-btn-content">
+                <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
+                Note
+              </span>
+            </button>
+
+          </div>
         </div>
 
         <!-- ══ TAB 1: LINK ══ -->
