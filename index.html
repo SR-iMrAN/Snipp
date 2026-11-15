@@ -7,11 +7,12 @@
 <meta name="description" content="Transform URLs into short links, share files up to 1 GB, and save rich notes — all in one place. Instant, secure, and privacy-first."/>
 <link rel="preconnect" href="https://fonts.googleapis.com"/>
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Space+Mono:wght@400;700&family=Syne:wght@600;700;800&display=swap" rel="stylesheet"/>
 <link href="https://cdn.quilljs.com/1.3.7/quill.snow.css" rel="stylesheet"/>
 <style>
   :root {
     --font-sans: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    --font-display: 'Syne', sans-serif;
     --font-mono: 'Space Mono', monospace;
     --radius-sm: 8px;
     --radius-md: 14px;
@@ -22,16 +23,17 @@
 
   /* ── LIGHT THEME (Default per mockup) ── */
   html, html[data-theme="light"] {
+    --canvas-bg: #e6e9ee;
     --bg: #f4f5f8;
     --surface: #ffffff;
     --surface-elevated: #f9fafb;
-    --surface-subtle: #f3f4f6;
-    --border: #e5e7eb;
-    --border-subtle: #f0f2f5;
+    --surface-subtle: #f1f3f6;
+    --border: #e2e5eb;
+    --border-subtle: #edf0f4;
     --border-focus: #16a34a;
-    --text: #111827;
-    --text-dim: #4b5563;
-    --text-muted: #9ca3af;
+    --text: #0f172a;
+    --text-dim: #475569;
+    --text-muted: #94a3b8;
     --accent: #16a34a;
     --accent-hover: #15803d;
     --accent-subtle: rgba(22, 163, 74, 0.1);
@@ -44,26 +46,30 @@
     --amber-subtle: rgba(217, 119, 6, 0.1);
     --red: #dc2626;
     --red-subtle: rgba(220, 38, 38, 0.1);
-    --nav-bg: rgba(244, 245, 248, 0.88);
+    --nav-bg: rgba(244, 245, 248, 0.92);
     
-    /* 3D Glassmorphic Layered Card (Annotated 1, 2, 3) */
+    /* 3-Layer Depth System (Annotated 1, 2, 3) */
+    --frame-bg: #f4f5f8;
+    --frame-border: rgba(255, 255, 255, 0.9);
+    --frame-shadow: 0 30px 80px -20px rgba(15, 23, 42, 0.12), 0 0 0 1px rgba(0, 0, 0, 0.04);
+    
     --layer-1-bg: rgba(255, 255, 255, 0.45);
-    --layer-1-border: rgba(255, 255, 255, 0.75);
-    --layer-1-shadow: 0 24px 48px -12px rgba(0, 0, 0, 0.05);
+    --layer-1-border: rgba(255, 255, 255, 0.85);
+    --layer-1-shadow: 0 24px 48px -12px rgba(15, 23, 42, 0.06);
     
-    --layer-2-bg: rgba(255, 255, 255, 0.65);
-    --layer-2-border: rgba(255, 255, 255, 0.88);
-    --layer-2-shadow: 0 12px 28px -8px rgba(0, 0, 0, 0.04);
+    --layer-2-bg: rgba(255, 255, 255, 0.7);
+    --layer-2-border: rgba(255, 255, 255, 0.95);
+    --layer-2-shadow: 0 12px 28px -8px rgba(15, 23, 42, 0.04);
     
-    --layer-3-bg: rgba(255, 255, 255, 0.95);
-    --layer-3-border: rgba(255, 255, 255, 0.95);
-    --layer-3-shadow: 0 8px 30px rgba(0, 0, 0, 0.04);
+    --layer-3-bg: #ffffff;
+    --layer-3-border: rgba(226, 229, 235, 0.85);
+    --layer-3-shadow: 0 10px 32px -6px rgba(15, 23, 42, 0.05);
 
-    --card-3d-bg: rgba(255, 255, 255, 0.95);
-    --card-3d-border: rgba(255, 255, 255, 0.9);
-    --card-3d-shadow: 0 16px 32px rgba(0, 0, 0, 0.08), inset 0 1px 0 rgba(255, 255, 255, 0.9);
+    --card-3d-bg: rgba(255, 255, 255, 0.96);
+    --card-3d-border: rgba(255, 255, 255, 0.95);
+    --card-3d-shadow: 0 18px 36px rgba(15, 23, 42, 0.1), inset 0 1px 0 rgba(255, 255, 255, 0.95);
     
-    --tab-bar-bg: #eceef2;
+    --tab-bar-bg: #e8ebf0;
     --warn-bg: #fef3c7;
     --warn-border: #fcd34d;
     --warn-text: #92400e;
@@ -74,20 +80,21 @@
 
   /* ── DARK THEME (Image 5) ── */
   html[data-theme="dark"] {
-    --bg: #0f0f0f;
-    --surface: #18181b;
-    --surface-elevated: #27272a;
-    --surface-subtle: rgba(255, 255, 255, 0.03);
+    --canvas-bg: #08090a;
+    --bg: #0f1013;
+    --surface: #18191e;
+    --surface-elevated: #23252b;
+    --surface-subtle: rgba(255, 255, 255, 0.04);
     --border: rgba(255, 255, 255, 0.1);
     --border-subtle: rgba(255, 255, 255, 0.06);
     --border-focus: #16a34a;
-    --text: #f3f4f6;
-    --text-dim: #9ca3af;
-    --text-muted: #6b7280;
+    --text: #f8fafc;
+    --text-dim: #94a3b8;
+    --text-muted: #64748b;
     --accent: #16a34a;
     --accent-hover: #22c55e;
     --accent-subtle: rgba(22, 163, 74, 0.18);
-    --accent-glow: rgba(22, 163, 74, 0.4);
+    --accent-glow: rgba(22, 163, 74, 0.42);
     --blue: #3b82f6;
     --blue-subtle: rgba(59, 130, 246, 0.15);
     --purple: #a855f7;
@@ -96,25 +103,29 @@
     --amber-subtle: rgba(245, 158, 11, 0.15);
     --red: #ef4444;
     --red-subtle: rgba(239, 68, 68, 0.15);
-    --nav-bg: rgba(15, 15, 15, 0.88);
+    --nav-bg: rgba(15, 16, 19, 0.9);
 
-    --layer-1-bg: rgba(24, 24, 27, 0.4);
-    --layer-1-border: rgba(255, 255, 255, 0.04);
+    --frame-bg: #111216;
+    --frame-border: rgba(255, 255, 255, 0.08);
+    --frame-shadow: 0 30px 80px -20px rgba(0, 0, 0, 0.8), 0 0 0 1px rgba(255, 255, 255, 0.04);
+
+    --layer-1-bg: rgba(24, 25, 30, 0.4);
+    --layer-1-border: rgba(255, 255, 255, 0.05);
     --layer-1-shadow: 0 30px 60px -15px rgba(0, 0, 0, 0.7);
 
-    --layer-2-bg: rgba(24, 24, 27, 0.7);
-    --layer-2-border: rgba(255, 255, 255, 0.07);
+    --layer-2-bg: rgba(24, 25, 30, 0.7);
+    --layer-2-border: rgba(255, 255, 255, 0.08);
     --layer-2-shadow: 0 16px 36px -10px rgba(0, 0, 0, 0.6);
 
-    --layer-3-bg: #18181b;
+    --layer-3-bg: #18191e;
     --layer-3-border: rgba(255, 255, 255, 0.1);
     --layer-3-shadow: 0 12px 36px rgba(0, 0, 0, 0.6);
 
     --card-3d-bg: rgba(28, 30, 36, 0.94);
-    --card-3d-border: rgba(255, 255, 255, 0.12);
-    --card-3d-shadow: 0 18px 36px rgba(0, 0, 0, 0.6), inset 0 1px 0 rgba(255, 255, 255, 0.15);
+    --card-3d-border: rgba(255, 255, 255, 0.14);
+    --card-3d-shadow: 0 18px 36px rgba(0, 0, 0, 0.7), inset 0 1px 0 rgba(255, 255, 255, 0.16);
 
-    --tab-bar-bg: #111215;
+    --tab-bar-bg: #0c0d10;
     --warn-bg: rgba(245, 158, 11, 0.12);
     --warn-border: rgba(245, 158, 11, 0.35);
     --warn-text: #fbbf24;
@@ -127,36 +138,49 @@
   html { scroll-behavior: smooth; }
   body {
     font-family: var(--font-sans);
-    background: var(--bg);
+    background: var(--canvas-bg);
     color: var(--text);
     min-height: 100vh;
     overflow-x: hidden;
     position: relative;
     line-height: 1.5;
+    padding: 20px 16px 40px;
     transition: background-color 0.25s ease, color 0.25s ease;
   }
 
-  /* ── NAVBAR (Mockup style) ── */
+  /* ── MASTER APP FRAME (Layer 1 of outer window) ── */
+  .app-frame {
+    max-width: 1060px;
+    margin: 0 auto;
+    background: var(--frame-bg);
+    border-radius: 34px;
+    border: 1px solid var(--frame-border);
+    box-shadow: var(--frame-shadow);
+    overflow: hidden;
+    position: relative;
+    transition: all 0.25s ease;
+  }
+
+  /* ── NAVBAR ── */
   nav {
-    position: sticky; top: 0; z-index: 100;
     display: flex; align-items: center; justify-content: space-between;
-    padding: 16px 40px;
+    padding: 20px 36px;
     background: var(--nav-bg);
+    border-bottom: 1px solid var(--border-subtle);
     backdrop-filter: blur(16px);
     -webkit-backdrop-filter: blur(16px);
-    border-bottom: 1px solid var(--border);
-    transition: background-color 0.25s ease, border-color 0.25s ease;
   }
   .nav-logo {
     display: flex; align-items: center; gap: 10px;
-    font-size: 21px; font-weight: 800; letter-spacing: -0.5px;
+    font-family: var(--font-display);
+    font-size: 22px; font-weight: 800; letter-spacing: -0.6px;
     color: var(--text); text-decoration: none; cursor: pointer;
     user-select: none;
   }
   .nav-logo-icon {
-    width: 24px; height: 24px;
+    width: 25px; height: 25px;
     color: var(--text);
-    transition: transform 0.2s ease, color 0.2s ease;
+    transition: transform 0.25s ease, color 0.25s ease;
   }
   .nav-logo:hover .nav-logo-icon {
     transform: rotate(45deg);
@@ -183,7 +207,7 @@
     color: var(--text);
     background: var(--surface);
     font-weight: 600;
-    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
+    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.08);
   }
 
   /* Right Nav Actions */
@@ -221,11 +245,9 @@
   }
   .nav-theme-dropdown-btn svg { width: 16px; height: 16px; }
 
-  /* ── MAIN WRAPPER ── */
+  /* ── MAIN CONTENT ── */
   main {
-    max-width: 960px;
-    margin: 0 auto;
-    padding: 36px 20px 80px;
+    padding: 36px 36px 60px;
     position: relative;
     z-index: 1;
   }
@@ -236,18 +258,47 @@
     align-items: center;
     justify-content: space-between;
     gap: 32px;
-    margin-bottom: 24px;
-    min-height: 190px;
+    margin-bottom: 28px;
+    min-height: 200px;
   }
   .hero-left {
     flex: 1;
-    max-width: 520px;
+    max-width: 530px;
   }
+
+  /* Version 3 Tag Line Badge (Matching Image 2) */
+  .hero-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    font-family: var(--font-mono);
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--accent);
+    background: var(--accent-subtle);
+    border: 1.5px solid var(--accent);
+    padding: 5px 14px;
+    border-radius: var(--radius-full);
+    margin-bottom: 16px;
+    box-shadow: 0 2px 8px var(--accent-glow);
+  }
+  .hero-badge .badge-dot {
+    width: 7px; height: 7px;
+    background: var(--accent);
+    border-radius: 50%;
+    box-shadow: 0 0 6px var(--accent);
+    display: inline-block;
+  }
+
+  /* Syne Font Heading */
   .hero-left h1 {
-    font-size: clamp(34px, 4.5vw, 48px);
+    font-family: var(--font-display);
+    font-size: clamp(36px, 5.2vw, 52px);
     font-weight: 800;
-    letter-spacing: -1.2px;
-    line-height: 1.15;
+    letter-spacing: -1.5px;
+    line-height: 1.08;
     color: var(--text);
   }
   .hero-heading-second-line {
@@ -273,7 +324,7 @@
     color: var(--text-dim);
     margin-top: 14px;
     line-height: 1.6;
-    max-width: 460px;
+    max-width: 480px;
   }
 
   /* ── 3D INTERACTIVE CARDS STACK (SLIDESHOW) ── */
@@ -336,6 +387,7 @@
   }
   .card-3d-icon svg { width: 28px; height: 28px; stroke-width: 2.2; }
   .card-3d-title {
+    font-family: var(--font-display);
     font-size: 14px; font-weight: 700;
     color: var(--text);
   }
@@ -465,7 +517,7 @@
     border: 1px solid var(--layer-3-border);
     box-shadow: var(--layer-3-shadow);
     z-index: 3;
-    padding: 24px 28px 20px;
+    padding: 26px 28px 22px;
     backdrop-filter: blur(24px);
     -webkit-backdrop-filter: blur(24px);
     overflow: hidden;
@@ -506,7 +558,7 @@
     align-items: center;
     justify-content: center;
     gap: 8px;
-    padding: 11px 18px;
+    padding: 12px 18px;
     border-radius: 14px;
     border: none;
     background: transparent;
@@ -567,14 +619,15 @@
     padding: 0 16px 0 46px;
     border-radius: 14px;
     border: 1px solid var(--border);
-    background: var(--surface);
+    background: var(--surface-subtle);
     color: var(--text);
     font-size: 14px;
     font-family: var(--font-sans);
     outline: none;
-    transition: border-color 0.2s, box-shadow 0.2s;
+    transition: border-color 0.2s, box-shadow 0.2s, background-color 0.2s;
   }
   .modern-input:focus {
+    background: var(--surface);
     border-color: var(--border-focus);
     box-shadow: 0 0 0 3px var(--accent-subtle);
   }
@@ -604,16 +657,17 @@
     font-size: 12px;
     font-family: var(--font-mono);
     color: var(--text-muted);
-    background: var(--surface-subtle);
+    background: var(--surface);
     padding: 2px 8px;
     border-radius: 6px;
     pointer-events: none;
+    border: 1px solid var(--border-subtle);
   }
   .domain-badge-wrap {
     height: 48px;
     padding: 0 16px;
     border-radius: 14px;
-    background: var(--surface);
+    background: var(--surface-subtle);
     border: 1px solid var(--border);
     display: flex;
     align-items: center;
@@ -627,7 +681,7 @@
   .domain-badge-wrap svg { width: 14px; height: 14px; color: var(--text-muted); }
   .btn-gen-pill {
     height: 48px;
-    padding: 0 22px;
+    padding: 0 24px;
     border-radius: 14px;
     background: var(--accent);
     color: #ffffff;
@@ -679,9 +733,9 @@
   .result-card {
     display: none;
     margin-top: 18px;
-    padding: 14px 18px;
-    border-radius: 16px;
-    background: var(--surface);
+    padding: 16px 20px;
+    border-radius: 18px;
+    background: var(--surface-subtle);
     border: 1px solid var(--border);
     animation: fadeScale 0.25s cubic-bezier(0.16, 1, 0.3, 1);
   }
@@ -743,7 +797,7 @@
   .icon-action-btn {
     width: 36px; height: 36px;
     border-radius: 10px;
-    background: var(--surface-subtle);
+    background: var(--surface);
     border: 1px solid var(--border);
     color: var(--text-dim);
     display: flex; align-items: center; justify-content: center;
@@ -821,7 +875,7 @@
     align-items: center;
     gap: 10px;
     padding: 12px 16px;
-    border-radius: 12px;
+    border-radius: 14px;
     background: var(--notice-bg);
     border: 1px solid var(--notice-border);
     color: var(--notice-text);
@@ -849,7 +903,7 @@
     padding: 30px 20px;
     text-align: center;
     cursor: pointer;
-    background: var(--surface);
+    background: var(--surface-subtle);
     transition: all 0.2s;
     position: relative;
     margin-bottom: 14px;
@@ -862,14 +916,14 @@
     position: absolute; inset: 0; opacity: 0; cursor: pointer; width: 100%; height: 100%;
   }
   .dz-icon-circle {
-    width: 46px; height: 46px;
+    width: 48px; height: 48px;
     border-radius: 50%;
     background: var(--accent-subtle);
     color: var(--accent);
     display: flex; align-items: center; justify-content: center;
     margin: 0 auto 10px;
   }
-  .dz-icon-circle svg { width: 22px; height: 22px; }
+  .dz-icon-circle svg { width: 24px; height: 24px; }
   .dz-title { font-size: 14px; font-weight: 600; color: var(--text); }
   .dz-sub { font-size: 12px; color: var(--text-dim); margin-top: 3px; }
   .dz-limit { font-size: 11px; color: var(--text-muted); margin-top: 5px; }
@@ -881,7 +935,7 @@
     gap: 14px;
     padding: 14px 16px;
     border-radius: 16px;
-    background: var(--surface);
+    background: var(--surface-subtle);
     border: 1px solid var(--border);
     margin-bottom: 14px;
   }
@@ -914,7 +968,7 @@
     display: none;
     width: 100%; height: 6px;
     border-radius: 3px;
-    background: var(--surface-subtle);
+    background: var(--surface-elevated);
     overflow: hidden;
     margin-top: 8px;
   }
@@ -935,21 +989,22 @@
     flex: 1; position: relative;
   }
   .picker-trigger-btn {
-    width: 100%; height: 44px;
+    width: 100%; height: 46px;
     padding: 0 14px;
     border-radius: 12px;
-    background: var(--surface);
+    background: var(--surface-subtle);
     border: 1px solid var(--border);
     display: flex; align-items: center; justify-content: space-between;
     font-size: 13px; font-weight: 500; color: var(--text);
     cursor: pointer; transition: all 0.2s;
   }
+  .picker-trigger-btn:hover { border-color: var(--text-dim); }
   .picker-trigger-btn svg { width: 16px; height: 16px; color: var(--text-dim); }
   .expiry-dropdown {
     display: none; position: absolute; top: calc(100% + 6px); left: 0; right: 0;
     background: var(--surface); border: 1px solid var(--border);
-    border-radius: 12px; box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
-    z-index: 50; overflow: hidden; padding: 4px;
+    border-radius: 14px; box-shadow: 0 10px 28px rgba(0, 0, 0, 0.14);
+    z-index: 50; overflow: hidden; padding: 6px;
   }
   .expiry-dropdown.show { display: block; }
   .expiry-opt {
@@ -964,19 +1019,20 @@
     background: var(--surface-subtle); color: var(--text); font-size: 12px; margin-top: 4px;
   }
   .collection-select {
-    width: 100%; height: 44px;
+    width: 100%; height: 46px;
     padding: 0 14px;
     border-radius: 12px;
-    background: var(--surface);
+    background: var(--surface-subtle);
     border: 1px solid var(--border);
     color: var(--text); font-size: 13px; font-weight: 500;
-    outline: none; cursor: pointer;
+    outline: none; cursor: pointer; transition: border-color 0.2s;
   }
+  .collection-select:hover { border-color: var(--text-dim); }
 
   /* File Result Card (Right side in side-by-side mode) */
   .file-result-container {
     border-radius: 18px;
-    background: var(--surface);
+    background: var(--surface-subtle);
     border: 1px solid var(--border);
     padding: 20px;
     display: none;
@@ -989,19 +1045,19 @@
     display: flex; align-items: center; gap: 12px;
   }
   .ready-check-icon {
-    width: 36px; height: 36px; border-radius: 50%;
+    width: 38px; height: 38px; border-radius: 50%;
     background: var(--accent-subtle); color: var(--accent);
     display: flex; align-items: center; justify-content: center;
     flex-shrink: 0;
   }
   .ready-check-icon svg { width: 20px; height: 20px; stroke-width: 2.5; }
-  .ready-title { font-size: 15px; font-weight: 700; color: var(--text); }
+  .ready-title { font-family: var(--font-display); font-size: 16px; font-weight: 700; color: var(--text); }
   .ready-sub { font-size: 12px; color: var(--text-dim); }
 
   /* Expiration warning banner (Image 4 yellow box) */
   .expiry-warn-box {
     display: flex; align-items: center; gap: 8px;
-    padding: 10px 14px; border-radius: 10px;
+    padding: 10px 14px; border-radius: 12px;
     background: var(--warn-bg); border: 1px solid var(--warn-border);
     color: var(--warn-text); font-size: 12px; font-weight: 500;
   }
@@ -1012,7 +1068,7 @@
     display: flex; gap: 10px;
   }
   .btn-pill-green {
-    flex: 1; height: 42px; border-radius: 12px;
+    flex: 1; height: 44px; border-radius: 12px;
     background: var(--accent); color: #ffffff;
     border: none; font-size: 13px; font-weight: 600;
     display: inline-flex; align-items: center; justify-content: center; gap: 8px;
@@ -1020,7 +1076,7 @@
   }
   .btn-pill-green:hover { background: var(--accent-hover); transform: translateY(-1px); }
   .btn-pill-outline {
-    flex: 1; height: 42px; border-radius: 12px;
+    flex: 1; height: 44px; border-radius: 12px;
     background: var(--surface); color: var(--text);
     border: 1px solid var(--border); font-size: 13px; font-weight: 600;
     display: inline-flex; align-items: center; justify-content: center; gap: 8px;
@@ -1032,20 +1088,22 @@
   }
   .btn-sub-pill {
     flex: 1; height: 38px; border-radius: 10px;
-    background: var(--surface-subtle); color: var(--text-dim);
+    background: var(--surface); color: var(--text-dim);
     border: 1px solid var(--border); font-size: 12px; font-weight: 500;
     display: inline-flex; align-items: center; justify-content: center; gap: 6px;
     cursor: pointer; transition: all 0.2s;
   }
-  .btn-sub-pill:hover { color: var(--text); background: var(--surface); }
+  .btn-sub-pill:hover { color: var(--text); border-color: var(--text-dim); }
 
   /* ── NOTE TAB (Image 3) ── */
   .note-title-inp {
-    width: 100%; height: 44px; padding: 0 16px;
+    width: 100%; height: 46px; padding: 0 16px;
     border-radius: 12px; border: 1px solid var(--border);
-    background: var(--surface); color: var(--text);
+    background: var(--surface-subtle); color: var(--text);
     font-size: 15px; font-weight: 600; outline: none; margin-bottom: 12px;
+    font-family: var(--font-sans);
   }
+  .note-title-inp:focus { background: var(--surface); border-color: var(--border-focus); }
   .quill-wrapper {
     border: 1px solid var(--border);
     border-radius: 14px;
@@ -1055,8 +1113,8 @@
   .ql-toolbar.ql-snow {
     border: none !important;
     border-bottom: 1px solid var(--border) !important;
-    background: var(--surface-elevated);
-    padding: 8px 12px !important;
+    background: var(--surface-subtle);
+    padding: 10px 14px !important;
   }
   .ql-container.ql-snow {
     border: none !important;
@@ -1073,24 +1131,26 @@
     margin-top: 14px; gap: 12px;
   }
   .privacy-toggle-btn {
-    height: 42px; padding: 0 16px; border-radius: 12px;
-    background: var(--surface); border: 1px solid var(--border);
+    height: 44px; padding: 0 16px; border-radius: 12px;
+    background: var(--surface-subtle); border: 1px solid var(--border);
     color: var(--text); font-size: 13px; font-weight: 500;
     display: inline-flex; align-items: center; gap: 6px; cursor: pointer;
   }
+  .privacy-toggle-btn:hover { border-color: var(--text-dim); }
 
   /* ── WORKSPACE HISTORY & COLLECTIONS ── */
   #history-section {
-    margin-top: 60px;
+    margin-top: 50px;
     padding-top: 30px;
-    border-top: 1px solid var(--border);
+    border-top: 1px solid var(--border-subtle);
   }
   .workspace-hdr {
     display: flex; align-items: center; justify-content: space-between;
     margin-bottom: 16px;
   }
   .sec-title {
-    font-size: 20px; font-weight: 700; color: var(--text);
+    font-family: var(--font-display);
+    font-size: 21px; font-weight: 700; color: var(--text);
     display: flex; align-items: center; gap: 8px;
   }
   .cbadge {
@@ -1107,6 +1167,7 @@
     font-size: 12px; font-weight: 500; color: var(--text-dim);
     cursor: pointer; transition: all 0.2s;
   }
+  .coll-pill:hover { border-color: var(--text-dim); color: var(--text); }
   .coll-pill.active {
     background: var(--accent); color: #fff; border-color: var(--accent);
   }
@@ -1128,7 +1189,7 @@
     display: flex; gap: 6px; margin-bottom: 16px;
   }
   .type-tab-btn {
-    padding: 6px 14px; border-radius: 10px; border: none;
+    padding: 7px 16px; border-radius: 10px; border: none;
     background: transparent; color: var(--text-dim); font-size: 13px; font-weight: 500;
     cursor: pointer; transition: all 0.2s;
   }
@@ -1158,7 +1219,7 @@
   .modal-card {
     width: 100%; max-width: 440px;
     background: var(--surface); border: 1px solid var(--border);
-    border-radius: 20px; padding: 24px;
+    border-radius: 22px; padding: 24px;
     box-shadow: 0 20px 50px rgba(0, 0, 0, 0.2);
     animation: fadeScale 0.25s cubic-bezier(0.16, 1, 0.3, 1);
   }
@@ -1172,7 +1233,7 @@
   .modal-title-icon {
     width: 28px; height: 28px; color: var(--text);
   }
-  .modal-title { font-size: 17px; font-weight: 700; color: var(--text); }
+  .modal-title { font-family: var(--font-display); font-size: 18px; font-weight: 700; color: var(--text); }
   .modal-sub { font-size: 12px; color: var(--text-dim); margin-top: 2px; }
   .modal-close-btn {
     width: 32px; height: 32px; border-radius: 8px; border: none;
@@ -1186,7 +1247,7 @@
   }
   .modal-field textarea {
     width: 100%; padding: 10px 14px; border-radius: 12px;
-    border: 1px solid var(--border); background: var(--surface-elevated);
+    border: 1px solid var(--border); background: var(--surface-subtle);
     color: var(--text); font-family: var(--font-sans); font-size: 13px;
     outline: none; resize: vertical; min-height: 80px;
   }
@@ -1289,11 +1350,12 @@
   .dl-card {
     width: 100%; max-width: 540px;
     background: var(--surface); border: 1px solid var(--border);
-    border-radius: 24px; padding: 36px 30px; text-align: center;
-    box-shadow: 0 20px 50px rgba(0, 0, 0, 0.1);
+    border-radius: 26px; padding: 36px 30px; text-align: center;
+    box-shadow: 0 20px 50px rgba(0, 0, 0, 0.12);
   }
   .dl-brand {
-    font-size: 20px; font-weight: 800; color: var(--text); margin-bottom: 24px;
+    font-family: var(--font-display);
+    font-size: 22px; font-weight: 800; color: var(--text); margin-bottom: 24px;
     display: flex; align-items: center; justify-content: center; gap: 8px;
   }
   .dl-file-icon {
@@ -1337,13 +1399,13 @@
   .nv-container {
     max-width: 760px; margin: 0 auto;
     background: var(--surface); border: 1px solid var(--border);
-    border-radius: 20px; padding: 32px;
+    border-radius: 22px; padding: 32px;
   }
   .nv-header {
     display: flex; align-items: center; justify-content: space-between;
     margin-bottom: 20px; padding-bottom: 16px; border-bottom: 1px solid var(--border);
   }
-  .nv-brand { font-size: 18px; font-weight: 700; color: var(--text); }
+  .nv-brand { font-family: var(--font-display); font-size: 20px; font-weight: 800; color: var(--text); }
   .nv-actions { display: flex; gap: 8px; }
   .nv-meta { font-size: 12px; color: var(--text-muted); margin-bottom: 16px; }
   .nv-content { font-size: 15px; line-height: 1.7; color: var(--text); word-break: break-word; }
@@ -1355,7 +1417,7 @@
     align-items: center; justify-content: center; gap: 14px;
   }
   #routeLoader.show { display: flex; }
-  .rl-brand { font-size: 24px; font-weight: 800; color: var(--text); }
+  .rl-brand { font-family: var(--font-display); font-size: 26px; font-weight: 800; color: var(--text); }
   .rl-brand span { color: var(--accent); }
   .rl-spinner {
     width: 36px; height: 36px;
@@ -1374,17 +1436,16 @@
     max-width: 420px; background: var(--surface);
     border: 1px solid var(--border); border-radius: 20px; padding: 32px;
   }
-  .error-title { font-size: 18px; font-weight: 700; color: var(--text); margin-bottom: 8px; }
+  .error-title { font-family: var(--font-display); font-size: 19px; font-weight: 700; color: var(--text); margin-bottom: 8px; }
   .error-desc { font-size: 14px; color: var(--text-dim); margin-bottom: 20px; }
 
   /* ── FOOTER ── */
   footer {
-    max-width: 960px; margin: 0 auto;
-    padding: 30px 20px 50px;
-    text-align: center; border-top: 1px solid var(--border);
+    padding: 24px 36px 32px;
+    text-align: center; border-top: 1px solid var(--border-subtle);
     color: var(--text-muted); font-size: 13px;
   }
-  .fbrand { font-size: 16px; font-weight: 700; color: var(--text); margin-bottom: 8px; }
+  .fbrand { font-family: var(--font-display); font-size: 17px; font-weight: 800; color: var(--text); margin-bottom: 8px; }
   .fbrand span { color: var(--accent); }
   .finfo { margin-bottom: 6px; line-height: 1.6; }
   .finfo a { color: var(--text-dim); text-decoration: none; font-weight: 500; }
@@ -1421,7 +1482,10 @@
 
   /* ── RESPONSIVE RULES ── */
   @media (max-width: 860px) {
-    nav { padding: 14px 20px; }
+    body { padding: 8px; }
+    .app-frame { border-radius: 20px; }
+    nav { padding: 14px 18px; }
+    main { padding: 24px 18px 40px; }
     .hero-row { flex-direction: column; text-align: center; gap: 24px; }
     .hero-left h1 { align-items: center; }
     .hero-left { max-width: 100%; }
@@ -1441,6 +1505,596 @@
 </style>
 </head>
 <body>
+
+<!-- Master App Window Frame (Layer 1 in Overall Window Architecture) -->
+<div class="app-frame" id="appFrame">
+
+  <!-- Navbar -->
+  <nav>
+    <div class="nav-logo" onclick="window.scrollTo({top:0,behavior:'smooth'})">
+      <svg class="nav-logo-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/>
+        <path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/>
+      </svg>
+      SnipLink
+    </div>
+    
+    <!-- Center Nav Pills (Mockup) -->
+    <div class="nav-center-pills">
+      <button class="nav-pill active" id="navHomeBtn" onclick="window.scrollTo({top:0,behavior:'smooth'})">Home</button>
+      <a class="nav-pill" href="#history-section">History</a>
+      <a class="nav-pill" href="#history-section" onclick="focusCollections()">Collections</a>
+    </div>
+
+    <!-- Right Actions: Search, Theme Toggle, Settings (Mockup) -->
+    <div class="nav-actions">
+      <button class="nav-action-btn" id="navSearchBtn" onclick="focusSearch()" title="Search history">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:16px;height:16px;"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+      </button>
+      
+      <!-- Theme Toggle Dropdown Button (Mockup ☀️ ⌵ / 🌙 ⌵) -->
+      <button class="nav-theme-dropdown-btn" id="navThemeBtn" onclick="cycleTheme()" title="Toggle Light / Dark mode">
+        <span id="navThemeIcon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg>
+        </span>
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+      </button>
+
+      <button class="nav-action-btn" onclick="focusAbout()" title="Settings & About">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:16px;height:16px;"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
+      </button>
+    </div>
+  </nav>
+
+  <!-- Main Experience -->
+  <main>
+
+    <!-- Hero Section (With V3.0 Tagline Badge and Syne Font) -->
+    <div class="hero-row">
+      <div class="hero-left">
+        <!-- V3.0 Tagline Badge -->
+        <div class="hero-badge">
+          <span class="badge-dot"></span>
+          V3.0 &middot; LINKS &middot; FILES &middot; NOTES
+        </div>
+        
+        <!-- Syne Font Heading -->
+        <h1>
+          <span>Shorten, Share &amp; Keep</span>
+          <span class="hero-heading-second-line">
+            Your Content
+            <span class="hero-dots">
+              <span></span><span></span><span></span><span></span>
+            </span>
+          </span>
+        </h1>
+        <p class="hero-sub">Create short links, share files, and save notes &mdash; all in one place.</p>
+      </div>
+      
+      <!-- 3D Interactive Floating Cards Stack (Slideshow / Tab switcher) -->
+      <div class="hero-right">
+        <div class="hero-3d-scene">
+          <div class="hero-3d-stack" id="hero3dStack" data-active="link">
+            
+            <!-- Link Card 3D -->
+            <div class="card-3d card-3d-link active" id="card3d-link" onclick="switchTab('link')" title="Switch to Link tab">
+              <div class="card-3d-corner tl"></div>
+              <div class="card-3d-corner br"></div>
+              <div class="card-3d-icon">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>
+              </div>
+              <div class="card-3d-title">Link</div>
+            </div>
+
+            <!-- File Card 3D -->
+            <div class="card-3d card-3d-file" id="card3d-file" onclick="switchTab('file')" title="Switch to File tab">
+              <div class="card-3d-icon">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>
+              </div>
+              <div class="card-3d-title">File</div>
+            </div>
+
+            <!-- Note Card 3D -->
+            <div class="card-3d card-3d-note" id="card3d-note" onclick="switchTab('note')" title="Switch to Note tab">
+              <div class="card-3d-icon">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
+              </div>
+              <div class="card-3d-title">Note</div>
+            </div>
+
+          </div>
+          <div class="hero-3d-shadow"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Three Layers Glass Container (Annotated 1, 2, 3) -->
+    <div class="layered-card-wrap">
+      <div class="layer-base layer-1"></div>
+      <div class="layer-base layer-2"></div>
+      <div class="layer-main layer-3">
+        
+        <!-- Top Shimmer Progress Bar (Tab Transition Loader) -->
+        <div class="tab-loader-bar" id="tabLoaderBar"></div>
+
+        <!-- Tab Bar (Mockup) -->
+        <div class="tab-bar" role="tablist">
+          <button class="tab-btn active" id="tab-link" role="tab" onclick="switchTab('link')" aria-selected="true">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>
+            Link
+          </button>
+          <button class="tab-btn" id="tab-file" role="tab" onclick="switchTab('file')" aria-selected="false">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+            File
+          </button>
+          <button class="tab-btn" id="tab-note" role="tab" onclick="switchTab('note')" aria-selected="false">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
+            Note
+          </button>
+        </div>
+
+        <!-- ══ TAB 1: LINK ══ -->
+        <div class="tab-section active" id="section-link">
+          
+          <!-- Long URL Input (Mockup with link icon) -->
+          <div class="input-with-icon-wrap">
+            <svg class="input-icon-left" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>
+            <input type="url" id="urlInput" class="modern-input" placeholder="Paste your long URL here"/>
+          </div>
+          <div class="ferr" id="urlErr">Please enter a valid URL starting with http:// or https://</div>
+
+          <!-- Custom short link + Domain badge + Shorten Link button (Mockup Row 2) -->
+          <div class="link-inputs-row-2">
+            <div class="link-custom-col">
+              <div class="input-with-icon-wrap">
+                <svg class="input-icon-left" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z"/><line x1="7" y1="7" x2="7.01" y2="7"/></svg>
+                <input type="text" id="codeInput" class="modern-input" placeholder="Custom short link (optional)"/>
+                <span class="suffix-badge" id="sufPrev">-??</span>
+              </div>
+              <div class="ferr" id="codeErr">Letters, numbers, dash and underscore only.</div>
+            </div>
+
+            <!-- Domain dropdown/badge -->
+            <div class="domain-badge-wrap">
+              <span id="linkPrefixLabel">sniplink.netlify.app/</span>
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+            </div>
+
+            <!-- Collection select for link -->
+            <select id="linkCollectionSelect" class="collection-select" style="max-width:180px;" onchange="handleCollectionSelect('link', this.value)">
+              <option value="">(None - Unorganized)</option>
+            </select>
+
+            <!-- Shorten Link Button -->
+            <button class="btn-gen-pill" id="genBtn" onclick="handleGen()">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>
+              <span class="btext">Shorten Link &rarr;</span>
+              <div class="spinner"></div>
+            </button>
+          </div>
+
+          <div class="upload-prog-wrap" id="progWrap"><div class="upload-prog-bar" id="progBar"></div></div>
+
+          <!-- Link Result Card (Image 2 mockup) -->
+          <div class="result-card" id="resultCard">
+            <div class="result-main-row">
+              <div class="result-left-group">
+                <div class="result-badge-icon">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>
+                </div>
+                <div class="result-info">
+                  <div class="result-short-url" id="rCode"></div>
+                  <div class="result-dest-url" id="rOrig"></div>
+                  <div class="result-sub" id="resultSub">Active &middot; 0 clicks</div>
+                </div>
+              </div>
+
+              <div class="result-actions-group">
+                <button class="icon-action-btn" onclick="copyShort()" title="Copy Short Link">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
+                </button>
+                <button class="icon-action-btn" onclick="openEmailShareModal('link')" title="Share via Email">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/></svg>
+                </button>
+                <button class="icon-action-btn" id="qrBtn" onclick="toggleQR('link')" title="QR Code">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><rect x="14" y="14" width="3" height="3"/><rect x="18" y="14" width="3" height="3"/><rect x="14" y="18" width="3" height="3"/><rect x="18" y="18" width="3" height="3"/></svg>
+                </button>
+                <button class="icon-action-btn" onclick="openRes()" title="Open Destination">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="1"/><circle cx="12" cy="5" r="1"/><circle cx="12" cy="19" r="1"/></svg>
+                </button>
+              </div>
+            </div>
+
+            <div class="qr-wrap" id="qrWrap">
+              <div style="font-size:12px;color:var(--text-dim)">Scan to open link on mobile:</div>
+              <div class="qr-img-box"><img id="qrImg" src="" alt="QR Code" width="140" height="140"/></div>
+              <div style="margin-top:8px"><button class="btn-sub-pill" id="downloadQRBtn" style="display:none;margin:0 auto;" onclick="downloadQR('qrImg')">Save QR Image</button></div>
+            </div>
+          </div>
+
+          <!-- 4 Feature Badges Strip (Mockup) -->
+          <div class="features-strip">
+            <div class="feat-item">
+              <div class="feat-icon">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>
+              </div>
+              <div>
+                <div class="feat-title">Fast &amp; Simple</div>
+                <div class="feat-sub">Create links instantly</div>
+              </div>
+            </div>
+            <div class="feat-item">
+              <div class="feat-icon">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+              </div>
+              <div>
+                <div class="feat-title">Secure Sharing</div>
+                <div class="feat-sub">Private and reliable</div>
+              </div>
+            </div>
+            <div class="feat-item">
+              <div class="feat-icon">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><polygon points="12 2 2 7 12 12 22 7 12 2"/><polyline points="2 17 12 22 22 17"/><polyline points="2 12 12 17 22 12"/></svg>
+              </div>
+              <div>
+                <div class="feat-title">Organize Easily</div>
+                <div class="feat-sub">Keep everything in collections</div>
+              </div>
+            </div>
+            <div class="feat-item">
+              <div class="feat-icon">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+              </div>
+              <div>
+                <div class="feat-title">Auto Expiry</div>
+                <div class="feat-sub">Set your own time limit</div>
+              </div>
+            </div>
+          </div>
+
+        </div><!-- /section-link -->
+
+        <!-- ══ TAB 2: FILE (Image 4 & 5 Mockup) ══ -->
+        <div class="tab-section" id="section-file">
+          
+          <!-- Notice banner -->
+          <div class="file-alert-banner">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/></svg>
+            <div><strong>File Share:</strong> Direct high-speed upload up to 1 GB. Recipient downloads via SnipLink branded interface.</div>
+          </div>
+
+          <div class="file-grid-layout" id="fileGridLayout">
+            
+            <!-- Left Column (Upload Form) -->
+            <div class="file-left-col">
+              <!-- Drop zone -->
+              <div class="drop-zone" id="dropZone">
+                <input type="file" id="fileInput" onchange="handleFileSelect(event)"/>
+                <div class="dz-icon-circle">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
+                </div>
+                <div class="dz-title">Drop your file here, or click to browse</div>
+                <div class="dz-sub">For best results, upload files up to 1 GB. Supported: MP4, PDF, DOC, ZIP, JPG, PNG</div>
+                <div class="dz-limit">Zero signup &middot; Direct fast transfer</div>
+              </div>
+
+              <!-- Selected File Preview Card -->
+              <div class="file-preview" id="filePreview">
+                <div class="file-type-badge" id="fileTypeBadge">FILE</div>
+                <div class="file-info">
+                  <span class="file-name-text" id="fileNameText"></span>
+                  <span class="file-meta-text" id="fileMetaText"></span>
+                  <div class="upload-prog-wrap" id="uploadProgWrap">
+                    <div class="upload-prog-bar" id="uploadProgBar"></div>
+                  </div>
+                  <div class="upload-status" id="uploadStatus"></div>
+                </div>
+                <button class="file-remove" onclick="clearFile()" title="Remove file">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+                </button>
+              </div>
+
+              <!-- Custom short name for file -->
+              <div class="input-with-icon-wrap" style="margin-top:12px">
+                <span id="filePrefixLabel" style="display:none"></span>
+                <svg class="input-icon-left" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z"/><line x1="7" y1="7" x2="7.01" y2="7"/></svg>
+                <input type="text" id="fileCodeInput" class="modern-input" placeholder="Custom short name (optional)"/>
+                <span class="suffix-badge" id="filesSufPrev">-??</span>
+              </div>
+              <div class="ferr" id="fileCodeErr">Letters, numbers, dash and underscore only.</div>
+
+              <!-- Expiration & Collection controls -->
+              <div class="file-options-row">
+                <!-- Expiry picker -->
+                <div class="picker-btn-wrap" id="fileExpiryPickerWrap">
+                  <button type="button" class="picker-trigger-btn" id="fileExpiryTrigger" onclick="toggleExpiryDropdown('file')">
+                    <span style="display:flex;align-items:center;gap:6px">
+                      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+                      <span id="fileExpiryLabel">60 days</span>
+                    </span>
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+                  </button>
+                  <div class="expiry-dropdown" id="fileExpiryDropdown">
+                    <div class="expiry-opt" onclick="selectExpiry('file', 7, '7 days')">7 days</div>
+                    <div class="expiry-opt" onclick="selectExpiry('file', 15, '15 days')">15 days</div>
+                    <div class="expiry-opt" onclick="selectExpiry('file', 30, '30 days')">30 days</div>
+                    <div class="expiry-opt active" onclick="selectExpiry('file', 60, '60 days')">60 days <span style="font-size:11px;opacity:0.7">Recommended</span></div>
+                    <div class="expiry-opt" onclick="selectExpiry('file', 90, '90 days')">90 days</div>
+                    <div class="expiry-opt" onclick="selectExpiry('file', 180, '180 days')">180 days</div>
+                    <div class="expiry-opt custom" onclick="event.stopPropagation()">
+                      <label style="display:block;font-size:11px;margin-bottom:2px">Custom date:</label>
+                      <input type="date" id="fileCustomDateInput" class="custom-date-inp" onchange="applyCustomDate('file', this.value)"/>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- Collection select -->
+                <div class="picker-btn-wrap">
+                  <select id="fileCollectionSelect" class="collection-select" onchange="handleCollectionSelect('file', this.value)">
+                    <option value="">(None - Unorganized)</option>
+                  </select>
+                </div>
+              </div>
+
+              <!-- Upload Button -->
+              <button class="btn-gen-pill" id="fileGenBtn" style="width:100%;margin-top:14px;justify-content:center" onclick="handleFileUpload()">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
+                <span class="btext">Upload &amp; Generate Link</span>
+                <div class="spinner"></div>
+              </button>
+            </div><!-- /file-left-col -->
+
+            <!-- Right Column (File Result Card - Image 4 & 5) -->
+            <div class="file-result-container" id="fileResultCard">
+              <div class="file-ready-head">
+                <div class="ready-check-icon">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><polyline points="20 6 9 17 4 12"/></svg>
+                </div>
+                <div>
+                  <div class="ready-title">File Uploaded &amp; Ready</div>
+                  <div class="ready-sub" id="fileResultSub">Just now &middot; Ready for sharing</div>
+                </div>
+              </div>
+
+              <!-- Link Box -->
+              <div style="background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:12px 14px;display:flex;align-items:center;justify-content:space-between;gap:10px">
+                <div style="display:flex;align-items:center;gap:10px;min-width:0">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="var(--accent)" stroke-width="2" style="width:18px;height:18px;flex-shrink:0"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>
+                  <div style="min-width:0">
+                    <div style="font-weight:700;font-size:13px;color:var(--text);white-space:nowrap;overflow:hidden;text-overflow:ellipsis" id="fCode"></div>
+                    <div style="font-size:11px;color:var(--text-dim);white-space:nowrap;overflow:hidden;text-overflow:ellipsis" id="fName"></div>
+                  </div>
+                </div>
+                <button class="icon-action-btn" onclick="copyFileLink()" title="Copy Link">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
+                </button>
+              </div>
+
+              <!-- Auto-deletes Warning Banner (Image 4 & 5 Yellow box) -->
+              <div class="expiry-warn-box" id="fileExpiryWarn">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+                <span id="fileExpiryText">Auto-deletes on expiration.</span>
+              </div>
+
+              <!-- Action buttons Row 1 -->
+              <div class="file-actions-row">
+                <button class="btn-pill-green" onclick="copyFileLink()">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:16px;height:16px"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
+                  Copy Link
+                </button>
+                <button class="btn-pill-outline" onclick="openFileRes()">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:16px;height:16px"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+                  View Download Page
+                </button>
+              </div>
+
+              <!-- Action buttons Row 2 -->
+              <div class="file-sub-actions-row">
+                <button class="btn-sub-pill" id="fileQrBtn" onclick="toggleQR('file')">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:14px;height:14px"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><rect x="14" y="14" width="3" height="3"/><rect x="18" y="14" width="3" height="3"/><rect x="14" y="18" width="3" height="3"/><rect x="18" y="18" width="3" height="3"/></svg>
+                  QR Code
+                </button>
+                <button class="btn-sub-pill" onclick="openEmailShareModal('file')">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:14px;height:14px"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+                  Share via Email
+                </button>
+                <button class="btn-sub-pill" id="fileDownloadQRBtn" style="display:none" onclick="downloadQR('fileQrImg')">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:14px;height:14px"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+                  Save QR
+                </button>
+              </div>
+
+              <div class="qr-wrap" id="fileQrWrap">
+                <div style="font-size:12px;color:var(--text-dim)">Scan to open download page:</div>
+                <div class="qr-img-box"><img id="fileQrImg" src="" alt="QR Code" width="140" height="140"/></div>
+              </div>
+            </div><!-- /fileResultCard -->
+
+          </div>
+        </div><!-- /section-file -->
+
+        <!-- ══ TAB 3: NOTE (Image 3 Mockup) ══ -->
+        <div class="tab-section" id="section-note">
+          
+          <input type="text" id="noteTitleInput" class="note-title-inp" placeholder="Note Title (Optional)"/>
+          
+          <div class="quill-wrapper">
+            <div id="quillEditor"></div>
+          </div>
+
+          <div class="note-stats">
+            <span id="wordCount">0 words</span>
+            <span id="charCount">0 chars</span>
+          </div>
+
+          <div class="input-with-icon-wrap" style="margin-top:12px">
+            <span id="notePrefixLabel" style="display:none"></span>
+            <svg class="input-icon-left" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z"/><line x1="7" y1="7" x2="7.01" y2="7"/></svg>
+            <input type="text" id="noteCodeInput" class="modern-input" placeholder="Custom short name (optional)"/>
+            <span class="suffix-badge" id="notesSufPrev">-??</span>
+          </div>
+          <div class="ferr" id="noteCodeErr">Letters, numbers, dash and underscore only.</div>
+
+          <!-- Note Expiration & Collection controls -->
+          <div class="file-options-row">
+            <div class="picker-btn-wrap" id="noteExpiryPickerWrap">
+              <button type="button" class="picker-trigger-btn" id="noteExpiryTrigger" onclick="toggleExpiryDropdown('note')">
+                <span style="display:flex;align-items:center;gap:6px">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+                  <span id="noteExpiryLabel">30 days</span>
+                </span>
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+              </button>
+              <div class="expiry-dropdown" id="noteExpiryDropdown">
+                <div class="expiry-opt" onclick="selectExpiry('note', 7, '7 days')">7 days</div>
+                <div class="expiry-opt" onclick="selectExpiry('note', 15, '15 days')">15 days</div>
+                <div class="expiry-opt active" onclick="selectExpiry('note', 30, '30 days')">30 days</div>
+                <div class="expiry-opt" onclick="selectExpiry('note', 60, '60 days')">60 days</div>
+                <div class="expiry-opt" onclick="selectExpiry('note', 90, '90 days')">90 days</div>
+                <div class="expiry-opt" onclick="selectExpiry('note', 180, '180 days')">180 days</div>
+                <div class="expiry-opt custom" onclick="event.stopPropagation()">
+                  <label style="display:block;font-size:11px;margin-bottom:2px">Custom date:</label>
+                  <input type="date" id="noteCustomDateInput" class="custom-date-inp" onchange="applyCustomDate('note', this.value)"/>
+                </div>
+              </div>
+            </div>
+
+            <div class="picker-btn-wrap">
+              <select id="noteCollectionSelect" class="collection-select" onchange="handleCollectionSelect('note', this.value)">
+                <option value="">(None - Unorganized)</option>
+              </select>
+            </div>
+          </div>
+
+          <!-- Note Footer Bar (Mockup Image 3) -->
+          <div class="note-footer-bar">
+            <button class="privacy-toggle-btn" type="button" title="Privacy Setting">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:16px;height:16px"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+              Private
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:14px;height:14px"><polyline points="6 9 12 15 18 9"/></svg>
+            </button>
+            
+            <div style="display:flex;gap:10px">
+              <button class="btn-sub-pill" style="height:44px;padding:0 18px" onclick="toast('Draft saved locally')">Save Draft</button>
+              <button class="btn-gen-pill" id="noteGenBtn" onclick="handleNoteGen()">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"/><polyline points="17 21 17 13 7 13 7 21"/><polyline points="7 3 7 8 15 8"/></svg>
+                <span class="btext">Save Note</span>
+                <div class="spinner"></div>
+              </button>
+            </div>
+          </div>
+
+          <!-- Note Result Card -->
+          <div class="result-card" id="noteResultCard">
+            <div class="result-main-row">
+              <div class="result-left-group">
+                <div class="result-badge-icon" style="background:var(--purple-subtle);color:var(--purple)">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+                </div>
+                <div class="result-info">
+                  <div class="result-short-url" id="nCode"></div>
+                  <div class="result-dest-url" id="nPreview"></div>
+                  <div class="result-sub" id="noteResultSub">Just now</div>
+                </div>
+              </div>
+
+              <div class="result-actions-group">
+                <button class="icon-action-btn" onclick="copyNoteLink()" title="Copy Note Link">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
+                </button>
+                <button class="icon-action-btn" onclick="openNoteRes()" title="View Note Reader">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+                </button>
+                <button class="icon-action-btn" onclick="downloadNoteCreatorTxt()" title="Download .txt">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+                </button>
+                <button class="icon-action-btn" id="noteQrBtn" onclick="toggleQR('note')" title="QR Code">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><rect x="14" y="14" width="3" height="3"/><rect x="18" y="14" width="3" height="3"/><rect x="14" y="18" width="3" height="3"/><rect x="18" y="18" width="3" height="3"/></svg>
+                </button>
+                <button class="icon-action-btn" onclick="openEmailShareModal('note')" title="Share via Email">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+                </button>
+              </div>
+            </div>
+
+            <div class="expiry-warn-box" id="noteExpiryWarn" style="margin-top:12px">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+              <span id="noteExpiryText">Auto-deletes on expiration.</span>
+            </div>
+
+            <div class="qr-wrap" id="noteQrWrap">
+              <div style="font-size:12px;color:var(--text-dim)">Scan to view note on mobile:</div>
+              <div class="qr-img-box"><img id="noteQrImg" src="" alt="QR Code" width="140" height="140"/></div>
+              <div style="margin-top:8px"><button class="btn-sub-pill" id="noteDownloadQRBtn" style="display:none;margin:0 auto;" onclick="downloadQR('noteQrImg')">Save QR Image</button></div>
+            </div>
+          </div>
+
+        </div><!-- /section-note -->
+
+      </div><!-- /layer-3 -->
+    </div><!-- /layered-card-wrap -->
+
+    <!-- ══ WORKSPACE HISTORY & COLLECTIONS ══ -->
+    <div id="history-section">
+      <div class="workspace-hdr">
+        <div class="sec-title">Workspace History <span class="cbadge" id="hTotalCount">0</span></div>
+        
+        <!-- Theme Switcher Controls -->
+        <div class="nav-actions" role="radiogroup" aria-label="Theme">
+          <button class="btn-sub-pill" id="theme-btn-system" onclick="setTheme('system')">Auto</button>
+          <button class="btn-sub-pill" id="theme-btn-light" onclick="setTheme('light')">Light</button>
+          <button class="btn-sub-pill" id="theme-btn-dark" onclick="setTheme('dark')">Dark</button>
+        </div>
+      </div>
+
+      <!-- Collections Bar -->
+      <div class="collections-bar" id="collectionsBar"></div>
+
+      <!-- History Search & Clear Toolbar -->
+      <div class="hist-toolbar">
+        <div class="hist-search-box">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+          <input type="text" id="histSearchInput" placeholder="Search links, files, notes, or collections..." oninput="filterHistory()"/>
+        </div>
+        <button class="btn-sub-pill" style="height:42px;padding:0 16px" onclick="clearCurrentHistory()">Clear History</button>
+      </div>
+
+      <!-- Type Tabs: All, Links, Files, Notes -->
+      <div class="type-filter-tabs">
+        <button class="type-tab-btn active" id="type-tab-all" onclick="setTypeFilter('all')">All Items</button>
+        <button class="type-tab-btn" id="type-tab-link" onclick="setTypeFilter('link')">Links</button>
+        <button class="type-tab-btn" id="type-tab-file" onclick="setTypeFilter('file')">Files</button>
+        <button class="type-tab-btn" id="type-tab-note" onclick="setTypeFilter('note')">Notes</button>
+      </div>
+
+      <!-- Unified History List -->
+      <div class="h-list" id="unifiedHistoryList"></div>
+    </div>
+
+    <!-- About Section -->
+    <div id="about" style="margin-top:50px;padding-top:24px;border-top:1px solid var(--border-subtle)">
+      <div class="sec-title" style="margin-bottom:8px">About SnipLink</div>
+      <p style="font-size:14px;color:var(--text-dim);line-height:1.6;margin-bottom:16px;">
+        SnipLink is a fast, privacy-first 3-in-1 tool for compact short links, high-speed temporary file sharing up to 1 GB, and distraction-free note publishing. Zero accounts required.
+      </p>
+    </div>
+
+  </main>
+
+  <!-- Footer -->
+  <footer>
+    <div class="fbrand">SnipLink</div>
+    <div class="finfo">
+      Developed by <a href="https://sr-imran.github.io/sri/" target="_blank" rel="noopener noreferrer">Sifatur Rahman Imran</a><br/>
+      <a class="github-link" href="https://github.com/SR-iMrAN" target="_blank" rel="noopener noreferrer">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.3 3.438 9.8 8.205 11.387.6.11.82-.26.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61-.546-1.387-1.334-1.756-1.334-1.756-1.09-.745.083-.73.083-.73 1.205.085 1.84 1.238 1.84 1.238 1.07 1.835 2.807 1.305 3.492.998.108-.775.418-1.305.76-1.605-2.665-.304-5.466-1.332-5.466-5.93 0-1.31.468-2.38 1.237-3.22-.124-.303-.536-1.524.117-3.176 0 0 1.008-.323 3.3 1.23A11.52 11.52 0 0112 5.8c1.02.005 2.045.138 3.003.404 2.29-1.553 3.296-1.23 3.296-1.23.655 1.653.244 2.874.12 3.176.77.84 1.232 1.91 1.232 3.22 0 4.61-2.803 5.624-5.475 5.92.43.37.814 1.1.814 2.22 0 1.606-.015 2.9-.015 3.293 0 .32.216.694.825.576C20.565 21.796 24 17.296 24 12c0-6.63-5.37-12-12-12z"/></svg>
+        GitHub
+      </a>
+    </div>
+    <div class="fcopy">&copy; 2026 All Rights Reserved</div>
+  </footer>
+
+</div><!-- /app-frame -->
 
 <!-- Route Loader -->
 <div id="routeLoader">
@@ -1560,571 +2214,6 @@
   </div>
 </div>
 
-<!-- Navbar (Mockup style) -->
-<nav>
-  <div class="nav-logo" onclick="window.scrollTo({top:0,behavior:'smooth'})">
-    <svg class="nav-logo-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-      <path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/>
-      <path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/>
-    </svg>
-    SnipLink
-  </div>
-  
-  <!-- Center Nav Pills (Mockup) -->
-  <div class="nav-center-pills">
-    <button class="nav-pill active" id="navHomeBtn" onclick="window.scrollTo({top:0,behavior:'smooth'})">Home</button>
-    <a class="nav-pill" href="#history-section">History</a>
-    <a class="nav-pill" href="#history-section" onclick="focusCollections()">Collections</a>
-  </div>
-
-  <!-- Right Actions: Search, Theme Toggle, Settings (Mockup) -->
-  <div class="nav-actions">
-    <button class="nav-action-btn" id="navSearchBtn" onclick="focusSearch()" title="Search history">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:16px;height:16px;"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
-    </button>
-    
-    <!-- Theme Toggle Dropdown Button (Mockup ☀️ ⌵ / 🌙 ⌵) -->
-    <button class="nav-theme-dropdown-btn" id="navThemeBtn" onclick="cycleTheme()" title="Toggle Light / Dark mode">
-      <span id="navThemeIcon">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg>
-      </span>
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
-    </button>
-
-    <button class="nav-action-btn" onclick="focusAbout()" title="Settings & About">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:16px;height:16px;"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
-    </button>
-  </div>
-</nav>
-
-<!-- Main Experience -->
-<main>
-
-  <!-- Hero Section (Mockup) -->
-  <div class="hero-row">
-    <div class="hero-left">
-      <h1>
-        <span>Shorten, Share &amp; Keep</span>
-        <span class="hero-heading-second-line">
-          Your Content
-          <span class="hero-dots">
-            <span></span><span></span><span></span><span></span>
-          </span>
-        </span>
-      </h1>
-      <p class="hero-sub">Create short links, share files, and save notes &mdash; all in one place.</p>
-    </div>
-    
-    <!-- 3D Interactive Floating Cards Stack (Slideshow / Tab switcher) -->
-    <div class="hero-right">
-      <div class="hero-3d-scene">
-        <div class="hero-3d-stack" id="hero3dStack" data-active="link">
-          
-          <!-- Link Card 3D -->
-          <div class="card-3d card-3d-link active" id="card3d-link" onclick="switchTab('link')" title="Switch to Link tab">
-            <div class="card-3d-corner tl"></div>
-            <div class="card-3d-corner br"></div>
-            <div class="card-3d-icon">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>
-            </div>
-            <div class="card-3d-title">Link</div>
-          </div>
-
-          <!-- File Card 3D -->
-          <div class="card-3d card-3d-file" id="card3d-file" onclick="switchTab('file')" title="Switch to File tab">
-            <div class="card-3d-icon">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>
-            </div>
-            <div class="card-3d-title">File</div>
-          </div>
-
-          <!-- Note Card 3D -->
-          <div class="card-3d card-3d-note" id="card3d-note" onclick="switchTab('note')" title="Switch to Note tab">
-            <div class="card-3d-icon">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
-            </div>
-            <div class="card-3d-title">Note</div>
-          </div>
-
-        </div>
-        <div class="hero-3d-shadow"></div>
-      </div>
-    </div>
-  </div>
-
-  <!-- Three Layers Glass Container (Annotated 1, 2, 3) -->
-  <div class="layered-card-wrap">
-    <div class="layer-base layer-1"></div>
-    <div class="layer-base layer-2"></div>
-    <div class="layer-main layer-3">
-      
-      <!-- Top Shimmer Progress Bar (Tab Transition Loader) -->
-      <div class="tab-loader-bar" id="tabLoaderBar"></div>
-
-      <!-- Tab Bar (Mockup) -->
-      <div class="tab-bar" role="tablist">
-        <button class="tab-btn active" id="tab-link" role="tab" onclick="switchTab('link')" aria-selected="true">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>
-          Link
-        </button>
-        <button class="tab-btn" id="tab-file" role="tab" onclick="switchTab('file')" aria-selected="false">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
-          File
-        </button>
-        <button class="tab-btn" id="tab-note" role="tab" onclick="switchTab('note')" aria-selected="false">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
-          Note
-        </button>
-      </div>
-
-      <!-- ══ TAB 1: LINK ══ -->
-      <div class="tab-section active" id="section-link">
-        
-        <!-- Long URL Input (Mockup with link icon) -->
-        <div class="input-with-icon-wrap">
-          <svg class="input-icon-left" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>
-          <input type="url" id="urlInput" class="modern-input" placeholder="Paste your long URL here"/>
-        </div>
-        <div class="ferr" id="urlErr">Please enter a valid URL starting with http:// or https://</div>
-
-        <!-- Custom short link + Domain badge + Shorten Link button (Mockup Row 2) -->
-        <div class="link-inputs-row-2">
-          <div class="link-custom-col">
-            <div class="input-with-icon-wrap">
-              <svg class="input-icon-left" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z"/><line x1="7" y1="7" x2="7.01" y2="7"/></svg>
-              <input type="text" id="codeInput" class="modern-input" placeholder="Custom short link (optional)"/>
-              <span class="suffix-badge" id="sufPrev">-??</span>
-            </div>
-            <div class="ferr" id="codeErr">Letters, numbers, dash and underscore only.</div>
-          </div>
-
-          <!-- Domain dropdown/badge -->
-          <div class="domain-badge-wrap">
-            <span id="linkPrefixLabel">sniplink.netlify.app/</span>
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
-          </div>
-
-          <!-- Collection select for link -->
-          <select id="linkCollectionSelect" class="collection-select" style="max-width:170px;" onchange="handleCollectionSelect('link', this.value)">
-            <option value="">(None - Unorganized)</option>
-          </select>
-
-          <!-- Shorten Link Button -->
-          <button class="btn-gen-pill" id="genBtn" onclick="handleGen()">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>
-            <span class="btext">Shorten Link &rarr;</span>
-            <div class="spinner"></div>
-          </button>
-        </div>
-
-        <div class="upload-prog-wrap" id="progWrap"><div class="upload-prog-bar" id="progBar"></div></div>
-
-        <!-- Link Result Card (Image 2 mockup) -->
-        <div class="result-card" id="resultCard">
-          <div class="result-main-row">
-            <div class="result-left-group">
-              <div class="result-badge-icon">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>
-              </div>
-              <div class="result-info">
-                <div class="result-short-url" id="rCode"></div>
-                <div class="result-dest-url" id="rOrig"></div>
-                <div class="result-sub" id="resultSub">Active &middot; 0 clicks</div>
-              </div>
-            </div>
-
-            <div class="result-actions-group">
-              <button class="icon-action-btn" onclick="copyShort()" title="Copy Short Link">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
-              </button>
-              <button class="icon-action-btn" onclick="openEmailShareModal('link')" title="Share via Email">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/></svg>
-              </button>
-              <button class="icon-action-btn" id="qrBtn" onclick="toggleQR('link')" title="QR Code">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><rect x="14" y="14" width="3" height="3"/><rect x="18" y="14" width="3" height="3"/><rect x="14" y="18" width="3" height="3"/><rect x="18" y="18" width="3" height="3"/></svg>
-              </button>
-              <button class="icon-action-btn" onclick="openRes()" title="Open Destination">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="1"/><circle cx="12" cy="5" r="1"/><circle cx="12" cy="19" r="1"/></svg>
-              </button>
-            </div>
-          </div>
-
-          <div class="qr-wrap" id="qrWrap">
-            <div style="font-size:12px;color:var(--text-dim)">Scan to open link on mobile:</div>
-            <div class="qr-img-box"><img id="qrImg" src="" alt="QR Code" width="140" height="140"/></div>
-            <div style="margin-top:8px"><button class="btn-sub-pill" id="downloadQRBtn" style="display:none;margin:0 auto;" onclick="downloadQR('qrImg')">Save QR Image</button></div>
-          </div>
-        </div>
-
-        <!-- 4 Feature Badges Strip (Mockup) -->
-        <div class="features-strip">
-          <div class="feat-item">
-            <div class="feat-icon">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>
-            </div>
-            <div>
-              <div class="feat-title">Fast &amp; Simple</div>
-              <div class="feat-sub">Create links instantly</div>
-            </div>
-          </div>
-          <div class="feat-item">
-            <div class="feat-icon">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
-            </div>
-            <div>
-              <div class="feat-title">Secure Sharing</div>
-              <div class="feat-sub">Private and reliable</div>
-            </div>
-          </div>
-          <div class="feat-item">
-            <div class="feat-icon">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><polygon points="12 2 2 7 12 12 22 7 12 2"/><polyline points="2 17 12 22 22 17"/><polyline points="2 12 12 17 22 12"/></svg>
-            </div>
-            <div>
-              <div class="feat-title">Organize Easily</div>
-              <div class="feat-sub">Keep everything in collections</div>
-            </div>
-          </div>
-          <div class="feat-item">
-            <div class="feat-icon">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
-            </div>
-            <div>
-              <div class="feat-title">Auto Expiry</div>
-              <div class="feat-sub">Set your own time limit</div>
-            </div>
-          </div>
-        </div>
-
-      </div><!-- /section-link -->
-
-      <!-- ══ TAB 2: FILE (Image 4 & 5 Mockup) ══ -->
-      <div class="tab-section" id="section-file">
-        
-        <!-- Notice banner -->
-        <div class="file-alert-banner">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/></svg>
-          <div><strong>File Share:</strong> Direct high-speed upload up to 1 GB. Recipient downloads via SnipLink branded interface.</div>
-        </div>
-
-        <div class="file-grid-layout" id="fileGridLayout">
-          
-          <!-- Left Column (Upload Form) -->
-          <div class="file-left-col">
-            <!-- Drop zone -->
-            <div class="drop-zone" id="dropZone">
-              <input type="file" id="fileInput" onchange="handleFileSelect(event)"/>
-              <div class="dz-icon-circle">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
-              </div>
-              <div class="dz-title">Drop your file here, or click to browse</div>
-              <div class="dz-sub">For best results, upload files up to 1 GB. Supported: MP4, PDF, DOC, ZIP, JPG, PNG</div>
-              <div class="dz-limit">Zero signup &middot; Direct fast transfer</div>
-            </div>
-
-            <!-- Selected File Preview Card -->
-            <div class="file-preview" id="filePreview">
-              <div class="file-type-badge" id="fileTypeBadge">FILE</div>
-              <div class="file-info">
-                <span class="file-name-text" id="fileNameText"></span>
-                <span class="file-meta-text" id="fileMetaText"></span>
-                <div class="upload-prog-wrap" id="uploadProgWrap">
-                  <div class="upload-prog-bar" id="uploadProgBar"></div>
-                </div>
-                <div class="upload-status" id="uploadStatus"></div>
-              </div>
-              <button class="file-remove" onclick="clearFile()" title="Remove file">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
-              </button>
-            </div>
-
-            <!-- Custom short name for file -->
-            <div class="input-with-icon-wrap" style="margin-top:12px">
-              <span id="filePrefixLabel" style="display:none"></span>
-              <svg class="input-icon-left" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z"/><line x1="7" y1="7" x2="7.01" y2="7"/></svg>
-              <input type="text" id="fileCodeInput" class="modern-input" placeholder="Custom short name (optional)"/>
-              <span class="suffix-badge" id="filesSufPrev">-??</span>
-            </div>
-            <div class="ferr" id="fileCodeErr">Letters, numbers, dash and underscore only.</div>
-
-            <!-- Expiration & Collection controls -->
-            <div class="file-options-row">
-              <!-- Expiry picker -->
-              <div class="picker-btn-wrap" id="fileExpiryPickerWrap">
-                <button type="button" class="picker-trigger-btn" id="fileExpiryTrigger" onclick="toggleExpiryDropdown('file')">
-                  <span style="display:flex;align-items:center;gap:6px">
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
-                    <span id="fileExpiryLabel">60 days</span>
-                  </span>
-                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
-                </button>
-                <div class="expiry-dropdown" id="fileExpiryDropdown">
-                  <div class="expiry-opt" onclick="selectExpiry('file', 7, '7 days')">7 days</div>
-                  <div class="expiry-opt" onclick="selectExpiry('file', 15, '15 days')">15 days</div>
-                  <div class="expiry-opt" onclick="selectExpiry('file', 30, '30 days')">30 days</div>
-                  <div class="expiry-opt active" onclick="selectExpiry('file', 60, '60 days')">60 days <span style="font-size:11px;opacity:0.7">Recommended</span></div>
-                  <div class="expiry-opt" onclick="selectExpiry('file', 90, '90 days')">90 days</div>
-                  <div class="expiry-opt" onclick="selectExpiry('file', 180, '180 days')">180 days</div>
-                  <div class="expiry-opt custom" onclick="event.stopPropagation()">
-                    <label style="display:block;font-size:11px;margin-bottom:2px">Custom date:</label>
-                    <input type="date" id="fileCustomDateInput" class="custom-date-inp" onchange="applyCustomDate('file', this.value)"/>
-                  </div>
-                </div>
-              </div>
-
-              <!-- Collection select -->
-              <div class="picker-btn-wrap">
-                <select id="fileCollectionSelect" class="collection-select" onchange="handleCollectionSelect('file', this.value)">
-                  <option value="">(None - Unorganized)</option>
-                </select>
-              </div>
-            </div>
-
-            <!-- Upload Button -->
-            <button class="btn-gen-pill" id="fileGenBtn" style="width:100%;margin-top:14px;justify-content:center" onclick="handleFileUpload()">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
-              <span class="btext">Upload &amp; Generate Link</span>
-              <div class="spinner"></div>
-            </button>
-          </div><!-- /file-left-col -->
-
-          <!-- Right Column (File Result Card - Image 4 & 5) -->
-          <div class="file-result-container" id="fileResultCard">
-            <div class="file-ready-head">
-              <div class="ready-check-icon">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><polyline points="20 6 9 17 4 12"/></svg>
-              </div>
-              <div>
-                <div class="ready-title">File Uploaded &amp; Ready</div>
-                <div class="ready-sub" id="fileResultSub">Just now &middot; Ready for sharing</div>
-              </div>
-            </div>
-
-            <!-- Link Box -->
-            <div style="background:var(--surface-elevated);border:1px solid var(--border);border-radius:14px;padding:12px 14px;display:flex;align-items:center;justify-content:space-between;gap:10px">
-              <div style="display:flex;align-items:center;gap:10px;min-width:0">
-                <svg viewBox="0 0 24 24" fill="none" stroke="var(--accent)" stroke-width="2" style="width:18px;height:18px;flex-shrink:0"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>
-                <div style="min-width:0">
-                  <div style="font-weight:700;font-size:13px;color:var(--text);white-space:nowrap;overflow:hidden;text-overflow:ellipsis" id="fCode"></div>
-                  <div style="font-size:11px;color:var(--text-dim);white-space:nowrap;overflow:hidden;text-overflow:ellipsis" id="fName"></div>
-                </div>
-              </div>
-              <button class="icon-action-btn" onclick="copyFileLink()" title="Copy Link">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
-              </button>
-            </div>
-
-            <!-- Auto-deletes Warning Banner (Image 4 & 5 Yellow box) -->
-            <div class="expiry-warn-box" id="fileExpiryWarn">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
-              <span id="fileExpiryText">Auto-deletes on expiration.</span>
-            </div>
-
-            <!-- Action buttons Row 1 -->
-            <div class="file-actions-row">
-              <button class="btn-pill-green" onclick="copyFileLink()">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:16px;height:16px"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
-                Copy Link
-              </button>
-              <button class="btn-pill-outline" onclick="openFileRes()">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:16px;height:16px"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
-                View Download Page
-              </button>
-            </div>
-
-            <!-- Action buttons Row 2 -->
-            <div class="file-sub-actions-row">
-              <button class="btn-sub-pill" id="fileQrBtn" onclick="toggleQR('file')">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:14px;height:14px"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><rect x="14" y="14" width="3" height="3"/><rect x="18" y="14" width="3" height="3"/><rect x="14" y="18" width="3" height="3"/><rect x="18" y="18" width="3" height="3"/></svg>
-                QR Code
-              </button>
-              <button class="btn-sub-pill" onclick="openEmailShareModal('file')">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:14px;height:14px"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
-                Share via Email
-              </button>
-              <button class="btn-sub-pill" id="fileDownloadQRBtn" style="display:none" onclick="downloadQR('fileQrImg')">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:14px;height:14px"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
-                Save QR
-              </button>
-            </div>
-
-            <div class="qr-wrap" id="fileQrWrap">
-              <div style="font-size:12px;color:var(--text-dim)">Scan to open download page:</div>
-              <div class="qr-img-box"><img id="fileQrImg" src="" alt="QR Code" width="140" height="140"/></div>
-            </div>
-          </div><!-- /fileResultCard -->
-
-        </div>
-      </div><!-- /section-file -->
-
-      <!-- ══ TAB 3: NOTE (Image 3 Mockup) ══ -->
-      <div class="tab-section" id="section-note">
-        
-        <input type="text" id="noteTitleInput" class="note-title-inp" placeholder="Note Title (Optional)"/>
-        
-        <div class="quill-wrapper">
-          <div id="quillEditor"></div>
-        </div>
-
-        <div class="note-stats">
-          <span id="wordCount">0 words</span>
-          <span id="charCount">0 chars</span>
-        </div>
-
-        <div class="input-with-icon-wrap" style="margin-top:12px">
-          <span id="notePrefixLabel" style="display:none"></span>
-          <svg class="input-icon-left" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z"/><line x1="7" y1="7" x2="7.01" y2="7"/></svg>
-          <input type="text" id="noteCodeInput" class="modern-input" placeholder="Custom short name (optional)"/>
-          <span class="suffix-badge" id="notesSufPrev">-??</span>
-        </div>
-        <div class="ferr" id="noteCodeErr">Letters, numbers, dash and underscore only.</div>
-
-        <!-- Note Expiration & Collection controls -->
-        <div class="file-options-row">
-          <div class="picker-btn-wrap" id="noteExpiryPickerWrap">
-            <button type="button" class="picker-trigger-btn" id="noteExpiryTrigger" onclick="toggleExpiryDropdown('note')">
-              <span style="display:flex;align-items:center;gap:6px">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
-                <span id="noteExpiryLabel">30 days</span>
-              </span>
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
-            </button>
-            <div class="expiry-dropdown" id="noteExpiryDropdown">
-              <div class="expiry-opt" onclick="selectExpiry('note', 7, '7 days')">7 days</div>
-              <div class="expiry-opt" onclick="selectExpiry('note', 15, '15 days')">15 days</div>
-              <div class="expiry-opt active" onclick="selectExpiry('note', 30, '30 days')">30 days</div>
-              <div class="expiry-opt" onclick="selectExpiry('note', 60, '60 days')">60 days</div>
-              <div class="expiry-opt" onclick="selectExpiry('note', 90, '90 days')">90 days</div>
-              <div class="expiry-opt" onclick="selectExpiry('note', 180, '180 days')">180 days</div>
-              <div class="expiry-opt custom" onclick="event.stopPropagation()">
-                <label style="display:block;font-size:11px;margin-bottom:2px">Custom date:</label>
-                <input type="date" id="noteCustomDateInput" class="custom-date-inp" onchange="applyCustomDate('note', this.value)"/>
-              </div>
-            </div>
-          </div>
-
-          <div class="picker-btn-wrap">
-            <select id="noteCollectionSelect" class="collection-select" onchange="handleCollectionSelect('note', this.value)">
-              <option value="">(None - Unorganized)</option>
-            </select>
-          </div>
-        </div>
-
-        <!-- Note Footer Bar (Mockup Image 3) -->
-        <div class="note-footer-bar">
-          <button class="privacy-toggle-btn" type="button" title="Privacy Setting">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:16px;height:16px"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
-            Private
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:14px;height:14px"><polyline points="6 9 12 15 18 9"/></svg>
-          </button>
-          
-          <div style="display:flex;gap:10px">
-            <button class="btn-sub-pill" style="height:42px;padding:0 18px" onclick="toast('Draft saved locally')">Save Draft</button>
-            <button class="btn-gen-pill" id="noteGenBtn" onclick="handleNoteGen()">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"/><polyline points="17 21 17 13 7 13 7 21"/><polyline points="7 3 7 8 15 8"/></svg>
-              <span class="btext">Save Note</span>
-              <div class="spinner"></div>
-            </button>
-          </div>
-        </div>
-
-        <!-- Note Result Card -->
-        <div class="result-card" id="noteResultCard">
-          <div class="result-main-row">
-            <div class="result-left-group">
-              <div class="result-badge-icon" style="background:var(--purple-subtle);color:var(--purple)">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
-              </div>
-              <div class="result-info">
-                <div class="result-short-url" id="nCode"></div>
-                <div class="result-dest-url" id="nPreview"></div>
-                <div class="result-sub" id="noteResultSub">Just now</div>
-              </div>
-            </div>
-
-            <div class="result-actions-group">
-              <button class="icon-action-btn" onclick="copyNoteLink()" title="Copy Note Link">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
-              </button>
-              <button class="icon-action-btn" onclick="openNoteRes()" title="View Note Reader">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
-              </button>
-              <button class="icon-action-btn" onclick="downloadNoteCreatorTxt()" title="Download .txt">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
-              </button>
-              <button class="icon-action-btn" id="noteQrBtn" onclick="toggleQR('note')" title="QR Code">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><rect x="14" y="14" width="3" height="3"/><rect x="18" y="14" width="3" height="3"/><rect x="14" y="18" width="3" height="3"/><rect x="18" y="18" width="3" height="3"/></svg>
-              </button>
-              <button class="icon-action-btn" onclick="openEmailShareModal('note')" title="Share via Email">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
-              </button>
-            </div>
-          </div>
-
-          <div class="expiry-warn-box" id="noteExpiryWarn" style="margin-top:12px">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
-            <span id="noteExpiryText">Auto-deletes on expiration.</span>
-          </div>
-
-          <div class="qr-wrap" id="noteQrWrap">
-            <div style="font-size:12px;color:var(--text-dim)">Scan to view note on mobile:</div>
-            <div class="qr-img-box"><img id="noteQrImg" src="" alt="QR Code" width="140" height="140"/></div>
-            <div style="margin-top:8px"><button class="btn-sub-pill" id="noteDownloadQRBtn" style="display:none;margin:0 auto;" onclick="downloadQR('noteQrImg')">Save QR Image</button></div>
-          </div>
-        </div>
-
-      </div><!-- /section-note -->
-
-    </div><!-- /layer-3 -->
-  </div><!-- /layered-card-wrap -->
-
-  <!-- ══ WORKSPACE HISTORY & COLLECTIONS ══ -->
-  <div id="history-section">
-    <div class="workspace-hdr">
-      <div class="sec-title">Workspace History <span class="cbadge" id="hTotalCount">0</span></div>
-      
-      <!-- Theme Switcher Controls -->
-      <div class="nav-actions" role="radiogroup" aria-label="Theme">
-        <button class="btn-sub-pill" id="theme-btn-system" onclick="setTheme('system')">Auto</button>
-        <button class="btn-sub-pill" id="theme-btn-light" onclick="setTheme('light')">Light</button>
-        <button class="btn-sub-pill" id="theme-btn-dark" onclick="setTheme('dark')">Dark</button>
-      </div>
-    </div>
-
-    <!-- Collections Bar -->
-    <div class="collections-bar" id="collectionsBar"></div>
-
-    <!-- History Search & Clear Toolbar -->
-    <div class="hist-toolbar">
-      <div class="hist-search-box">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
-        <input type="text" id="histSearchInput" placeholder="Search links, files, notes, or collections..." oninput="filterHistory()"/>
-      </div>
-      <button class="btn-sub-pill" style="height:42px;padding:0 16px" onclick="clearCurrentHistory()">Clear History</button>
-    </div>
-
-    <!-- Type Tabs: All, Links, Files, Notes -->
-    <div class="type-filter-tabs">
-      <button class="type-tab-btn active" id="type-tab-all" onclick="setTypeFilter('all')">All Items</button>
-      <button class="type-tab-btn" id="type-tab-link" onclick="setTypeFilter('link')">Links</button>
-      <button class="type-tab-btn" id="type-tab-file" onclick="setTypeFilter('file')">Files</button>
-      <button class="type-tab-btn" id="type-tab-note" onclick="setTypeFilter('note')">Notes</button>
-    </div>
-
-    <!-- Unified History List -->
-    <div class="h-list" id="unifiedHistoryList"></div>
-  </div>
-
-  <!-- About Section -->
-  <div id="about" style="margin-top:50px;padding-top:24px;border-top:1px solid var(--border)">
-    <div class="sec-title" style="margin-bottom:8px">About SnipLink</div>
-    <p style="font-size:14px;color:var(--text-dim);line-height:1.6;margin-bottom:16px;">
-      SnipLink is a fast, privacy-first 3-in-1 tool for compact short links, high-speed temporary file sharing up to 1 GB, and distraction-free note publishing. Zero accounts required.
-    </p>
-  </div>
-
-</main>
-
 <!-- Email Sharing Modal (Image 2 Mockup) -->
 <div class="modal-overlay" id="emailModal" onclick="if(event.target===this) closeEmailModal()">
   <div class="modal-card">
@@ -2171,19 +2260,6 @@
     </div>
   </div>
 </div>
-
-<!-- Footer -->
-<footer>
-  <div class="fbrand">SnipLink</div>
-  <div class="finfo">
-    Developed by <a href="https://sr-imran.github.io/sri/" target="_blank" rel="noopener noreferrer">Sifatur Rahman Imran</a><br/>
-    <a class="github-link" href="https://github.com/SR-iMrAN" target="_blank" rel="noopener noreferrer">
-      <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.3 3.438 9.8 8.205 11.387.6.11.82-.26.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61-.546-1.387-1.334-1.756-1.334-1.756-1.09-.745.083-.73.083-.73 1.205.085 1.84 1.238 1.84 1.238 1.07 1.835 2.807 1.305 3.492.998.108-.775.418-1.305.76-1.605-2.665-.304-5.466-1.332-5.466-5.93 0-1.31.468-2.38 1.237-3.22-.124-.303-.536-1.524.117-3.176 0 0 1.008-.323 3.3 1.23A11.52 11.52 0 0112 5.8c1.02.005 2.045.138 3.003.404 2.29-1.553 3.296-1.23 3.296-1.23.655 1.653.244 2.874.12 3.176.77.84 1.232 1.91 1.232 3.22 0 4.61-2.803 5.624-5.475 5.92.43.37.814 1.1.814 2.22 0 1.606-.015 2.9-.015 3.293 0 .32.216.694.825.576C20.565 21.796 24 17.296 24 12c0-6.63-5.37-12-12-12z"/></svg>
-      GitHub
-    </a>
-  </div>
-  <div class="fcopy">&copy; 2026 All Rights Reserved</div>
-</footer>
 
 <div class="toast" id="toast"></div>
 
@@ -3498,13 +3574,11 @@ function toast(msg) {
     const btn = document.getElementById('dlBtn');
     if (!btn || btn.classList.contains('slicing')) return;
     
-    // Prevent immediate navigation
     e.preventDefault();
     const targetUrl = btn.getAttribute('href');
 
     btn.classList.add('slicing');
     
-    // Optional Web Audio synthesized laser/electric cut sound
     try {
       const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
       const osc = audioCtx.createOscillator();
@@ -3520,7 +3594,6 @@ function toast(msg) {
       osc.stop(audioCtx.currentTime + 0.35);
     } catch (err) {}
 
-    // After 1.2s, snap back together and start download
     setTimeout(() => {
       btn.classList.remove('slicing');
       if (targetUrl && targetUrl !== '#') {
