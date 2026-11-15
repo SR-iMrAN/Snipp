@@ -1,515 +1,2180 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-theme="light">
 <head>
 <meta charset="UTF-8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-<title>SNIPP — Ultra-Short Links</title>
+<title>SnipLink — Shorten, Share &amp; Keep Your Content</title>
+<meta name="description" content="Transform URLs into short links, share files up to 1 GB, and save rich notes — all in one place. Instant, secure, and privacy-first."/>
 <link rel="preconnect" href="https://fonts.googleapis.com"/>
-<link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=Syne:wght@400;500;600;700;800&display=swap" rel="stylesheet"/>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet"/>
+<link href="https://cdn.quilljs.com/1.3.7/quill.snow.css" rel="stylesheet"/>
 <style>
   :root {
-    --bg: #080a0c;
-    --glass: rgba(255,255,255,0.035);
-    --glass-border: rgba(255,255,255,0.07);
-    --accent: #b9ff6a;
-    --accent2: #7fff47;
-    --accent-dim: rgba(185,255,106,0.12);
-    --accent-glow: rgba(185,255,106,0.35);
-    --text: #f0f2f5;
-    --text-dim: #6b7280;
-    --text-muted: #374151;
-    --red: #ff5858;
-    --radius: 14px;
+    --font-sans: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    --font-mono: 'Space Mono', monospace;
     --radius-sm: 8px;
-    --mono: 'Space Mono', monospace;
-    --display: 'Syne', sans-serif;
+    --radius-md: 14px;
+    --radius-lg: 20px;
+    --radius-xl: 26px;
+    --radius-full: 9999px;
   }
+
+  /* ── LIGHT THEME (Default per mockup) ── */
+  html, html[data-theme="light"] {
+    --bg: #f4f5f8;
+    --surface: #ffffff;
+    --surface-elevated: #f9fafb;
+    --surface-subtle: #f3f4f6;
+    --border: #e5e7eb;
+    --border-subtle: #f0f2f5;
+    --border-focus: #16a34a;
+    --text: #111827;
+    --text-dim: #4b5563;
+    --text-muted: #9ca3af;
+    --accent: #16a34a;
+    --accent-hover: #15803d;
+    --accent-subtle: rgba(22, 163, 74, 0.1);
+    --accent-glow: rgba(22, 163, 74, 0.28);
+    --blue: #2563eb;
+    --blue-subtle: rgba(37, 99, 235, 0.1);
+    --purple: #9333ea;
+    --purple-subtle: rgba(147, 51, 234, 0.1);
+    --amber: #d97706;
+    --amber-subtle: rgba(217, 119, 6, 0.1);
+    --red: #dc2626;
+    --red-subtle: rgba(220, 38, 38, 0.1);
+    --nav-bg: rgba(244, 245, 248, 0.88);
+    
+    /* 3D Glassmorphic Layered Card (Annotated 1, 2, 3) */
+    --layer-1-bg: rgba(255, 255, 255, 0.45);
+    --layer-1-border: rgba(255, 255, 255, 0.75);
+    --layer-1-shadow: 0 24px 48px -12px rgba(0, 0, 0, 0.05);
+    
+    --layer-2-bg: rgba(255, 255, 255, 0.65);
+    --layer-2-border: rgba(255, 255, 255, 0.88);
+    --layer-2-shadow: 0 12px 28px -8px rgba(0, 0, 0, 0.04);
+    
+    --layer-3-bg: rgba(255, 255, 255, 0.95);
+    --layer-3-border: rgba(255, 255, 255, 0.95);
+    --layer-3-shadow: 0 8px 30px rgba(0, 0, 0, 0.04);
+
+    --card-3d-bg: rgba(255, 255, 255, 0.95);
+    --card-3d-border: rgba(255, 255, 255, 0.9);
+    --card-3d-shadow: 0 16px 32px rgba(0, 0, 0, 0.08), inset 0 1px 0 rgba(255, 255, 255, 0.9);
+    
+    --tab-bar-bg: #eceef2;
+    --warn-bg: #fef3c7;
+    --warn-border: #fcd34d;
+    --warn-text: #92400e;
+    --notice-bg: #ecfdf5;
+    --notice-border: #a7f3d0;
+    --notice-text: #065f46;
+  }
+
+  /* ── DARK THEME (Image 5) ── */
+  html[data-theme="dark"] {
+    --bg: #0f0f0f;
+    --surface: #18181b;
+    --surface-elevated: #27272a;
+    --surface-subtle: rgba(255, 255, 255, 0.03);
+    --border: rgba(255, 255, 255, 0.1);
+    --border-subtle: rgba(255, 255, 255, 0.06);
+    --border-focus: #16a34a;
+    --text: #f3f4f6;
+    --text-dim: #9ca3af;
+    --text-muted: #6b7280;
+    --accent: #16a34a;
+    --accent-hover: #22c55e;
+    --accent-subtle: rgba(22, 163, 74, 0.18);
+    --accent-glow: rgba(22, 163, 74, 0.4);
+    --blue: #3b82f6;
+    --blue-subtle: rgba(59, 130, 246, 0.15);
+    --purple: #a855f7;
+    --purple-subtle: rgba(168, 85, 247, 0.15);
+    --amber: #f59e0b;
+    --amber-subtle: rgba(245, 158, 11, 0.15);
+    --red: #ef4444;
+    --red-subtle: rgba(239, 68, 68, 0.15);
+    --nav-bg: rgba(15, 15, 15, 0.88);
+
+    --layer-1-bg: rgba(24, 24, 27, 0.4);
+    --layer-1-border: rgba(255, 255, 255, 0.04);
+    --layer-1-shadow: 0 30px 60px -15px rgba(0, 0, 0, 0.7);
+
+    --layer-2-bg: rgba(24, 24, 27, 0.7);
+    --layer-2-border: rgba(255, 255, 255, 0.07);
+    --layer-2-shadow: 0 16px 36px -10px rgba(0, 0, 0, 0.6);
+
+    --layer-3-bg: #18181b;
+    --layer-3-border: rgba(255, 255, 255, 0.1);
+    --layer-3-shadow: 0 12px 36px rgba(0, 0, 0, 0.6);
+
+    --card-3d-bg: rgba(28, 30, 36, 0.94);
+    --card-3d-border: rgba(255, 255, 255, 0.12);
+    --card-3d-shadow: 0 18px 36px rgba(0, 0, 0, 0.6), inset 0 1px 0 rgba(255, 255, 255, 0.15);
+
+    --tab-bar-bg: #111215;
+    --warn-bg: rgba(245, 158, 11, 0.12);
+    --warn-border: rgba(245, 158, 11, 0.35);
+    --warn-text: #fbbf24;
+    --notice-bg: rgba(22, 163, 74, 0.12);
+    --notice-border: rgba(22, 163, 74, 0.3);
+    --notice-text: #4ade80;
+  }
+
   *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
   html { scroll-behavior: smooth; }
   body {
-    font-family: var(--display);
+    font-family: var(--font-sans);
     background: var(--bg);
     color: var(--text);
     min-height: 100vh;
     overflow-x: hidden;
     position: relative;
-  }
-  body::before {
-    content: '';
-    position: fixed; inset: 0;
-    background-image:
-      linear-gradient(rgba(185,255,106,0.03) 1px, transparent 1px),
-      linear-gradient(90deg, rgba(185,255,106,0.03) 1px, transparent 1px);
-    background-size: 40px 40px;
-    pointer-events: none; z-index: 0;
-  }
-  .bg-glow {
-    position: fixed; top: -200px; left: 50%;
-    transform: translateX(-50%);
-    width: 800px; height: 600px;
-    background: radial-gradient(ellipse, rgba(185,255,106,0.06) 0%, transparent 70%);
-    pointer-events: none; z-index: 0;
+    line-height: 1.5;
+    transition: background-color 0.25s ease, color 0.25s ease;
   }
 
-  /* NAV */
+  /* ── NAVBAR (Mockup style) ── */
   nav {
     position: sticky; top: 0; z-index: 100;
     display: flex; align-items: center; justify-content: space-between;
-    padding: 18px 32px;
-    background: rgba(8,10,12,0.88);
-    backdrop-filter: blur(20px);
-    border-bottom: 1px solid var(--glass-border);
+    padding: 16px 40px;
+    background: var(--nav-bg);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    border-bottom: 1px solid var(--border);
+    transition: background-color 0.25s ease, border-color 0.25s ease;
   }
   .nav-logo {
-    font-size: 22px; font-weight: 800; letter-spacing: -0.5px;
-    display: flex; align-items: center; gap: 8px;
-    text-decoration: none; color: var(--text); cursor: pointer;
+    display: flex; align-items: center; gap: 10px;
+    font-size: 21px; font-weight: 800; letter-spacing: -0.5px;
+    color: var(--text); text-decoration: none; cursor: pointer;
+    user-select: none;
   }
-  .nav-logo span { color: var(--accent); }
-  .logo-dot {
-    width: 8px; height: 8px;
-    background: var(--accent); border-radius: 50%;
-    box-shadow: 0 0 10px var(--accent-glow);
-    animation: pulse-dot 2s ease-in-out infinite;
+  .nav-logo-icon {
+    width: 24px; height: 24px;
+    color: var(--text);
+    transition: transform 0.2s ease, color 0.2s ease;
   }
-  @keyframes pulse-dot {
-    0%,100% { transform: scale(1); opacity: 1; }
-    50% { transform: scale(1.4); opacity: 0.7; }
-  }
-  .nav-links { display: flex; align-items: center; gap: 6px; }
-  .nav-links a {
-    font-size: 13px; font-weight: 600; letter-spacing: 0.02em;
-    color: var(--text-dim); text-decoration: none;
-    padding: 6px 14px; border-radius: 20px; transition: all 0.2s;
-    text-transform: uppercase;
-  }
-  .nav-links a:hover { color: var(--text); background: var(--glass); }
-
-  /* REDIRECT OVERLAY */
-  .redirect-page {
-    display: none; position: fixed; inset: 0;
-    background: var(--bg); z-index: 9999;
-    flex-direction: column; align-items: center; justify-content: center;
-    text-align: center;
-  }
-  .redirect-page.show { display: flex; }
-  .redirect-spinner {
-    width: 48px; height: 48px;
-    border: 2px solid var(--accent-dim);
-    border-top-color: var(--accent); border-radius: 50%;
-    animation: spin 0.8s linear infinite;
-    margin-bottom: 20px;
-    box-shadow: 0 0 20px var(--accent-glow);
-  }
-  @keyframes spin { to { transform: rotate(360deg); } }
-  .redirect-logo { font-size: 28px; font-weight: 800; letter-spacing: -1px; margin-bottom: 16px; }
-  .redirect-logo span { color: var(--accent); }
-  .redirect-msg { font-family: var(--mono); font-size: 13px; color: var(--text-dim); }
-  .redirect-dest {
-    font-family: var(--mono); font-size: 12px; color: var(--accent);
-    margin-top: 6px; max-width: 380px; overflow: hidden;
-    text-overflow: ellipsis; white-space: nowrap; padding: 0 20px;
-  }
-  .redirect-cancel {
-    margin-top: 28px; font-family: var(--mono); font-size: 12px;
-    color: var(--text-dim); background: none;
-    border: 1px solid var(--glass-border); padding: 8px 20px;
-    border-radius: 8px; cursor: pointer; transition: all 0.2s;
-  }
-  .redirect-cancel:hover { color: var(--text); border-color: rgba(255,255,255,0.2); }
-
-  /* MAIN */
-  main { position: relative; z-index: 1; max-width: 720px; margin: 0 auto; padding: 60px 24px 100px; }
-
-  /* HERO */
-  .hero { text-align: center; margin-bottom: 40px; animation: fadeUp 0.6s ease both; }
-  @keyframes fadeUp {
-    from { opacity: 0; transform: translateY(24px); }
-    to { opacity: 1; transform: translateY(0); }
-  }
-  .hero-badge {
-    display: inline-flex; align-items: center; gap: 6px;
-    font-family: var(--mono); font-size: 11px; font-weight: 700;
-    letter-spacing: 0.12em; text-transform: uppercase;
-    color: var(--accent); background: var(--accent-dim);
-    border: 1px solid rgba(185,255,106,0.2);
-    padding: 5px 12px; border-radius: 20px; margin-bottom: 24px;
-  }
-  .hero-badge::before {
-    content: ''; width: 6px; height: 6px;
-    background: var(--accent); border-radius: 50%;
-    box-shadow: 0 0 8px var(--accent);
-  }
-  h1 {
-    font-size: clamp(42px,7vw,68px); font-weight: 800;
-    line-height: 1.0; letter-spacing: -2px; margin-bottom: 16px;
-    background: linear-gradient(135deg, #ffffff 0%, #9ca3af 100%);
-    -webkit-background-clip: text; -webkit-text-fill-color: transparent;
-  }
-  h1 em { font-style: normal; -webkit-text-fill-color: var(--accent); }
-  .hero-sub { font-size: 16px; color: var(--text-dim); line-height: 1.6; max-width: 440px; margin: 0 auto; }
-
-  /* INFO BANNER */
-  .info-banner {
-    background: rgba(185,255,106,0.05);
-    border: 1px solid rgba(185,255,106,0.18);
-    border-radius: 12px; padding: 14px 18px;
-    margin-bottom: 16px;
-    font-family: var(--mono); font-size: 12px; color: var(--text-dim); line-height: 1.7;
-    animation: fadeUp 0.6s 0.05s ease both;
-  }
-  .info-banner strong { color: var(--accent); }
-
-  /* GEN CARD */
-  .gen-card {
-    background: var(--glass);
-    border: 1px solid var(--glass-border);
-    border-radius: 20px; padding: 32px;
-    backdrop-filter: blur(20px); margin-bottom: 16px;
-    animation: fadeUp 0.6s 0.12s ease both;
-    position: relative; overflow: hidden;
-  }
-  .gen-card::before {
-    content: ''; position: absolute;
-    top: 0; left: 0; right: 0; height: 1px;
-    background: linear-gradient(90deg, transparent, var(--accent-glow), transparent);
-  }
-  .field-group { display: flex; flex-direction: column; gap: 12px; margin-bottom: 20px; }
-  .field-label { font-family: var(--mono); font-size: 10px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--text-dim); margin-bottom: 6px; display: block; }
-  .field input {
-    width: 100%; background: rgba(255,255,255,0.04);
-    border: 1px solid var(--glass-border); border-radius: var(--radius-sm);
-    padding: 14px 16px; font-family: var(--mono); font-size: 13px;
-    color: var(--text); outline: none; transition: all 0.2s;
-  }
-  .field input::placeholder { color: var(--text-muted); }
-  .field input:focus {
-    border-color: rgba(185,255,106,0.4);
-    background: rgba(185,255,106,0.04);
-    box-shadow: 0 0 0 3px rgba(185,255,106,0.08);
-  }
-  .field input.err { border-color: rgba(255,88,88,0.5); background: rgba(255,88,88,0.04); }
-  .ferr { font-family: var(--mono); font-size: 11px; color: var(--red); margin-top: 5px; display: none; }
-  .ferr.show { display: block; }
-  .prefix-wrap { position: relative; }
-  .prefix-label {
-    position: absolute; left: 14px; top: 50%; transform: translateY(-50%);
-    font-family: var(--mono); font-size: 12px; color: var(--accent);
-    pointer-events: none; z-index: 1;
-    white-space: nowrap; max-width: calc(100% - 40px);
-    overflow: hidden; text-overflow: ellipsis;
-  }
-  .prefix-wrap input { padding-left: 240px !important; padding-right: 56px !important; }
-  .suffix-prev {
-    position: absolute; right: 14px; top: 50%; transform: translateY(-50%);
-    font-family: var(--mono); font-size: 11px; color: var(--accent); opacity: 0.5;
-    pointer-events: none;
+  .nav-logo:hover .nav-logo-icon {
+    transform: rotate(45deg);
+    color: var(--accent);
   }
 
-  /* BUTTON */
-  .btn-gen {
-    width: 100%; padding: 15px 24px;
-    background: var(--accent); color: #080a0c;
-    font-family: var(--display); font-size: 15px; font-weight: 700;
-    border: none; border-radius: var(--radius-sm);
-    cursor: pointer; transition: all 0.2s;
-    display: flex; align-items: center; justify-content: center; gap: 8px;
-  }
-  .btn-gen:hover:not(:disabled) { background: var(--accent2); box-shadow: 0 0 30px rgba(185,255,106,0.4); transform: translateY(-1px); }
-  .btn-gen:disabled { opacity: 0.6; cursor: not-allowed; }
-  .btn-gen.loading { background: var(--accent-dim); color: var(--accent); border: 1px solid rgba(185,255,106,0.3); }
-  .spinner { width: 16px; height: 16px; border: 2px solid rgba(185,255,106,0.2); border-top-color: var(--accent); border-radius: 50%; animation: spin 0.6s linear infinite; display: none; }
-  .btn-gen.loading .spinner { display: block; }
-  .btn-gen.loading .btext { display: none; }
-  .prog-wrap { height: 2px; background: var(--glass); border-radius: 2px; overflow: hidden; margin-top: 14px; display: none; }
-  .prog-wrap.show { display: block; }
-  .prog-bar { height: 2px; background: var(--accent); width: 0%; transition: width 0.35s ease; border-radius: 2px; box-shadow: 0 0 8px var(--accent-glow); }
-
-  /* RESULT */
-  .result-card {
-    background: linear-gradient(135deg, rgba(185,255,106,0.06), rgba(185,255,106,0.02));
-    border: 1px solid rgba(185,255,106,0.25);
-    border-radius: 20px; padding: 28px;
-    display: none; margin-bottom: 16px;
-    position: relative; overflow: hidden;
-  }
-  .result-card::before {
-    content: ''; position: absolute;
-    top: 0; left: 0; right: 0; height: 1px;
-    background: linear-gradient(90deg, transparent, var(--accent), transparent);
-  }
-  .result-card.show { display: block; animation: resultIn 0.4s cubic-bezier(0.34,1.56,0.64,1) both; }
-  @keyframes resultIn {
-    from { opacity: 0; transform: scale(0.95) translateY(10px); }
-    to { opacity: 1; transform: scale(1) translateY(0); }
-  }
-  .result-head { display: flex; align-items: center; gap: 10px; margin-bottom: 18px; }
-  .result-icon {
-    width: 30px; height: 30px; background: var(--accent); border-radius: 50%;
-    display: flex; align-items: center; justify-content: center; font-size: 15px;
-    flex-shrink: 0; box-shadow: 0 0 16px var(--accent-glow);
-  }
-  .result-title { font-size: 14px; font-weight: 700; color: var(--accent); }
-  .result-sub { font-size: 11px; color: var(--text-dim); font-family: var(--mono); margin-top: 2px; }
-
-  .link-box {
-    background: rgba(0,0,0,0.35); border: 1px solid rgba(185,255,106,0.15);
-    border-radius: var(--radius-sm); padding: 14px 16px; margin-bottom: 14px;
-  }
-  .link-code { font-family: var(--mono); font-size: 16px; font-weight: 700; color: var(--accent); display: block; margin-bottom: 4px; }
-  .link-orig { font-family: var(--mono); font-size: 11px; color: var(--text-dim); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; display: block; }
-
-  .tip-box {
-    background: rgba(185,255,106,0.04); border: 1px solid rgba(185,255,106,0.1);
-    border-radius: 8px; padding: 10px 14px; margin-bottom: 16px;
-    font-family: var(--mono); font-size: 11px; color: var(--text-dim); line-height: 1.6;
-  }
-  .tip-box strong { color: var(--accent); }
-
-  .actions { display: flex; gap: 8px; flex-wrap: wrap; }
-  .btn-sm {
-    padding: 9px 16px; border-radius: var(--radius-sm);
-    font-family: var(--display); font-size: 13px; font-weight: 600;
-    cursor: pointer; transition: all 0.2s; border: none;
+  /* Center Nav Pills */
+  .nav-center-pills {
     display: flex; align-items: center; gap: 6px;
   }
-  .bcopy { background: var(--accent); color: #080a0c; }
-  .bcopy:hover { background: var(--accent2); box-shadow: 0 0 16px var(--accent-glow); transform: translateY(-1px); }
-  .bopen { background: var(--glass); color: var(--text); border: 1px solid var(--glass-border); }
-  .bopen:hover { background: rgba(255,255,255,0.08); transform: translateY(-1px); }
-  .bqr { background: var(--glass); color: var(--text-dim); border: 1px solid var(--glass-border); }
-  .bqr:hover { color: var(--text); background: rgba(255,255,255,0.08); }
-  .bqr.on { color: var(--accent); border-color: rgba(185,255,106,0.3); background: var(--accent-dim); }
-  .bdownload { background: rgba(255,255,255,0.08); color: var(--text); border: 1px solid var(--glass-border); }
-  .bdownload:hover { color: var(--text); background: rgba(185,255,106,0.08); }
-
-  /* QR */
-  .qr-wrap { display: none; margin-top: 18px; padding-top: 18px; border-top: 1px solid var(--glass-border); text-align: center; }
-  .qr-wrap.show { display: block; animation: fadeUp 0.3s ease both; }
-  .qr-label { font-family: var(--mono); font-size: 11px; color: var(--text-dim); margin-bottom: 12px; }
-  .qr-img-box {
-    display: inline-block; padding: 12px; background: #fff;
-    border-radius: 10px;
+  .nav-pill {
+    font-size: 14px; font-weight: 500;
+    color: var(--text-dim); text-decoration: none;
+    padding: 7px 20px; border-radius: var(--radius-full);
+    transition: all 0.2s ease;
+    cursor: pointer;
+    border: none; background: transparent;
   }
-  .qr-img-box img { display: block; border-radius: 4px; }
+  .nav-pill:hover {
+    color: var(--text);
+    background: var(--surface-subtle);
+  }
+  .nav-pill.active {
+    color: var(--text);
+    background: var(--surface);
+    font-weight: 600;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
+  }
 
-  /* TOAST */
-  .toast {
-    position: fixed; bottom: 32px; left: 50%;
-    transform: translateX(-50%) translateY(80px);
-    background: var(--accent); color: #080a0c;
-    font-family: var(--mono); font-size: 13px; font-weight: 700;
-    padding: 12px 22px; border-radius: 30px; z-index: 9999;
-    transition: transform 0.3s cubic-bezier(0.34,1.56,0.64,1);
-    white-space: nowrap; box-shadow: 0 8px 32px rgba(185,255,106,0.4);
+  /* Right Nav Actions */
+  .nav-actions {
+    display: flex; align-items: center; gap: 8px;
+  }
+  .nav-action-btn {
+    width: 38px; height: 38px;
+    border-radius: var(--radius-full);
+    display: flex; align-items: center; justify-content: center;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    color: var(--text-dim);
+    cursor: pointer;
+    transition: all 0.2s ease;
+  }
+  .nav-action-btn:hover {
+    color: var(--text);
+    border-color: var(--text-dim);
+    transform: translateY(-1px);
+  }
+  .nav-theme-dropdown-btn {
+    display: flex; align-items: center; gap: 6px;
+    padding: 0 12px; height: 38px;
+    border-radius: var(--radius-full);
+    background: var(--surface);
+    border: 1px solid var(--border);
+    color: var(--text);
+    font-size: 13px; font-weight: 500;
+    cursor: pointer;
+    transition: all 0.2s ease;
+  }
+  .nav-theme-dropdown-btn:hover {
+    border-color: var(--text-dim);
+  }
+  .nav-theme-dropdown-btn svg { width: 16px; height: 16px; }
+
+  /* ── MAIN WRAPPER ── */
+  main {
+    max-width: 960px;
+    margin: 0 auto;
+    padding: 36px 20px 80px;
+    position: relative;
+    z-index: 1;
+  }
+
+  /* ── HERO SECTION ── */
+  .hero-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 32px;
+    margin-bottom: 24px;
+    min-height: 190px;
+  }
+  .hero-left {
+    flex: 1;
+    max-width: 520px;
+  }
+  .hero-left h1 {
+    font-size: clamp(34px, 4.5vw, 48px);
+    font-weight: 800;
+    letter-spacing: -1.2px;
+    line-height: 1.15;
+    color: var(--text);
+  }
+  .hero-heading-second-line {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+  .hero-dots {
+    display: inline-grid;
+    grid-template-columns: repeat(2, 6px);
+    grid-gap: 5px;
+    align-items: center;
+    vertical-align: middle;
+  }
+  .hero-dots span {
+    width: 6px; height: 6px;
+    background: var(--accent);
+    border-radius: 2px;
+    opacity: 0.9;
+  }
+  .hero-sub {
+    font-size: 15px;
+    color: var(--text-dim);
+    margin-top: 14px;
+    line-height: 1.6;
+    max-width: 460px;
+  }
+
+  /* ── 3D INTERACTIVE CARDS STACK (SLIDESHOW) ── */
+  .hero-right {
+    flex-shrink: 0;
+    width: 320px;
+    height: 190px;
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .hero-3d-scene {
+    perspective: 1200px;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+  }
+  .hero-3d-stack {
+    position: relative;
+    width: 130px;
+    height: 130px;
+    transform-style: preserve-3d;
+    transform: rotateX(16deg) rotateY(-22deg) rotateZ(6deg);
+    transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+    animation: heroCardsHover 6s ease-in-out infinite alternate;
+  }
+  @keyframes heroCardsHover {
+    0% { transform: rotateX(16deg) rotateY(-22deg) rotateZ(6deg) translateY(0px); }
+    100% { transform: rotateX(19deg) rotateY(-18deg) rotateZ(4deg) translateY(-8px); }
+  }
+
+  .card-3d {
+    position: absolute;
+    width: 125px;
+    height: 125px;
+    border-radius: 22px;
+    background: var(--card-3d-bg);
+    border: 1px solid var(--card-3d-border);
+    box-shadow: var(--card-3d-shadow);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    cursor: pointer;
+    user-select: none;
+    transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+  }
+  .card-3d-icon {
+    width: 38px; height: 38px;
+    display: flex; align-items: center; justify-content: center;
+    color: var(--text);
+    transition: transform 0.3s ease, color 0.3s ease;
+  }
+  .card-3d-icon svg { width: 28px; height: 28px; stroke-width: 2.2; }
+  .card-3d-title {
+    font-size: 14px; font-weight: 700;
+    color: var(--text);
+  }
+  .card-3d-corner {
+    position: absolute;
+    width: 10px; height: 10px;
+    border: 2px solid var(--text-dim);
+    opacity: 0.35;
+  }
+  .card-3d-corner.tl { top: 12px; left: 12px; border-right: none; border-bottom: none; }
+  .card-3d-corner.br { bottom: 12px; right: 12px; border-left: none; border-top: none; }
+
+  /* 3D Stack Layer Placement */
+  .card-3d-link {
+    transform: translate3d(0, 0, 50px);
+    z-index: 3;
+  }
+  .card-3d-file {
+    transform: translate3d(45px, -15px, 15px);
+    z-index: 2;
+    opacity: 0.9;
+  }
+  .card-3d-note {
+    transform: translate3d(90px, -30px, -20px);
+    z-index: 1;
+    opacity: 0.75;
+  }
+
+  /* When active tab is File */
+  .hero-3d-stack[data-active="file"] .card-3d-file {
+    transform: translate3d(20px, -5px, 60px);
+    z-index: 3;
+    opacity: 1;
+  }
+  .hero-3d-stack[data-active="file"] .card-3d-link {
+    transform: translate3d(-35px, 15px, 20px);
+    z-index: 2;
+    opacity: 0.85;
+  }
+  .hero-3d-stack[data-active="file"] .card-3d-note {
+    transform: translate3d(85px, -25px, -20px);
+    z-index: 1;
+    opacity: 0.75;
+  }
+
+  /* When active tab is Note */
+  .hero-3d-stack[data-active="note"] .card-3d-note {
+    transform: translate3d(40px, -10px, 60px);
+    z-index: 3;
+    opacity: 1;
+  }
+  .hero-3d-stack[data-active="note"] .card-3d-file {
+    transform: translate3d(0px, 5px, 20px);
+    z-index: 2;
+    opacity: 0.85;
+  }
+  .hero-3d-stack[data-active="note"] .card-3d-link {
+    transform: translate3d(-45px, 20px, -20px);
+    z-index: 1;
+    opacity: 0.75;
+  }
+
+  .card-3d:hover {
+    filter: brightness(1.05);
+  }
+  .card-3d.active {
+    border-color: var(--accent);
+    box-shadow: 0 16px 36px var(--accent-glow), inset 0 1px 0 rgba(255, 255, 255, 0.9);
+  }
+  .card-3d.active .card-3d-icon {
+    color: var(--accent);
+    transform: scale(1.1);
+  }
+
+  .hero-3d-shadow {
+    position: absolute;
+    bottom: -10px;
+    width: 220px;
+    height: 30px;
+    background: radial-gradient(ellipse at center, rgba(0, 0, 0, 0.18) 0%, transparent 70%);
+    transform: rotateX(60deg);
+    filter: blur(8px);
     pointer-events: none;
   }
-  .toast.show { transform: translateX(-50%) translateY(0); }
-
-  /* HISTORY */
-  #history-section { animation: fadeUp 0.6s 0.28s ease both; }
-  .sec-hdr { display: flex; align-items: center; justify-content: space-between; margin-bottom: 16px; }
-  .sec-title { font-size: 13px; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; color: var(--text-dim); font-family: var(--mono); display: flex; align-items: center; gap: 8px; }
-  .cbadge { background: var(--accent-dim); color: var(--accent); font-size: 10px; padding: 2px 8px; border-radius: 10px; border: 1px solid rgba(185,255,106,0.2); }
-  .btn-clr { font-family: var(--mono); font-size: 11px; color: var(--text-dim); background: none; border: 1px solid var(--glass-border); padding: 5px 12px; border-radius: 6px; cursor: pointer; transition: all 0.2s; }
-  .btn-clr:hover { color: var(--red); border-color: rgba(255,88,88,0.3); }
-  .h-empty { text-align: center; padding: 48px 24px; color: var(--text-muted); font-family: var(--mono); font-size: 12px; letter-spacing: 0.05em; border: 1px dashed var(--glass-border); border-radius: var(--radius); }
-  .h-empty .eicon { font-size: 32px; margin-bottom: 12px; opacity: 0.4; display: block; }
-  .h-list { display: flex; flex-direction: column; gap: 8px; }
-  .h-item {
-    background: var(--glass); border: 1px solid var(--glass-border);
-    border-radius: var(--radius); padding: 16px 18px;
-    display: flex; align-items: center; gap: 14px;
-    transition: all 0.2s; animation: fadeUp 0.3s ease both;
+  html[data-theme="dark"] .hero-3d-shadow {
+    background: radial-gradient(ellipse at center, rgba(0, 0, 0, 0.6) 0%, transparent 70%);
   }
-  .h-item:hover { background: rgba(255,255,255,0.05); border-color: rgba(185,255,106,0.15); transform: translateX(2px); }
-  .h-dot { width: 8px; height: 8px; background: var(--accent); border-radius: 50%; flex-shrink: 0; box-shadow: 0 0 8px var(--accent-glow); }
-  .h-info { flex: 1; min-width: 0; }
-  .h-short { font-family: var(--mono); font-size: 13px; font-weight: 700; color: var(--accent); display: block; margin-bottom: 3px; }
-  .h-orig { font-size: 12px; color: var(--text-dim); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; display: block; font-family: var(--mono); }
-  .h-meta { font-size: 10px; color: var(--text-muted); font-family: var(--mono); margin-top: 2px; display: flex; align-items: center; gap: 8px; }
-  .hclicks { color: var(--accent); font-weight: 700; }
-  .h-acts { display: flex; gap: 6px; flex-shrink: 0; }
-  .bicon { width: 32px; height: 32px; border-radius: 7px; border: 1px solid var(--glass-border); background: var(--glass); color: var(--text-dim); cursor: pointer; display: flex; align-items: center; justify-content: center; font-size: 14px; transition: all 0.2s; }
-  .bicon:hover { color: var(--text); background: rgba(255,255,255,0.08); }
-  .bicon.del:hover { color: var(--red); border-color: rgba(255,88,88,0.3); }
 
-  .error-page { display: none; position: fixed; inset: 0; z-index: 10000; background: rgba(8,10,12,0.95); align-items: center; justify-content: center; padding: 20px; }
-  .error-page.show { display: flex; }
-  .error-card { width: 100%; max-width: 420px; background: rgba(12,14,17,0.98); border: 1px solid rgba(185,255,106,0.15); border-radius: 24px; padding: 32px; box-shadow: 0 0 40px rgba(0,0,0,0.35); text-align: center; }
-  .error-title { font-size: 28px; font-weight: 800; color: #ffffff; margin-bottom: 14px; }
-  .error-desc { font-family: var(--mono); color: var(--text-dim); font-size: 14px; line-height: 1.8; margin-bottom: 24px; }
-  .error-actions { display: flex; gap: 10px; justify-content: center; flex-wrap: wrap; }
+  /* ── THREE LAYERS GLASS CONTAINER (Annotated 1, 2, 3) ── */
+  .layered-card-wrap {
+    position: relative;
+    width: 100%;
+    margin-top: 10px;
+  }
+  .layer-base {
+    position: absolute;
+    pointer-events: none;
+    transition: all 0.3s ease;
+  }
+  /* Layer 1 - Deep outer base */
+  .layer-1 {
+    inset: -14px -14px -14px -14px;
+    border-radius: 36px;
+    background: var(--layer-1-bg);
+    border: 1px solid var(--layer-1-border);
+    box-shadow: var(--layer-1-shadow);
+    z-index: 1;
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+  }
+  /* Layer 2 - Middle tier */
+  .layer-2 {
+    inset: -7px -7px -7px -7px;
+    border-radius: 30px;
+    background: var(--layer-2-bg);
+    border: 1px solid var(--layer-2-border);
+    box-shadow: var(--layer-2-shadow);
+    z-index: 2;
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+  }
+  /* Layer 3 - Main Interactive Card */
+  .layer-3 {
+    position: relative;
+    border-radius: 24px;
+    background: var(--layer-3-bg);
+    border: 1px solid var(--layer-3-border);
+    box-shadow: var(--layer-3-shadow);
+    z-index: 3;
+    padding: 24px 28px 20px;
+    backdrop-filter: blur(24px);
+    -webkit-backdrop-filter: blur(24px);
+    overflow: hidden;
+  }
 
-  /* ABOUT */
-  #about { margin-top: 56px; padding-top: 40px; border-top: 1px solid var(--glass-border); animation: fadeUp 0.6s 0.38s ease both; }
-  .agrid { display: grid; grid-template-columns: repeat(3,1fr); gap: 12px; margin-top: 18px; }
-  .acard { background: var(--glass); border: 1px solid var(--glass-border); border-radius: var(--radius); padding: 20px; }
-  .aicon { font-size: 22px; margin-bottom: 10px; display: block; }
-  .atitle { font-size: 13px; font-weight: 700; margin-bottom: 6px; }
-  .adesc { font-size: 12px; color: var(--text-dim); line-height: 1.5; font-family: var(--mono); }
+  /* Top Tab Shimmer Loader */
+  .tab-loader-bar {
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 3px;
+    background: linear-gradient(90deg, transparent, #16a34a, #4ade80, transparent);
+    transform: translateX(-100%);
+    z-index: 10;
+    pointer-events: none;
+    opacity: 0;
+  }
+  .tab-loader-bar.loading {
+    animation: tabShimmer 0.4s ease-out forwards;
+  }
+  @keyframes tabShimmer {
+    0% { transform: translateX(-100%); opacity: 1; }
+    50% { transform: translateX(0%); opacity: 1; }
+    100% { transform: translateX(100%); opacity: 0; }
+  }
 
-  /* FOOTER */
-  footer { position: relative; z-index: 1; text-align: center; padding: 32px 24px; border-top: 1px solid var(--glass-border); margin-top: 40px; }
-  .fbrand { font-size: 18px; font-weight: 800; letter-spacing: -0.5px; margin-bottom: 8px; }
+  /* ── TAB BAR ── */
+  .tab-bar {
+    display: flex;
+    gap: 8px;
+    background: var(--tab-bar-bg);
+    padding: 5px;
+    border-radius: 18px;
+    margin-bottom: 24px;
+  }
+  .tab-btn {
+    flex: 1;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    padding: 11px 18px;
+    border-radius: 14px;
+    border: none;
+    background: transparent;
+    color: var(--text-dim);
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.22s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+  .tab-btn svg {
+    width: 17px; height: 17px;
+    stroke-width: 2.2;
+    transition: transform 0.2s ease;
+  }
+  .tab-btn:hover {
+    color: var(--text);
+  }
+  .tab-btn.active {
+    background: var(--accent);
+    color: #ffffff;
+    box-shadow: 0 4px 14px var(--accent-glow);
+  }
+  .tab-btn.active svg {
+    color: #ffffff;
+  }
+
+  /* ── TAB SECTIONS ── */
+  .tab-section {
+    display: none;
+    opacity: 0;
+    transform: translateY(6px);
+    transition: opacity 0.25s ease, transform 0.25s ease;
+  }
+  .tab-section.active {
+    display: block;
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  /* ── INPUT FIELDS WITH ICONS (Mockup style) ── */
+  .input-with-icon-wrap {
+    position: relative;
+    display: flex;
+    align-items: center;
+    width: 100%;
+  }
+  .input-icon-left {
+    position: absolute;
+    left: 16px;
+    width: 18px; height: 18px;
+    color: var(--text-muted);
+    pointer-events: none;
+    z-index: 2;
+  }
+  .modern-input {
+    width: 100%;
+    height: 48px;
+    padding: 0 16px 0 46px;
+    border-radius: 14px;
+    border: 1px solid var(--border);
+    background: var(--surface);
+    color: var(--text);
+    font-size: 14px;
+    font-family: var(--font-sans);
+    outline: none;
+    transition: border-color 0.2s, box-shadow 0.2s;
+  }
+  .modern-input:focus {
+    border-color: var(--border-focus);
+    box-shadow: 0 0 0 3px var(--accent-subtle);
+  }
+  .modern-input::placeholder {
+    color: var(--text-muted);
+  }
+
+  /* Link Form Row 2 */
+  .link-inputs-row-2 {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-top: 14px;
+  }
+  .link-custom-col {
+    flex: 1;
+    position: relative;
+  }
+  .link-custom-col .modern-input {
+    padding-right: 56px;
+  }
+  .suffix-badge {
+    position: absolute;
+    right: 12px;
+    top: 50%;
+    transform: translateY(-50%);
+    font-size: 12px;
+    font-family: var(--font-mono);
+    color: var(--text-muted);
+    background: var(--surface-subtle);
+    padding: 2px 8px;
+    border-radius: 6px;
+    pointer-events: none;
+  }
+  .domain-badge-wrap {
+    height: 48px;
+    padding: 0 16px;
+    border-radius: 14px;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--text-dim);
+    flex-shrink: 0;
+    user-select: none;
+  }
+  .domain-badge-wrap svg { width: 14px; height: 14px; color: var(--text-muted); }
+  .btn-gen-pill {
+    height: 48px;
+    padding: 0 22px;
+    border-radius: 14px;
+    background: var(--accent);
+    color: #ffffff;
+    border: none;
+    font-size: 14px;
+    font-weight: 600;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    cursor: pointer;
+    transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+    box-shadow: 0 4px 12px var(--accent-glow);
+    flex-shrink: 0;
+  }
+  .btn-gen-pill:hover {
+    background: var(--accent-hover);
+    transform: translateY(-1px);
+    box-shadow: 0 6px 16px var(--accent-glow);
+  }
+  .btn-gen-pill:active {
+    transform: translateY(0);
+  }
+  .btn-gen-pill svg {
+    width: 16px; height: 16px;
+    stroke-width: 2.2;
+  }
+  .btn-gen-pill .spinner {
+    display: none;
+    width: 16px; height: 16px;
+    border: 2px solid rgba(255, 255, 255, 0.3);
+    border-top-color: #fff;
+    border-radius: 50%;
+    animation: spin 0.6s linear infinite;
+  }
+  .btn-gen-pill.loading .spinner { display: inline-block; }
+  .btn-gen-pill.loading .btext, .btn-gen-pill.loading svg { display: none; }
+
+  /* Error messages */
+  .ferr {
+    display: none;
+    font-size: 12px;
+    color: var(--red);
+    margin-top: 5px;
+    padding-left: 8px;
+  }
+  .ferr.show { display: block; }
+
+  /* ── RESULT CARD (Image 2 style) ── */
+  .result-card {
+    display: none;
+    margin-top: 18px;
+    padding: 14px 18px;
+    border-radius: 16px;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    animation: fadeScale 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+  .result-card.show { display: block; }
+
+  @keyframes fadeScale {
+    from { opacity: 0; transform: scale(0.98); }
+    to { opacity: 1; transform: scale(1); }
+  }
+
+  .result-main-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+  }
+  .result-left-group {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    min-width: 0;
+  }
+  .result-badge-icon {
+    width: 44px; height: 44px;
+    border-radius: 12px;
+    background: var(--accent-subtle);
+    color: var(--accent);
+    display: flex; align-items: center; justify-content: center;
+    flex-shrink: 0;
+  }
+  .result-badge-icon svg {
+    width: 22px; height: 22px;
+    stroke-width: 2.2;
+  }
+  .result-info {
+    min-width: 0;
+  }
+  .result-short-url {
+    font-size: 15px; font-weight: 700;
+    color: var(--text);
+    white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+  }
+  .result-dest-url {
+    font-size: 12px; color: var(--text-dim);
+    white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+    margin-top: 2px;
+  }
+  .result-sub {
+    font-size: 11px; color: var(--text-muted); margin-top: 2px;
+  }
+
+  /* Result Action Buttons (Copy, Share, QR, More) */
+  .result-actions-group {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    flex-shrink: 0;
+  }
+  .icon-action-btn {
+    width: 36px; height: 36px;
+    border-radius: 10px;
+    background: var(--surface-subtle);
+    border: 1px solid var(--border);
+    color: var(--text-dim);
+    display: flex; align-items: center; justify-content: center;
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+  .icon-action-btn:hover {
+    color: var(--text);
+    border-color: var(--text-dim);
+    background: var(--surface);
+    transform: translateY(-1px);
+  }
+  .icon-action-btn svg {
+    width: 16px; height: 16px;
+  }
+
+  /* QR Accordion wrap */
+  .qr-wrap {
+    display: none;
+    margin-top: 14px;
+    padding-top: 14px;
+    border-top: 1px solid var(--border-subtle);
+    text-align: center;
+  }
+  .qr-wrap.show { display: block; }
+  .qr-img-box {
+    display: inline-block;
+    padding: 10px;
+    background: #ffffff;
+    border-radius: 12px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+    margin-top: 8px;
+  }
+  .qr-img-box img { display: block; }
+
+  /* ── FEATURES STRIP (Bottom of card) ── */
+  .features-strip {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 16px;
+    margin-top: 24px;
+    padding-top: 20px;
+    border-top: 1px solid var(--border-subtle);
+  }
+  .feat-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+  }
+  .feat-icon {
+    width: 28px; height: 28px;
+    display: flex; align-items: center; justify-content: center;
+    color: var(--text);
+    flex-shrink: 0;
+    margin-top: 2px;
+  }
+  .feat-icon svg {
+    width: 18px; height: 18px;
+    stroke-width: 2;
+  }
+  .feat-title {
+    font-size: 13px; font-weight: 700;
+    color: var(--text);
+    line-height: 1.2;
+  }
+  .feat-sub {
+    font-size: 11px; color: var(--text-muted);
+    margin-top: 3px;
+    line-height: 1.3;
+  }
+
+  /* ── FILE TAB STYLING (Image 4 & 5) ── */
+  .file-alert-banner {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 12px 16px;
+    border-radius: 12px;
+    background: var(--notice-bg);
+    border: 1px solid var(--notice-border);
+    color: var(--notice-text);
+    font-size: 13px;
+    margin-bottom: 18px;
+  }
+  .file-alert-banner svg {
+    width: 18px; height: 18px;
+    flex-shrink: 0;
+  }
+
+  .file-grid-layout {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 20px;
+  }
+  .file-grid-layout.has-result {
+    grid-template-columns: 1.05fr 0.95fr;
+  }
+
+  /* Drop zone */
+  .drop-zone {
+    border: 2px dashed var(--border);
+    border-radius: 18px;
+    padding: 30px 20px;
+    text-align: center;
+    cursor: pointer;
+    background: var(--surface);
+    transition: all 0.2s;
+    position: relative;
+    margin-bottom: 14px;
+  }
+  .drop-zone:hover, .drop-zone.dragover {
+    border-color: var(--accent);
+    background: var(--accent-subtle);
+  }
+  .drop-zone input[type="file"] {
+    position: absolute; inset: 0; opacity: 0; cursor: pointer; width: 100%; height: 100%;
+  }
+  .dz-icon-circle {
+    width: 46px; height: 46px;
+    border-radius: 50%;
+    background: var(--accent-subtle);
+    color: var(--accent);
+    display: flex; align-items: center; justify-content: center;
+    margin: 0 auto 10px;
+  }
+  .dz-icon-circle svg { width: 22px; height: 22px; }
+  .dz-title { font-size: 14px; font-weight: 600; color: var(--text); }
+  .dz-sub { font-size: 12px; color: var(--text-dim); margin-top: 3px; }
+  .dz-limit { font-size: 11px; color: var(--text-muted); margin-top: 5px; }
+
+  /* Selected file preview card */
+  .file-preview {
+    display: none;
+    align-items: center;
+    gap: 14px;
+    padding: 14px 16px;
+    border-radius: 16px;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    margin-bottom: 14px;
+  }
+  .file-preview.show { display: flex; }
+  .file-type-badge {
+    padding: 8px 12px;
+    border-radius: 10px;
+    background: var(--accent-subtle);
+    color: var(--accent);
+    font-size: 12px; font-weight: 700;
+    font-family: var(--font-mono);
+    text-transform: uppercase;
+  }
+  .file-info { flex: 1; min-width: 0; }
+  .file-name-text {
+    font-size: 14px; font-weight: 600; color: var(--text);
+    white-space: nowrap; overflow: hidden; text-overflow: ellipsis; display: block;
+  }
+  .file-meta-text { font-size: 12px; color: var(--text-dim); display: block; margin-top: 2px; }
+  .file-remove {
+    width: 32px; height: 32px; border-radius: 8px;
+    border: none; background: transparent; color: var(--text-muted);
+    cursor: pointer; display: flex; align-items: center; justify-content: center;
+    transition: all 0.2s;
+  }
+  .file-remove:hover { color: var(--red); background: var(--red-subtle); }
+
+  /* Upload Progress Bar */
+  .upload-prog-wrap {
+    display: none;
+    width: 100%; height: 6px;
+    border-radius: 3px;
+    background: var(--surface-subtle);
+    overflow: hidden;
+    margin-top: 8px;
+  }
+  .upload-prog-wrap.show { display: block; }
+  .upload-prog-bar {
+    width: 0%; height: 100%;
+    background: var(--accent);
+    border-radius: 3px;
+    transition: width 0.15s ease;
+  }
+  .upload-status { font-size: 11px; color: var(--text-dim); margin-top: 4px; }
+
+  /* Expiration & Collection controls */
+  .file-options-row {
+    display: flex; gap: 12px; margin-top: 14px;
+  }
+  .picker-btn-wrap {
+    flex: 1; position: relative;
+  }
+  .picker-trigger-btn {
+    width: 100%; height: 44px;
+    padding: 0 14px;
+    border-radius: 12px;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    display: flex; align-items: center; justify-content: space-between;
+    font-size: 13px; font-weight: 500; color: var(--text);
+    cursor: pointer; transition: all 0.2s;
+  }
+  .picker-trigger-btn svg { width: 16px; height: 16px; color: var(--text-dim); }
+  .expiry-dropdown {
+    display: none; position: absolute; top: calc(100% + 6px); left: 0; right: 0;
+    background: var(--surface); border: 1px solid var(--border);
+    border-radius: 12px; box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
+    z-index: 50; overflow: hidden; padding: 4px;
+  }
+  .expiry-dropdown.show { display: block; }
+  .expiry-opt {
+    padding: 8px 12px; border-radius: 8px; font-size: 13px; color: var(--text);
+    cursor: pointer; display: flex; align-items: center; justify-content: space-between;
+    transition: background 0.15s;
+  }
+  .expiry-opt:hover { background: var(--surface-subtle); }
+  .expiry-opt.active { background: var(--accent-subtle); color: var(--accent); font-weight: 600; }
+  .custom-date-inp {
+    width: 100%; padding: 6px 10px; border-radius: 8px; border: 1px solid var(--border);
+    background: var(--surface-subtle); color: var(--text); font-size: 12px; margin-top: 4px;
+  }
+  .collection-select {
+    width: 100%; height: 44px;
+    padding: 0 14px;
+    border-radius: 12px;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    color: var(--text); font-size: 13px; font-weight: 500;
+    outline: none; cursor: pointer;
+  }
+
+  /* File Result Card (Right side in side-by-side mode) */
+  .file-result-container {
+    border-radius: 18px;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    padding: 20px;
+    display: none;
+    flex-direction: column;
+    gap: 14px;
+    animation: fadeScale 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+  .file-result-container.show { display: flex; }
+  .file-ready-head {
+    display: flex; align-items: center; gap: 12px;
+  }
+  .ready-check-icon {
+    width: 36px; height: 36px; border-radius: 50%;
+    background: var(--accent-subtle); color: var(--accent);
+    display: flex; align-items: center; justify-content: center;
+    flex-shrink: 0;
+  }
+  .ready-check-icon svg { width: 20px; height: 20px; stroke-width: 2.5; }
+  .ready-title { font-size: 15px; font-weight: 700; color: var(--text); }
+  .ready-sub { font-size: 12px; color: var(--text-dim); }
+
+  /* Expiration warning banner (Image 4 yellow box) */
+  .expiry-warn-box {
+    display: flex; align-items: center; gap: 8px;
+    padding: 10px 14px; border-radius: 10px;
+    background: var(--warn-bg); border: 1px solid var(--warn-border);
+    color: var(--warn-text); font-size: 12px; font-weight: 500;
+  }
+  .expiry-warn-box svg { width: 16px; height: 16px; flex-shrink: 0; }
+
+  /* File Action Pill Buttons */
+  .file-actions-row {
+    display: flex; gap: 10px;
+  }
+  .btn-pill-green {
+    flex: 1; height: 42px; border-radius: 12px;
+    background: var(--accent); color: #ffffff;
+    border: none; font-size: 13px; font-weight: 600;
+    display: inline-flex; align-items: center; justify-content: center; gap: 8px;
+    cursor: pointer; transition: all 0.2s;
+  }
+  .btn-pill-green:hover { background: var(--accent-hover); transform: translateY(-1px); }
+  .btn-pill-outline {
+    flex: 1; height: 42px; border-radius: 12px;
+    background: var(--surface); color: var(--text);
+    border: 1px solid var(--border); font-size: 13px; font-weight: 600;
+    display: inline-flex; align-items: center; justify-content: center; gap: 8px;
+    cursor: pointer; transition: all 0.2s;
+  }
+  .btn-pill-outline:hover { border-color: var(--text-dim); transform: translateY(-1px); }
+  .file-sub-actions-row {
+    display: flex; gap: 8px;
+  }
+  .btn-sub-pill {
+    flex: 1; height: 38px; border-radius: 10px;
+    background: var(--surface-subtle); color: var(--text-dim);
+    border: 1px solid var(--border); font-size: 12px; font-weight: 500;
+    display: inline-flex; align-items: center; justify-content: center; gap: 6px;
+    cursor: pointer; transition: all 0.2s;
+  }
+  .btn-sub-pill:hover { color: var(--text); background: var(--surface); }
+
+  /* ── NOTE TAB (Image 3) ── */
+  .note-title-inp {
+    width: 100%; height: 44px; padding: 0 16px;
+    border-radius: 12px; border: 1px solid var(--border);
+    background: var(--surface); color: var(--text);
+    font-size: 15px; font-weight: 600; outline: none; margin-bottom: 12px;
+  }
+  .quill-wrapper {
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    overflow: hidden;
+    background: var(--surface);
+  }
+  .ql-toolbar.ql-snow {
+    border: none !important;
+    border-bottom: 1px solid var(--border) !important;
+    background: var(--surface-elevated);
+    padding: 8px 12px !important;
+  }
+  .ql-container.ql-snow {
+    border: none !important;
+    font-family: var(--font-sans) !important;
+    font-size: 14px !important;
+    min-height: 180px;
+  }
+  .note-stats {
+    display: flex; gap: 14px; font-size: 11px; color: var(--text-muted);
+    margin-top: 6px; justify-content: flex-end;
+  }
+  .note-footer-bar {
+    display: flex; align-items: center; justify-content: space-between;
+    margin-top: 14px; gap: 12px;
+  }
+  .privacy-toggle-btn {
+    height: 42px; padding: 0 16px; border-radius: 12px;
+    background: var(--surface); border: 1px solid var(--border);
+    color: var(--text); font-size: 13px; font-weight: 500;
+    display: inline-flex; align-items: center; gap: 6px; cursor: pointer;
+  }
+
+  /* ── WORKSPACE HISTORY & COLLECTIONS ── */
+  #history-section {
+    margin-top: 60px;
+    padding-top: 30px;
+    border-top: 1px solid var(--border);
+  }
+  .workspace-hdr {
+    display: flex; align-items: center; justify-content: space-between;
+    margin-bottom: 16px;
+  }
+  .sec-title {
+    font-size: 20px; font-weight: 700; color: var(--text);
+    display: flex; align-items: center; gap: 8px;
+  }
+  .cbadge {
+    font-size: 12px; font-weight: 600;
+    background: var(--surface-subtle); color: var(--text-dim);
+    padding: 2px 8px; border-radius: var(--radius-full);
+  }
+  .collections-bar {
+    display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 18px;
+  }
+  .coll-pill {
+    padding: 6px 14px; border-radius: var(--radius-full);
+    background: var(--surface); border: 1px solid var(--border);
+    font-size: 12px; font-weight: 500; color: var(--text-dim);
+    cursor: pointer; transition: all 0.2s;
+  }
+  .coll-pill.active {
+    background: var(--accent); color: #fff; border-color: var(--accent);
+  }
+  .hist-toolbar {
+    display: flex; gap: 12px; align-items: center; margin-bottom: 14px;
+  }
+  .hist-search-box {
+    flex: 1; position: relative; display: flex; align-items: center;
+  }
+  .hist-search-box svg {
+    position: absolute; left: 14px; width: 16px; height: 16px; color: var(--text-muted);
+  }
+  .hist-search-box input {
+    width: 100%; height: 42px; padding: 0 14px 0 42px;
+    border-radius: 12px; border: 1px solid var(--border);
+    background: var(--surface); color: var(--text); font-size: 13px; outline: none;
+  }
+  .type-filter-tabs {
+    display: flex; gap: 6px; margin-bottom: 16px;
+  }
+  .type-tab-btn {
+    padding: 6px 14px; border-radius: 10px; border: none;
+    background: transparent; color: var(--text-dim); font-size: 13px; font-weight: 500;
+    cursor: pointer; transition: all 0.2s;
+  }
+  .type-tab-btn.active {
+    background: var(--surface); color: var(--text); font-weight: 600;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
+  }
+  .h-list {
+    display: flex; flex-direction: column; gap: 10px;
+  }
+  .h-item {
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 14px 18px; border-radius: 14px;
+    background: var(--surface); border: 1px solid var(--border);
+    transition: transform 0.15s, border-color 0.15s;
+  }
+  .h-item:hover { border-color: var(--text-muted); transform: translateY(-1px); }
+
+  /* ── EMAIL MODAL (Image 2) ── */
+  .modal-overlay {
+    display: none; position: fixed; inset: 0; z-index: 1000;
+    background: rgba(0, 0, 0, 0.5); backdrop-filter: blur(6px);
+    -webkit-backdrop-filter: blur(6px);
+    align-items: center; justify-content: center; padding: 20px;
+  }
+  .modal-overlay.show { display: flex; }
+  .modal-card {
+    width: 100%; max-width: 440px;
+    background: var(--surface); border: 1px solid var(--border);
+    border-radius: 20px; padding: 24px;
+    box-shadow: 0 20px 50px rgba(0, 0, 0, 0.2);
+    animation: fadeScale 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+  .modal-header-row {
+    display: flex; align-items: flex-start; justify-content: space-between;
+    margin-bottom: 16px;
+  }
+  .modal-title-group {
+    display: flex; align-items: center; gap: 10px;
+  }
+  .modal-title-icon {
+    width: 28px; height: 28px; color: var(--text);
+  }
+  .modal-title { font-size: 17px; font-weight: 700; color: var(--text); }
+  .modal-sub { font-size: 12px; color: var(--text-dim); margin-top: 2px; }
+  .modal-close-btn {
+    width: 32px; height: 32px; border-radius: 8px; border: none;
+    background: transparent; color: var(--text-muted); font-size: 20px;
+    cursor: pointer; display: flex; align-items: center; justify-content: center;
+  }
+  .modal-close-btn:hover { color: var(--text); background: var(--surface-subtle); }
+  .modal-field { margin-bottom: 14px; }
+  .modal-field label {
+    display: block; font-size: 12px; font-weight: 600; color: var(--text); margin-bottom: 6px;
+  }
+  .modal-field textarea {
+    width: 100%; padding: 10px 14px; border-radius: 12px;
+    border: 1px solid var(--border); background: var(--surface-elevated);
+    color: var(--text); font-family: var(--font-sans); font-size: 13px;
+    outline: none; resize: vertical; min-height: 80px;
+  }
+  .modal-footer {
+    display: flex; gap: 10px; justify-content: flex-end; margin-top: 20px;
+  }
+
+  /* ── SPECIAL: LIGHTNING CUTTING DOWNLOAD BUTTON EFFECT ── */
+  .btn-download-lightning {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    height: 52px;
+    padding: 0 32px;
+    border-radius: 14px;
+    background: var(--accent);
+    color: #ffffff;
+    font-size: 15px; font-weight: 700;
+    text-decoration: none;
+    cursor: pointer;
+    border: none;
+    box-shadow: 0 6px 20px var(--accent-glow);
+    transition: transform 0.2s, box-shadow 0.2s;
+    user-select: none;
+    overflow: visible;
+  }
+  .btn-download-lightning:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 24px var(--accent-glow);
+  }
+  .btn-download-lightning.slicing {
+    pointer-events: none;
+  }
+  /* Sliced Pieces Container */
+  .btn-slice-half {
+    position: absolute;
+    inset: 0;
+    border-radius: 14px;
+    background: var(--accent);
+    display: flex; align-items: center; justify-content: center;
+    gap: 10px;
+    color: #ffffff;
+    transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+  .btn-slice-top {
+    clip-path: polygon(0 0, 100% 0, 100% 48%, 0 66%);
+  }
+  .btn-slice-bottom {
+    clip-path: polygon(0 66%, 100% 48%, 100% 100%, 0 100%);
+  }
+  .btn-download-lightning.slicing .btn-slice-top {
+    transform: translate(-10px, -6px) rotate(-1.5deg);
+  }
+  .btn-download-lightning.slicing .btn-slice-bottom {
+    transform: translate(10px, 6px) rotate(1.5deg);
+  }
+  /* Lightning Slash SVG Bolt */
+  .lightning-bolt-svg {
+    position: absolute;
+    top: -30%; left: -20%;
+    width: 140%; height: 160%;
+    pointer-events: none;
+    opacity: 0;
+    z-index: 20;
+    filter: drop-shadow(0 0 12px #38bdf8) drop-shadow(0 0 24px #38bdf8);
+  }
+  .btn-download-lightning.slicing .lightning-bolt-svg {
+    animation: lightningSlash 0.5s ease-out forwards;
+  }
+  @keyframes lightningSlash {
+    0% { opacity: 0; transform: scale(0.6) rotate(-15deg); }
+    20% { opacity: 1; transform: scale(1.05) rotate(0deg); }
+    50% { opacity: 0.9; transform: scale(1) rotate(2deg); }
+    100% { opacity: 0; transform: scale(1.1) rotate(5deg); }
+  }
+  /* Electric Sparks */
+  .electric-sparks-wrap {
+    position: absolute; inset: 0; pointer-events: none; z-index: 15; opacity: 0;
+  }
+  .btn-download-lightning.slicing .electric-sparks-wrap {
+    opacity: 1;
+  }
+  .spark {
+    position: absolute;
+    width: 4px; height: 4px;
+    border-radius: 50%;
+    background: #38bdf8;
+    box-shadow: 0 0 8px #38bdf8, 0 0 14px #67e8f9;
+  }
+
+  /* ── BRANDED DOWNLOAD PAGE ── */
+  .file-dl-page {
+    display: none; position: fixed; inset: 0; z-index: 200;
+    background: var(--bg); overflow-y: auto; padding: 40px 20px;
+    align-items: center; justify-content: center;
+  }
+  .file-dl-page.show { display: flex; }
+  .dl-card {
+    width: 100%; max-width: 540px;
+    background: var(--surface); border: 1px solid var(--border);
+    border-radius: 24px; padding: 36px 30px; text-align: center;
+    box-shadow: 0 20px 50px rgba(0, 0, 0, 0.1);
+  }
+  .dl-brand {
+    font-size: 20px; font-weight: 800; color: var(--text); margin-bottom: 24px;
+    display: flex; align-items: center; justify-content: center; gap: 8px;
+  }
+  .dl-file-icon {
+    width: 72px; height: 72px; border-radius: 20px;
+    background: var(--accent-subtle); color: var(--accent);
+    display: flex; align-items: center; justify-content: center;
+    margin: 0 auto 16px;
+  }
+  .dl-file-icon svg { width: 36px; height: 36px; stroke-width: 2; }
+  .dl-file-name { font-size: 18px; font-weight: 700; color: var(--text); word-break: break-all; }
+  .dl-file-meta { font-size: 13px; color: var(--text-dim); margin-top: 4px; }
+  .dl-expiry {
+    display: inline-flex; align-items: center; gap: 6px;
+    margin: 16px 0 24px; padding: 6px 14px; border-radius: var(--radius-full);
+    background: var(--warn-bg); border: 1px solid var(--warn-border);
+    color: var(--warn-text); font-size: 12px; font-weight: 500;
+  }
+  .dl-expiry svg { width: 14px; height: 14px; }
+  .file-preview-panel {
+    border: 1px solid var(--border); border-radius: 14px;
+    margin-bottom: 24px; overflow: hidden; text-align: left;
+  }
+  .preview-header {
+    display: flex; justify-content: space-between; align-items: center;
+    padding: 8px 14px; background: var(--surface-elevated);
+    font-size: 12px; font-weight: 600; color: var(--text-dim);
+  }
+  .preview-body { padding: 14px; max-height: 260px; overflow-y: auto; text-align: center; }
+  .btn-dl-home {
+    display: block; margin: 18px auto 0; background: none; border: none;
+    color: var(--text-muted); font-size: 13px; cursor: pointer;
+  }
+  .btn-dl-home:hover { color: var(--text); }
+
+  /* ── NOTE VIEW PAGE ── */
+  .note-view-page {
+    display: none; position: fixed; inset: 0; z-index: 200;
+    background: var(--bg); overflow-y: auto; padding: 30px 20px;
+  }
+  .note-view-page.show { display: block; }
+  .nv-container {
+    max-width: 760px; margin: 0 auto;
+    background: var(--surface); border: 1px solid var(--border);
+    border-radius: 20px; padding: 32px;
+  }
+  .nv-header {
+    display: flex; align-items: center; justify-content: space-between;
+    margin-bottom: 20px; padding-bottom: 16px; border-bottom: 1px solid var(--border);
+  }
+  .nv-brand { font-size: 18px; font-weight: 700; color: var(--text); }
+  .nv-actions { display: flex; gap: 8px; }
+  .nv-meta { font-size: 12px; color: var(--text-muted); margin-bottom: 16px; }
+  .nv-content { font-size: 15px; line-height: 1.7; color: var(--text); word-break: break-word; }
+
+  /* ── ROUTE LOADER & REDIRECT ── */
+  #routeLoader {
+    display: none; position: fixed; inset: 0; z-index: 9999;
+    background: var(--bg); flex-direction: column;
+    align-items: center; justify-content: center; gap: 14px;
+  }
+  #routeLoader.show { display: flex; }
+  .rl-brand { font-size: 24px; font-weight: 800; color: var(--text); }
+  .rl-brand span { color: var(--accent); }
+  .rl-spinner {
+    width: 36px; height: 36px;
+    border: 3px solid var(--border); border-top-color: var(--accent);
+    border-radius: 50%; animation: spin 0.6s linear infinite;
+  }
+  .rl-label { font-size: 14px; color: var(--text-dim); }
+
+  .redirect-page, .error-page {
+    display: none; position: fixed; inset: 0; z-index: 500;
+    background: var(--bg); flex-direction: column;
+    align-items: center; justify-content: center; padding: 24px; text-align: center;
+  }
+  .redirect-page.show, .error-page.show { display: flex; }
+  .error-card {
+    max-width: 420px; background: var(--surface);
+    border: 1px solid var(--border); border-radius: 20px; padding: 32px;
+  }
+  .error-title { font-size: 18px; font-weight: 700; color: var(--text); margin-bottom: 8px; }
+  .error-desc { font-size: 14px; color: var(--text-dim); margin-bottom: 20px; }
+
+  /* ── FOOTER ── */
+  footer {
+    max-width: 960px; margin: 0 auto;
+    padding: 30px 20px 50px;
+    text-align: center; border-top: 1px solid var(--border);
+    color: var(--text-muted); font-size: 13px;
+  }
+  .fbrand { font-size: 16px; font-weight: 700; color: var(--text); margin-bottom: 8px; }
   .fbrand span { color: var(--accent); }
-  .finfo { font-family: var(--mono); font-size: 11px; color: var(--text-dim); line-height: 1.8; letter-spacing: 0.04em; }
-  .finfo a { color: var(--accent); text-decoration: none; transition: color 0.2s ease; }
-  .finfo a:hover { color: var(--accent2); }
-  .finfo .github-link { display: inline-flex; align-items: center; gap: 6px; }
-  .finfo svg { width: 14px; height: 14px; fill: currentColor; transition: transform 0.2s ease; }
-  .finfo .github-link:hover svg { transform: translateY(-1px) scale(1.05); }
-  .fcopy { font-family: var(--mono); font-size: 10px; color: var(--text-muted); margin-top: 10px; letter-spacing: 0.06em; text-transform: uppercase; }
+  .finfo { margin-bottom: 6px; line-height: 1.6; }
+  .finfo a { color: var(--text-dim); text-decoration: none; font-weight: 500; }
+  .finfo a:hover { color: var(--accent); }
+  .github-link {
+    display: inline-flex; align-items: center; gap: 5px; margin-top: 4px;
+  }
+  .github-link svg { width: 14px; height: 14px; fill: currentColor; }
 
-  @media (max-width: 600px) {
-    nav { padding: 14px 16px; }
-    .nav-links a { padding: 5px 10px; font-size: 11px; }
-    main { padding: 40px 16px 80px; }
-    h1 { letter-spacing: -1.5px; }
-    .gen-card, .result-card { padding: 20px; }
-    .agrid { grid-template-columns: 1fr; }
-    .h-item { flex-wrap: wrap; }
-    .h-acts { width: 100%; justify-content: flex-end; }
+  /* ── TOAST ── */
+  .toast {
+    position: fixed; bottom: 24px; left: 50%;
+    transform: translateX(-50%) translateY(80px);
+    background: #111827; color: #f9fafb;
+    padding: 10px 20px; border-radius: 12px;
+    font-size: 13px; font-weight: 500;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+    pointer-events: none; z-index: 10000;
+    transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.25s ease;
+    opacity: 0;
+  }
+  html[data-theme="dark"] .toast {
+    background: #27272a; color: #ffffff; border: 1px solid rgba(255, 255, 255, 0.1);
+  }
+  .toast.show {
+    transform: translateX(-50%) translateY(0);
+    opacity: 1;
+  }
+
+  /* ── SPINNER KEYFRAME ── */
+  @keyframes spin {
+    to { transform: rotate(360deg); }
+  }
+
+  /* ── RESPONSIVE RULES ── */
+  @media (max-width: 860px) {
+    nav { padding: 14px 20px; }
+    .hero-row { flex-direction: column; text-align: center; gap: 24px; }
+    .hero-left h1 { align-items: center; }
+    .hero-left { max-width: 100%; }
+    .hero-sub { margin-left: auto; margin-right: auto; }
+    .features-strip { grid-template-columns: repeat(2, 1fr); gap: 14px; }
+    .file-grid-layout.has-result { grid-template-columns: 1fr; }
+    .link-inputs-row-2 { flex-wrap: wrap; }
+    .btn-gen-pill { width: 100%; justify-content: center; }
+  }
+  @media (max-width: 580px) {
+    .nav-center-pills { display: none; }
+    .features-strip { grid-template-columns: 1fr; }
+    .layer-3 { padding: 18px 16px; }
+    .layer-1 { inset: -8px; border-radius: 28px; }
+    .layer-2 { inset: -4px; border-radius: 26px; }
   }
 </style>
 </head>
 <body>
 
-<div class="bg-glow"></div>
+<!-- Route Loader -->
+<div id="routeLoader">
+  <div class="rl-brand">SnipLink</div>
+  <div class="rl-spinner"></div>
+  <div class="rl-label" id="rlLabel">Loading...</div>
+</div>
+<script>
+/* Synchronous Route Detection */
+(function() {
+  var p = decodeURIComponent(location.pathname.replace(/^\//, '').replace(/\/$/, ''));
+  if (!p || p === 'index.html' || p === '404.html') return;
+  document.documentElement.classList.add('route-active');
+  var isFile = /^f[-/]/i.test(p);
+  var isNote = /^n[-/]/i.test(p);
+  var label = document.getElementById('rlLabel');
+  if (label) label.textContent = isFile ? 'Loading file...' : (isNote ? 'Loading note...' : 'Redirecting...');
+  var loader = document.getElementById('routeLoader');
+  if (loader) loader.classList.add('show');
+})();
+</script>
 
 <!-- Redirect Overlay -->
 <div class="redirect-page" id="rdPage">
-  <div class="redirect-spinner"></div>
-  <div class="redirect-logo">SNIPP<span>.</span></div>
-  <div class="redirect-msg">Opening your link…</div>
-  <div class="redirect-dest" id="rdDest"></div>
-  <button class="redirect-cancel" onclick="cancelRd()">✕ Cancel</button>
+  <div class="rl-spinner" style="width:44px;height:44px;margin-bottom:16px;"></div>
+  <div class="rl-brand" style="margin-bottom:8px">SnipLink</div>
+  <div class="rl-label" style="margin-bottom:8px">Opening your destination URL...</div>
+  <div class="redirect-dest" id="rdDest" style="font-family:var(--font-mono);font-size:13px;color:var(--text-dim);margin-bottom:16px;"></div>
+  <button class="btn-sub-pill" style="max-width:120px;" onclick="cancelRd()">Cancel</button>
 </div>
+
+<!-- Error Page -->
 <div class="error-page" id="errorPage">
   <div class="error-card">
-    <div class="error-title">Link not found</div>
-    <p class="error-desc" id="errorDesc">The link code is invalid or not available. Please return home and generate a valid short link.</p>
-    <div class="error-actions">
-      <button class="btn-sm bopen" onclick="closeError()">Go Home</button>
-    </div>
+    <div class="error-title">Content Unavailable</div>
+    <p class="error-desc" id="errorDesc">The link is invalid or has expired.</p>
+    <button class="btn-pill-green" style="margin:0 auto;max-width:160px;" onclick="closeError()">Go Home</button>
   </div>
 </div>
 
-<!-- Navbar -->
+<!-- Branded File Download Page (With Lightning Cut Animation) -->
+<div class="file-dl-page" id="fileDlPage">
+  <div class="dl-card">
+    <div class="dl-brand">
+      <svg class="nav-logo-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>
+      SnipLink
+    </div>
+    <div class="dl-file-icon" id="dlFileIcon"></div>
+    <div class="dl-file-name" id="dlFileName">file.zip</div>
+    <div class="dl-file-meta" id="dlFileMeta"></div>
+    <div class="dl-expiry" id="dlExpiry">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+      <span id="dlExpiryText"></span>
+    </div>
+    
+    <!-- Preview Panel -->
+    <div class="file-preview-panel" id="dlPreviewPanel">
+      <div class="preview-header">
+        <span>File Preview</span>
+        <button class="btn-sub-pill" style="height:26px;padding:0 8px;" id="btnTogglePreview" onclick="togglePreviewCollapse()">Collapse</button>
+      </div>
+      <div class="preview-body" id="dlPreviewBody"></div>
+    </div>
+
+    <!-- Download Button with Lightning Cut Slicing Animation -->
+    <a class="btn-download-lightning" id="dlBtn" href="#" onclick="handleLightningDownload(event)">
+      <!-- Top Sliced Half -->
+      <div class="btn-slice-half btn-slice-top">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" style="width:18px;height:18px;"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+        Download File
+      </div>
+      <!-- Bottom Sliced Half -->
+      <div class="btn-slice-half btn-slice-bottom">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" style="width:18px;height:18px;"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+        Download File
+      </div>
+      <!-- Lightning Slash Bolt -->
+      <svg class="lightning-bolt-svg" viewBox="0 0 100 100" fill="none">
+        <path d="M10 20 L55 50 L42 54 L90 85" stroke="#38bdf8" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
+        <path d="M10 20 L55 50 L42 54 L90 85" stroke="#ffffff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+      <!-- Spark Particles -->
+      <div class="electric-sparks-wrap">
+        <div class="spark" style="top:45%;left:25%;"></div>
+        <div class="spark" style="top:52%;left:48%;"></div>
+        <div class="spark" style="top:47%;left:70%;"></div>
+        <div class="spark" style="top:55%;left:82%;"></div>
+      </div>
+      <!-- Normal Text representation -->
+      <span style="opacity:0">Download File</span>
+    </a>
+
+    <button class="btn-dl-home" onclick="goHome()">Return to SnipLink home</button>
+    <div class="dl-clicks" id="dlClicks" style="font-size:11px;color:var(--text-muted);margin-top:10px;"></div>
+  </div>
+</div>
+
+<!-- Note View Page -->
+<div class="note-view-page" id="noteViewPage">
+  <div class="nv-container">
+    <div class="nv-header">
+      <div class="nv-brand">SnipLink Note</div>
+      <div class="nv-actions">
+        <button class="btn-sub-pill" id="nvCopyBtn" onclick="copyNoteText()">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:14px;height:14px;"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
+          Copy Text
+        </button>
+        <button class="btn-sub-pill" id="nvDownloadBtn" onclick="downloadNoteAsTxt()">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:14px;height:14px;"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+          Download .txt
+        </button>
+        <button class="btn-sub-pill" onclick="goHome()">Home</button>
+      </div>
+    </div>
+    <div class="nv-meta" id="nvMeta"></div>
+    <div class="nv-content" id="nvContent"></div>
+  </div>
+</div>
+
+<!-- Navbar (Mockup style) -->
 <nav>
   <div class="nav-logo" onclick="window.scrollTo({top:0,behavior:'smooth'})">
-    <div class="logo-dot"></div>
-    SNIPP<span>.</span>
+    <svg class="nav-logo-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/>
+      <path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/>
+    </svg>
+    SnipLink
   </div>
-  <div class="nav-links">
-    <a href="#history-section">History</a>
-    <a href="#about">About</a>
+  
+  <!-- Center Nav Pills (Mockup) -->
+  <div class="nav-center-pills">
+    <button class="nav-pill active" id="navHomeBtn" onclick="window.scrollTo({top:0,behavior:'smooth'})">Home</button>
+    <a class="nav-pill" href="#history-section">History</a>
+    <a class="nav-pill" href="#history-section" onclick="focusCollections()">Collections</a>
+  </div>
+
+  <!-- Right Actions: Search, Theme Toggle, Settings (Mockup) -->
+  <div class="nav-actions">
+    <button class="nav-action-btn" id="navSearchBtn" onclick="focusSearch()" title="Search history">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:16px;height:16px;"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+    </button>
+    
+    <!-- Theme Toggle Dropdown Button (Mockup ☀️ ⌵ / 🌙 ⌵) -->
+    <button class="nav-theme-dropdown-btn" id="navThemeBtn" onclick="cycleTheme()" title="Toggle Light / Dark mode">
+      <span id="navThemeIcon">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg>
+      </span>
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+    </button>
+
+    <button class="nav-action-btn" onclick="focusAbout()" title="Settings & About">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:16px;height:16px;"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
+    </button>
   </div>
 </nav>
 
-<!-- Main -->
+<!-- Main Experience -->
 <main>
 
-  <div class="hero">
-    <div class="hero-badge">v1.0 · Ultra-Short Links</div>
-    <h1>Shorten.<br/>Share. <em>Snipp.</em></h1>
-    <p class="hero-sub">Transform any long URL into a clean short link. Zero signup. Stored locally. Redirects with one click.</p>
-  </div>
+  <!-- Hero Section (Mockup) -->
+  <div class="hero-row">
+    <div class="hero-left">
+      <h1>
+        <span>Shorten, Share &amp; Keep</span>
+        <span class="hero-heading-second-line">
+          Your Content
+          <span class="hero-dots">
+            <span></span><span></span><span></span><span></span>
+          </span>
+        </span>
+      </h1>
+      <p class="hero-sub">Create short links, share files, and save notes &mdash; all in one place.</p>
+    </div>
+    
+    <!-- 3D Interactive Floating Cards Stack (Slideshow / Tab switcher) -->
+    <div class="hero-right">
+      <div class="hero-3d-scene">
+        <div class="hero-3d-stack" id="hero3dStack" data-active="link">
+          
+          <!-- Link Card 3D -->
+          <div class="card-3d card-3d-link active" id="card3d-link" onclick="switchTab('link')" title="Switch to Link tab">
+            <div class="card-3d-corner tl"></div>
+            <div class="card-3d-corner br"></div>
+            <div class="card-3d-icon">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>
+            </div>
+            <div class="card-3d-title">Link</div>
+          </div>
 
-  <!-- Info banner -->
-  <div class="info-banner">
-    💡 <strong>How it works:</strong> Generate a link → click <strong>Open Link</strong> to redirect instantly. Links are saved locally in your browser for history only; the actual generated short link includes the destination so anyone with it can open it on any device.
-  </div>
+          <!-- File Card 3D -->
+          <div class="card-3d card-3d-file" id="card3d-file" onclick="switchTab('file')" title="Switch to File tab">
+            <div class="card-3d-icon">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>
+            </div>
+            <div class="card-3d-title">File</div>
+          </div>
 
-  <!-- Generator -->
-  <div class="gen-card">
-    <div class="field-group">
-      <div class="field">
-        <label class="field-label">Long URL to shorten</label>
-        <input type="url" id="urlInput" placeholder="https://example.com/your/very/long/url/here"/>
-        <div class="ferr" id="urlErr">Please enter a valid URL starting with https:// or http://</div>
-      </div>
-      <div class="field">
-        <label class="field-label">Custom short name <span style="opacity:0.5">(optional)</span></label>
-        <div class="prefix-wrap">
-          <span class="prefix-label">snipplink.netlify.app/</span>
-          <input type="text" id="codeInput" placeholder="my-link"/>
-          <span class="suffix-prev" id="sufPrev">-??</span>
+          <!-- Note Card 3D -->
+          <div class="card-3d card-3d-note" id="card3d-note" onclick="switchTab('note')" title="Switch to Note tab">
+            <div class="card-3d-icon">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
+            </div>
+            <div class="card-3d-title">Note</div>
+          </div>
+
         </div>
-        <div class="ferr" id="codeErr">Only letters, numbers, dash and underscore allowed. No spaces.</div>
-      </div>
-    </div>
-
-    <div class="prog-wrap" id="progWrap">
-      <div class="prog-bar" id="progBar"></div>
-    </div>
-
-    <button class="btn-gen" id="genBtn" onclick="handleGen()">
-      <div class="spinner"></div>
-      <span class="btext">⚡ Generate Short Link</span>
-    </button>
-  </div>
-
-  <!-- Result -->
-  <div class="result-card" id="resultCard">
-    <div class="result-head">
-      <div class="result-icon">✓</div>
-      <div>
-        <div class="result-title">Link Generated!</div>
-        <div class="result-sub" id="resultSub">Just now · 0 clicks</div>
-      </div>
-    </div>
-    <div class="link-box">
-      <span class="link-code" id="rCode"></span>
-      <span class="link-orig" id="rOrig"></span>
-    </div>
-    <div class="tip-box">
-      👆 Click <strong>Open Link</strong> to redirect — SNIPP will open your destination URL in a new tab.
-    </div>
-    <div class="actions">
-      <button class="btn-sm bcopy" onclick="copyShort()">⧉ Copy</button>
-      <button class="btn-sm bopen" onclick="openRes()">↗ Open Link</button>
-      <button class="btn-sm bqr" id="qrBtn" onclick="toggleQR()">▦ QR Code</button>
-      <button class="btn-sm bdownload" id="downloadQRBtn" style="display:none;" onclick="downloadQR()">⤓ Save QR</button>
-    </div>
-    <div class="qr-wrap" id="qrWrap">
-      <div class="qr-label">Scan with your phone camera</div>
-      <div class="qr-img-box">
-        <img id="qrImg" src="" alt="QR Code" width="160" height="160"/>
+        <div class="hero-3d-shadow"></div>
       </div>
     </div>
   </div>
 
-  <!-- History -->
+  <!-- Three Layers Glass Container (Annotated 1, 2, 3) -->
+  <div class="layered-card-wrap">
+    <div class="layer-base layer-1"></div>
+    <div class="layer-base layer-2"></div>
+    <div class="layer-main layer-3">
+      
+      <!-- Top Shimmer Progress Bar (Tab Transition Loader) -->
+      <div class="tab-loader-bar" id="tabLoaderBar"></div>
+
+      <!-- Tab Bar (Mockup) -->
+      <div class="tab-bar" role="tablist">
+        <button class="tab-btn active" id="tab-link" role="tab" onclick="switchTab('link')" aria-selected="true">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>
+          Link
+        </button>
+        <button class="tab-btn" id="tab-file" role="tab" onclick="switchTab('file')" aria-selected="false">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+          File
+        </button>
+        <button class="tab-btn" id="tab-note" role="tab" onclick="switchTab('note')" aria-selected="false">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
+          Note
+        </button>
+      </div>
+
+      <!-- ══ TAB 1: LINK ══ -->
+      <div class="tab-section active" id="section-link">
+        
+        <!-- Long URL Input (Mockup with link icon) -->
+        <div class="input-with-icon-wrap">
+          <svg class="input-icon-left" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>
+          <input type="url" id="urlInput" class="modern-input" placeholder="Paste your long URL here"/>
+        </div>
+        <div class="ferr" id="urlErr">Please enter a valid URL starting with http:// or https://</div>
+
+        <!-- Custom short link + Domain badge + Shorten Link button (Mockup Row 2) -->
+        <div class="link-inputs-row-2">
+          <div class="link-custom-col">
+            <div class="input-with-icon-wrap">
+              <svg class="input-icon-left" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z"/><line x1="7" y1="7" x2="7.01" y2="7"/></svg>
+              <input type="text" id="codeInput" class="modern-input" placeholder="Custom short link (optional)"/>
+              <span class="suffix-badge" id="sufPrev">-??</span>
+            </div>
+            <div class="ferr" id="codeErr">Letters, numbers, dash and underscore only.</div>
+          </div>
+
+          <!-- Domain dropdown/badge -->
+          <div class="domain-badge-wrap">
+            <span id="linkPrefixLabel">sniplink.netlify.app/</span>
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+          </div>
+
+          <!-- Collection select for link -->
+          <select id="linkCollectionSelect" class="collection-select" style="max-width:170px;" onchange="handleCollectionSelect('link', this.value)">
+            <option value="">(None - Unorganized)</option>
+          </select>
+
+          <!-- Shorten Link Button -->
+          <button class="btn-gen-pill" id="genBtn" onclick="handleGen()">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>
+            <span class="btext">Shorten Link &rarr;</span>
+            <div class="spinner"></div>
+          </button>
+        </div>
+
+        <div class="upload-prog-wrap" id="progWrap"><div class="upload-prog-bar" id="progBar"></div></div>
+
+        <!-- Link Result Card (Image 2 mockup) -->
+        <div class="result-card" id="resultCard">
+          <div class="result-main-row">
+            <div class="result-left-group">
+              <div class="result-badge-icon">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>
+              </div>
+              <div class="result-info">
+                <div class="result-short-url" id="rCode"></div>
+                <div class="result-dest-url" id="rOrig"></div>
+                <div class="result-sub" id="resultSub">Active &middot; 0 clicks</div>
+              </div>
+            </div>
+
+            <div class="result-actions-group">
+              <button class="icon-action-btn" onclick="copyShort()" title="Copy Short Link">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
+              </button>
+              <button class="icon-action-btn" onclick="openEmailShareModal('link')" title="Share via Email">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/></svg>
+              </button>
+              <button class="icon-action-btn" id="qrBtn" onclick="toggleQR('link')" title="QR Code">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><rect x="14" y="14" width="3" height="3"/><rect x="18" y="14" width="3" height="3"/><rect x="14" y="18" width="3" height="3"/><rect x="18" y="18" width="3" height="3"/></svg>
+              </button>
+              <button class="icon-action-btn" onclick="openRes()" title="Open Destination">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="1"/><circle cx="12" cy="5" r="1"/><circle cx="12" cy="19" r="1"/></svg>
+              </button>
+            </div>
+          </div>
+
+          <div class="qr-wrap" id="qrWrap">
+            <div style="font-size:12px;color:var(--text-dim)">Scan to open link on mobile:</div>
+            <div class="qr-img-box"><img id="qrImg" src="" alt="QR Code" width="140" height="140"/></div>
+            <div style="margin-top:8px"><button class="btn-sub-pill" id="downloadQRBtn" style="display:none;margin:0 auto;" onclick="downloadQR('qrImg')">Save QR Image</button></div>
+          </div>
+        </div>
+
+        <!-- 4 Feature Badges Strip (Mockup) -->
+        <div class="features-strip">
+          <div class="feat-item">
+            <div class="feat-icon">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>
+            </div>
+            <div>
+              <div class="feat-title">Fast &amp; Simple</div>
+              <div class="feat-sub">Create links instantly</div>
+            </div>
+          </div>
+          <div class="feat-item">
+            <div class="feat-icon">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+            </div>
+            <div>
+              <div class="feat-title">Secure Sharing</div>
+              <div class="feat-sub">Private and reliable</div>
+            </div>
+          </div>
+          <div class="feat-item">
+            <div class="feat-icon">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><polygon points="12 2 2 7 12 12 22 7 12 2"/><polyline points="2 17 12 22 22 17"/><polyline points="2 12 12 17 22 12"/></svg>
+            </div>
+            <div>
+              <div class="feat-title">Organize Easily</div>
+              <div class="feat-sub">Keep everything in collections</div>
+            </div>
+          </div>
+          <div class="feat-item">
+            <div class="feat-icon">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+            </div>
+            <div>
+              <div class="feat-title">Auto Expiry</div>
+              <div class="feat-sub">Set your own time limit</div>
+            </div>
+          </div>
+        </div>
+
+      </div><!-- /section-link -->
+
+      <!-- ══ TAB 2: FILE (Image 4 & 5 Mockup) ══ -->
+      <div class="tab-section" id="section-file">
+        
+        <!-- Notice banner -->
+        <div class="file-alert-banner">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/></svg>
+          <div><strong>File Share:</strong> Direct high-speed upload up to 1 GB. Recipient downloads via SnipLink branded interface.</div>
+        </div>
+
+        <div class="file-grid-layout" id="fileGridLayout">
+          
+          <!-- Left Column (Upload Form) -->
+          <div class="file-left-col">
+            <!-- Drop zone -->
+            <div class="drop-zone" id="dropZone">
+              <input type="file" id="fileInput" onchange="handleFileSelect(event)"/>
+              <div class="dz-icon-circle">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
+              </div>
+              <div class="dz-title">Drop your file here, or click to browse</div>
+              <div class="dz-sub">For best results, upload files up to 1 GB. Supported: MP4, PDF, DOC, ZIP, JPG, PNG</div>
+              <div class="dz-limit">Zero signup &middot; Direct fast transfer</div>
+            </div>
+
+            <!-- Selected File Preview Card -->
+            <div class="file-preview" id="filePreview">
+              <div class="file-type-badge" id="fileTypeBadge">FILE</div>
+              <div class="file-info">
+                <span class="file-name-text" id="fileNameText"></span>
+                <span class="file-meta-text" id="fileMetaText"></span>
+                <div class="upload-prog-wrap" id="uploadProgWrap">
+                  <div class="upload-prog-bar" id="uploadProgBar"></div>
+                </div>
+                <div class="upload-status" id="uploadStatus"></div>
+              </div>
+              <button class="file-remove" onclick="clearFile()" title="Remove file">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+              </button>
+            </div>
+
+            <!-- Custom short name for file -->
+            <div class="input-with-icon-wrap" style="margin-top:12px">
+              <span id="filePrefixLabel" style="display:none"></span>
+              <svg class="input-icon-left" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z"/><line x1="7" y1="7" x2="7.01" y2="7"/></svg>
+              <input type="text" id="fileCodeInput" class="modern-input" placeholder="Custom short name (optional)"/>
+              <span class="suffix-badge" id="filesSufPrev">-??</span>
+            </div>
+            <div class="ferr" id="fileCodeErr">Letters, numbers, dash and underscore only.</div>
+
+            <!-- Expiration & Collection controls -->
+            <div class="file-options-row">
+              <!-- Expiry picker -->
+              <div class="picker-btn-wrap" id="fileExpiryPickerWrap">
+                <button type="button" class="picker-trigger-btn" id="fileExpiryTrigger" onclick="toggleExpiryDropdown('file')">
+                  <span style="display:flex;align-items:center;gap:6px">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+                    <span id="fileExpiryLabel">60 days</span>
+                  </span>
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+                </button>
+                <div class="expiry-dropdown" id="fileExpiryDropdown">
+                  <div class="expiry-opt" onclick="selectExpiry('file', 7, '7 days')">7 days</div>
+                  <div class="expiry-opt" onclick="selectExpiry('file', 15, '15 days')">15 days</div>
+                  <div class="expiry-opt" onclick="selectExpiry('file', 30, '30 days')">30 days</div>
+                  <div class="expiry-opt active" onclick="selectExpiry('file', 60, '60 days')">60 days <span style="font-size:11px;opacity:0.7">Recommended</span></div>
+                  <div class="expiry-opt" onclick="selectExpiry('file', 90, '90 days')">90 days</div>
+                  <div class="expiry-opt" onclick="selectExpiry('file', 180, '180 days')">180 days</div>
+                  <div class="expiry-opt custom" onclick="event.stopPropagation()">
+                    <label style="display:block;font-size:11px;margin-bottom:2px">Custom date:</label>
+                    <input type="date" id="fileCustomDateInput" class="custom-date-inp" onchange="applyCustomDate('file', this.value)"/>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Collection select -->
+              <div class="picker-btn-wrap">
+                <select id="fileCollectionSelect" class="collection-select" onchange="handleCollectionSelect('file', this.value)">
+                  <option value="">(None - Unorganized)</option>
+                </select>
+              </div>
+            </div>
+
+            <!-- Upload Button -->
+            <button class="btn-gen-pill" id="fileGenBtn" style="width:100%;margin-top:14px;justify-content:center" onclick="handleFileUpload()">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
+              <span class="btext">Upload &amp; Generate Link</span>
+              <div class="spinner"></div>
+            </button>
+          </div><!-- /file-left-col -->
+
+          <!-- Right Column (File Result Card - Image 4 & 5) -->
+          <div class="file-result-container" id="fileResultCard">
+            <div class="file-ready-head">
+              <div class="ready-check-icon">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><polyline points="20 6 9 17 4 12"/></svg>
+              </div>
+              <div>
+                <div class="ready-title">File Uploaded &amp; Ready</div>
+                <div class="ready-sub" id="fileResultSub">Just now &middot; Ready for sharing</div>
+              </div>
+            </div>
+
+            <!-- Link Box -->
+            <div style="background:var(--surface-elevated);border:1px solid var(--border);border-radius:14px;padding:12px 14px;display:flex;align-items:center;justify-content:space-between;gap:10px">
+              <div style="display:flex;align-items:center;gap:10px;min-width:0">
+                <svg viewBox="0 0 24 24" fill="none" stroke="var(--accent)" stroke-width="2" style="width:18px;height:18px;flex-shrink:0"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>
+                <div style="min-width:0">
+                  <div style="font-weight:700;font-size:13px;color:var(--text);white-space:nowrap;overflow:hidden;text-overflow:ellipsis" id="fCode"></div>
+                  <div style="font-size:11px;color:var(--text-dim);white-space:nowrap;overflow:hidden;text-overflow:ellipsis" id="fName"></div>
+                </div>
+              </div>
+              <button class="icon-action-btn" onclick="copyFileLink()" title="Copy Link">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
+              </button>
+            </div>
+
+            <!-- Auto-deletes Warning Banner (Image 4 & 5 Yellow box) -->
+            <div class="expiry-warn-box" id="fileExpiryWarn">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+              <span id="fileExpiryText">Auto-deletes on expiration.</span>
+            </div>
+
+            <!-- Action buttons Row 1 -->
+            <div class="file-actions-row">
+              <button class="btn-pill-green" onclick="copyFileLink()">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:16px;height:16px"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
+                Copy Link
+              </button>
+              <button class="btn-pill-outline" onclick="openFileRes()">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:16px;height:16px"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+                View Download Page
+              </button>
+            </div>
+
+            <!-- Action buttons Row 2 -->
+            <div class="file-sub-actions-row">
+              <button class="btn-sub-pill" id="fileQrBtn" onclick="toggleQR('file')">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:14px;height:14px"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><rect x="14" y="14" width="3" height="3"/><rect x="18" y="14" width="3" height="3"/><rect x="14" y="18" width="3" height="3"/><rect x="18" y="18" width="3" height="3"/></svg>
+                QR Code
+              </button>
+              <button class="btn-sub-pill" onclick="openEmailShareModal('file')">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:14px;height:14px"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+                Share via Email
+              </button>
+              <button class="btn-sub-pill" id="fileDownloadQRBtn" style="display:none" onclick="downloadQR('fileQrImg')">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:14px;height:14px"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+                Save QR
+              </button>
+            </div>
+
+            <div class="qr-wrap" id="fileQrWrap">
+              <div style="font-size:12px;color:var(--text-dim)">Scan to open download page:</div>
+              <div class="qr-img-box"><img id="fileQrImg" src="" alt="QR Code" width="140" height="140"/></div>
+            </div>
+          </div><!-- /fileResultCard -->
+
+        </div>
+      </div><!-- /section-file -->
+
+      <!-- ══ TAB 3: NOTE (Image 3 Mockup) ══ -->
+      <div class="tab-section" id="section-note">
+        
+        <input type="text" id="noteTitleInput" class="note-title-inp" placeholder="Note Title (Optional)"/>
+        
+        <div class="quill-wrapper">
+          <div id="quillEditor"></div>
+        </div>
+
+        <div class="note-stats">
+          <span id="wordCount">0 words</span>
+          <span id="charCount">0 chars</span>
+        </div>
+
+        <div class="input-with-icon-wrap" style="margin-top:12px">
+          <span id="notePrefixLabel" style="display:none"></span>
+          <svg class="input-icon-left" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z"/><line x1="7" y1="7" x2="7.01" y2="7"/></svg>
+          <input type="text" id="noteCodeInput" class="modern-input" placeholder="Custom short name (optional)"/>
+          <span class="suffix-badge" id="notesSufPrev">-??</span>
+        </div>
+        <div class="ferr" id="noteCodeErr">Letters, numbers, dash and underscore only.</div>
+
+        <!-- Note Expiration & Collection controls -->
+        <div class="file-options-row">
+          <div class="picker-btn-wrap" id="noteExpiryPickerWrap">
+            <button type="button" class="picker-trigger-btn" id="noteExpiryTrigger" onclick="toggleExpiryDropdown('note')">
+              <span style="display:flex;align-items:center;gap:6px">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+                <span id="noteExpiryLabel">30 days</span>
+              </span>
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+            </button>
+            <div class="expiry-dropdown" id="noteExpiryDropdown">
+              <div class="expiry-opt" onclick="selectExpiry('note', 7, '7 days')">7 days</div>
+              <div class="expiry-opt" onclick="selectExpiry('note', 15, '15 days')">15 days</div>
+              <div class="expiry-opt active" onclick="selectExpiry('note', 30, '30 days')">30 days</div>
+              <div class="expiry-opt" onclick="selectExpiry('note', 60, '60 days')">60 days</div>
+              <div class="expiry-opt" onclick="selectExpiry('note', 90, '90 days')">90 days</div>
+              <div class="expiry-opt" onclick="selectExpiry('note', 180, '180 days')">180 days</div>
+              <div class="expiry-opt custom" onclick="event.stopPropagation()">
+                <label style="display:block;font-size:11px;margin-bottom:2px">Custom date:</label>
+                <input type="date" id="noteCustomDateInput" class="custom-date-inp" onchange="applyCustomDate('note', this.value)"/>
+              </div>
+            </div>
+          </div>
+
+          <div class="picker-btn-wrap">
+            <select id="noteCollectionSelect" class="collection-select" onchange="handleCollectionSelect('note', this.value)">
+              <option value="">(None - Unorganized)</option>
+            </select>
+          </div>
+        </div>
+
+        <!-- Note Footer Bar (Mockup Image 3) -->
+        <div class="note-footer-bar">
+          <button class="privacy-toggle-btn" type="button" title="Privacy Setting">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:16px;height:16px"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+            Private
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:14px;height:14px"><polyline points="6 9 12 15 18 9"/></svg>
+          </button>
+          
+          <div style="display:flex;gap:10px">
+            <button class="btn-sub-pill" style="height:42px;padding:0 18px" onclick="toast('Draft saved locally')">Save Draft</button>
+            <button class="btn-gen-pill" id="noteGenBtn" onclick="handleNoteGen()">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"/><polyline points="17 21 17 13 7 13 7 21"/><polyline points="7 3 7 8 15 8"/></svg>
+              <span class="btext">Save Note</span>
+              <div class="spinner"></div>
+            </button>
+          </div>
+        </div>
+
+        <!-- Note Result Card -->
+        <div class="result-card" id="noteResultCard">
+          <div class="result-main-row">
+            <div class="result-left-group">
+              <div class="result-badge-icon" style="background:var(--purple-subtle);color:var(--purple)">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+              </div>
+              <div class="result-info">
+                <div class="result-short-url" id="nCode"></div>
+                <div class="result-dest-url" id="nPreview"></div>
+                <div class="result-sub" id="noteResultSub">Just now</div>
+              </div>
+            </div>
+
+            <div class="result-actions-group">
+              <button class="icon-action-btn" onclick="copyNoteLink()" title="Copy Note Link">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
+              </button>
+              <button class="icon-action-btn" onclick="openNoteRes()" title="View Note Reader">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+              </button>
+              <button class="icon-action-btn" onclick="downloadNoteCreatorTxt()" title="Download .txt">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+              </button>
+              <button class="icon-action-btn" id="noteQrBtn" onclick="toggleQR('note')" title="QR Code">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><rect x="14" y="14" width="3" height="3"/><rect x="18" y="14" width="3" height="3"/><rect x="14" y="18" width="3" height="3"/><rect x="18" y="18" width="3" height="3"/></svg>
+              </button>
+              <button class="icon-action-btn" onclick="openEmailShareModal('note')" title="Share via Email">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+              </button>
+            </div>
+          </div>
+
+          <div class="expiry-warn-box" id="noteExpiryWarn" style="margin-top:12px">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+            <span id="noteExpiryText">Auto-deletes on expiration.</span>
+          </div>
+
+          <div class="qr-wrap" id="noteQrWrap">
+            <div style="font-size:12px;color:var(--text-dim)">Scan to view note on mobile:</div>
+            <div class="qr-img-box"><img id="noteQrImg" src="" alt="QR Code" width="140" height="140"/></div>
+            <div style="margin-top:8px"><button class="btn-sub-pill" id="noteDownloadQRBtn" style="display:none;margin:0 auto;" onclick="downloadQR('noteQrImg')">Save QR Image</button></div>
+          </div>
+        </div>
+
+      </div><!-- /section-note -->
+
+    </div><!-- /layer-3 -->
+  </div><!-- /layered-card-wrap -->
+
+  <!-- ══ WORKSPACE HISTORY & COLLECTIONS ══ -->
   <div id="history-section">
-    <div class="sec-hdr">
-      <div class="sec-title">
-        Saved Links <span class="cbadge" id="hCount">0</span>
+    <div class="workspace-hdr">
+      <div class="sec-title">Workspace History <span class="cbadge" id="hTotalCount">0</span></div>
+      
+      <!-- Theme Switcher Controls -->
+      <div class="nav-actions" role="radiogroup" aria-label="Theme">
+        <button class="btn-sub-pill" id="theme-btn-system" onclick="setTheme('system')">Auto</button>
+        <button class="btn-sub-pill" id="theme-btn-light" onclick="setTheme('light')">Light</button>
+        <button class="btn-sub-pill" id="theme-btn-dark" onclick="setTheme('dark')">Dark</button>
       </div>
-      <button class="btn-clr" onclick="clearAll()">Clear all</button>
     </div>
-    <div id="hList">
-      <div class="h-empty"><span class="eicon">⌁</span>No links yet — generate your first one above</div>
+
+    <!-- Collections Bar -->
+    <div class="collections-bar" id="collectionsBar"></div>
+
+    <!-- History Search & Clear Toolbar -->
+    <div class="hist-toolbar">
+      <div class="hist-search-box">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+        <input type="text" id="histSearchInput" placeholder="Search links, files, notes, or collections..." oninput="filterHistory()"/>
+      </div>
+      <button class="btn-sub-pill" style="height:42px;padding:0 16px" onclick="clearCurrentHistory()">Clear History</button>
     </div>
+
+    <!-- Type Tabs: All, Links, Files, Notes -->
+    <div class="type-filter-tabs">
+      <button class="type-tab-btn active" id="type-tab-all" onclick="setTypeFilter('all')">All Items</button>
+      <button class="type-tab-btn" id="type-tab-link" onclick="setTypeFilter('link')">Links</button>
+      <button class="type-tab-btn" id="type-tab-file" onclick="setTypeFilter('file')">Files</button>
+      <button class="type-tab-btn" id="type-tab-note" onclick="setTypeFilter('note')">Notes</button>
+    </div>
+
+    <!-- Unified History List -->
+    <div class="h-list" id="unifiedHistoryList"></div>
   </div>
 
-  <!-- About -->
-  <div id="about">
-    <div class="sec-title" style="margin-bottom:8px;">About SNIPP.</div>
-    <div style="font-size:13px;color:var(--text-dim);font-family:var(--mono);line-height:1.6;margin-bottom:16px;">
-      A privacy-first URL shortener. No accounts, no tracking. Everything stored in your browser only.
-    </div>
-    <div class="agrid">
-      <div class="acard"><span class="aicon">⚡</span><div class="atitle">Instant</div><div class="adesc">One click to redirect. No server round-trips or delays.</div></div>
-      <div class="acard"><span class="aicon">🔒</span><div class="atitle">Private History</div><div class="adesc">History stays in your browser only. The generated link itself carries the destination so it works on other devices.</div></div>
-      <div class="acard"><span class="aicon">✦</span><div class="atitle">Unique</div><div class="adesc">Every link gets a unique 2-letter suffix. Zero collisions.</div></div>
-    </div>
+  <!-- About Section -->
+  <div id="about" style="margin-top:50px;padding-top:24px;border-top:1px solid var(--border)">
+    <div class="sec-title" style="margin-bottom:8px">About SnipLink</div>
+    <p style="font-size:14px;color:var(--text-dim);line-height:1.6;margin-bottom:16px;">
+      SnipLink is a fast, privacy-first 3-in-1 tool for compact short links, high-speed temporary file sharing up to 1 GB, and distraction-free note publishing. Zero accounts required.
+    </p>
   </div>
 
 </main>
 
+<!-- Email Sharing Modal (Image 2 Mockup) -->
+<div class="modal-overlay" id="emailModal" onclick="if(event.target===this) closeEmailModal()">
+  <div class="modal-card">
+    <div class="modal-header-row">
+      <div class="modal-title-group">
+        <svg class="modal-title-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/>
+          <polyline points="22,6 12,13 2,6"/>
+        </svg>
+        <div>
+          <div class="modal-title">Share via Email</div>
+          <div class="modal-sub">Send a link, file, or note to someone via email.</div>
+        </div>
+      </div>
+      <button class="modal-close-btn" onclick="closeEmailModal()">&times;</button>
+    </div>
+
+    <div style="background:var(--surface-subtle);border-radius:12px;padding:10px 14px;margin-bottom:14px;font-size:12px">
+      <div style="font-weight:600;color:var(--text)" id="emailItemTitle">Shared Item</div>
+      <div style="color:var(--accent);word-break:break-all;margin-top:2px" id="emailItemLink"></div>
+    </div>
+
+    <div class="modal-field">
+      <label for="emailRecipient">Recipient Email *</label>
+      <div class="input-with-icon-wrap">
+        <svg class="input-icon-left" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+        <input type="email" id="emailRecipient" class="modern-input" placeholder="Enter recipient email" required/>
+      </div>
+    </div>
+
+    <div class="modal-field">
+      <label for="emailMessage">Message (Optional)</label>
+      <textarea id="emailMessage" placeholder="Add a message..."></textarea>
+    </div>
+
+    <div class="modal-status" id="emailStatus" style="font-size:12px;margin-bottom:12px"></div>
+
+    <div class="modal-footer">
+      <button class="btn-sub-pill" style="height:42px;padding:0 20px" onclick="closeEmailModal()">Cancel</button>
+      <button class="btn-pill-green" style="height:42px;padding:0 24px;flex:initial" id="btnSendEmail" onclick="submitEmailShare()">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:16px;height:16px"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
+        Send
+      </button>
+    </div>
+  </div>
+</div>
+
+<!-- Footer -->
 <footer>
-  <div class="fbrand">SNIPP<span>.</span></div>
+  <div class="fbrand">SnipLink</div>
   <div class="finfo">
     Developed by <a href="https://sr-imran.github.io/sri/" target="_blank" rel="noopener noreferrer">Sifatur Rahman Imran</a><br/>
     <a class="github-link" href="https://github.com/SR-iMrAN" target="_blank" rel="noopener noreferrer">
@@ -517,309 +2182,1005 @@
       GitHub
     </a>
   </div>
-  <div class="fcopy">© 2026 All Rights Reserved</div>
+  <div class="fcopy">&copy; 2026 All Rights Reserved</div>
 </footer>
 
 <div class="toast" id="toast"></div>
 
+<!-- Application Scripts -->
+<script src="./firebase-env.js"></script>
+<script type="module" src="./firebase-setup.js"></script>
+<script src="https://cdn.quilljs.com/1.3.7/quill.min.js"></script>
 <script>
-// ─── STORAGE ───────────────────────────
-const SK = 'snipp_v2';
-const getLinks = () => { try { return JSON.parse(localStorage.getItem(SK)||'[]'); } catch { return []; } };
-const saveLinks = a => localStorage.setItem(SK, JSON.stringify(a));
+// ═══════════════════════════════════════════════════════
+// CONSTANTS & LOCAL STORAGE
+// ═══════════════════════════════════════════════════════
+const SK_LINKS = 'snipp_v2';
+const SK_FILES = 'snipp_files_v1';
+const SK_NOTES = 'snipp_notes_v1';
+const SK_COLLECTIONS = 'snipp_collections_v1';
+const SK_THEME = 'snipp_theme_v1';
 
-// ─── UTILS ─────────────────────────────
+const ONE_DAY = 24 * 60 * 60 * 1000;
+const THIRTY_DAYS = 30 * ONE_DAY;
+const MAX_FILE_SIZE = 1024 * 1024 * 1024; // 1 GB (1024 MB)
+
+const getLinks = () => { try { return JSON.parse(localStorage.getItem(SK_LINKS)||'[]'); } catch { return []; } };
+const saveLinks = a => localStorage.setItem(SK_LINKS, JSON.stringify(a));
+const getFiles = () => { try { return JSON.parse(localStorage.getItem(SK_FILES)||'[]'); } catch { return []; } };
+const saveFiles = a => localStorage.setItem(SK_FILES, JSON.stringify(a));
+const getNotes = () => { try { return JSON.parse(localStorage.getItem(SK_NOTES)||'[]'); } catch { return []; } };
+const saveNotes = a => localStorage.setItem(SK_NOTES, JSON.stringify(a));
+
+const getCollections = () => {
+  try {
+    const c = JSON.parse(localStorage.getItem(SK_COLLECTIONS));
+    if (Array.isArray(c) && c.length) return c;
+  } catch {}
+  const defaults = [
+    { id: 'col-summer', name: 'Summer Semester 2026' },
+    { id: 'col-uni', name: 'University' },
+    { id: 'col-projects', name: 'Projects' },
+    { id: 'col-personal', name: 'Personal' }
+  ];
+  localStorage.setItem(SK_COLLECTIONS, JSON.stringify(defaults));
+  return defaults;
+};
+const saveCollections = c => localStorage.setItem(SK_COLLECTIONS, JSON.stringify(c));
+
+// ═══════════════════════════════════════════════════════
+// UTILS
+// ═══════════════════════════════════════════════════════
 const BASE_HOST = `${window.location.protocol}//${window.location.host}`;
-const encodeUrlValue = s => {
-  try { return btoa(unescape(encodeURIComponent(s))); } catch { return btoa(s); }
-};
-const decodeUrlValue = s => {
-  try { return decodeURIComponent(escape(atob(s))); } catch { return atob(s); }
-};
 const getCleanUrl = code => `${BASE_HOST}/${encodeURIComponent(code)}`;
-const getActualUrl = (code, originalUrl) => {
-  if (!originalUrl) return getCleanUrl(code);
-  return `${getCleanUrl(code)}?u=${encodeURIComponent(encodeUrlValue(originalUrl))}`;
-};
-const randSuf = () => { const c='abcdefghijklmnopqrstuvwxyz'; return c[~~(Math.random()*26)]+c[~~(Math.random()*26)]; };
-const prefixLabelEl = document.querySelector('.prefix-label');
-const codeInputEl = document.getElementById('codeInput');
-const adjustPrefixLabel = () => {
-  if (prefixLabelEl) prefixLabelEl.textContent = `${BASE_HOST}/`;
-  if (prefixLabelEl && codeInputEl) codeInputEl.style.paddingLeft = `${prefixLabelEl.offsetWidth + 28}px`;
-};
-window.addEventListener('load', adjustPrefixLabel);
-window.addEventListener('resize', adjustPrefixLabel);
+const randSuf = () => { const c='abcdefghijklmnopqrstuvwxyz0123456789'; let s=''; for(let i=0;i<3;i++) s+=c[~~(Math.random()*c.length)]; return s; };
 const isUrl = u => { try { const p=new URL(u); return p.protocol==='http:'||p.protocol==='https:'; } catch { return false; } };
 const isCode = c => /^[a-zA-Z0-9_-]+$/.test(c);
-const exists = code => getLinks().some(l=>l.shortCode===code);
-const makeCode = base => { let s=randSuf(),c=base+'-'+s,t=0; while(exists(c)&&t<100){s=randSuf();c=base+'-'+s;t++;} return c; };
 const ago = ts => { const d=Date.now()-ts,m=~~(d/6e4),h=~~(d/36e5),dd=~~(d/864e5); if(m<1)return'Just now'; if(m<60)return m+'m ago'; if(h<24)return h+'h ago'; return dd+'d ago'; };
 const esc = s => String(s).replace(/&/g,'&amp;').replace(/"/g,'&quot;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
 const delay = ms => new Promise(r=>setTimeout(r,ms));
+const formatBytes = b => {
+  if (!b || isNaN(b)) return '0 B';
+  if (b < 1024) return b + ' B';
+  if (b < 1048576) return (b / 1024).toFixed(1) + ' KB';
+  if (b < 1073741824) return (b / 1048576).toFixed(1) + ' MB';
+  return (b / 1073741824).toFixed(2) + ' GB';
+};
+const formatDate = ts => new Date(ts).toLocaleDateString('en-US',{year:'numeric',month:'short',day:'numeric'});
+const daysLeft = ts => Math.max(0, Math.ceil((ts - Date.now()) / 864e5));
+const isExpired = ts => ts && Date.now() > ts;
 
-// ─── STATE ─────────────────────────────
-let curCode = null;
-let rdTimer = null;
-let qrOn = false;
+function expiryText(expiresAt) {
+  if (isExpired(expiresAt)) return { text: 'This link has expired and is no longer available.', critical: true };
+  const d = daysLeft(expiresAt);
+  if (d <= 3) return { text: `Expires in ${d} day${d===1?'':'s'} (${formatDate(expiresAt)}) — Download soon.`, critical: true };
+  return { text: `Auto-deletes on ${formatDate(expiresAt)} (${d} days remaining).`, critical: false };
+}
 
-// ─── SUFFIX PREVIEW ────────────────────
-document.getElementById('codeInput').addEventListener('input', function() {
-  document.getElementById('sufPrev').textContent = this.value.trim() ? '-'+randSuf() : '-??';
+// ═══════════════════════════════════════════════════════
+// THEME SYSTEM
+// ═══════════════════════════════════════════════════════
+function initTheme() {
+  const saved = localStorage.getItem(SK_THEME) || 'system';
+  setTheme(saved, false);
+}
+
+function setTheme(theme, save = true) {
+  if (save) localStorage.setItem(SK_THEME, theme);
+  const root = document.documentElement;
+  
+  if (theme === 'system') {
+    const prefersDark = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
+    root.setAttribute('data-theme', prefersDark ? 'dark' : 'light');
+  } else {
+    root.setAttribute('data-theme', theme);
+  }
+
+  ['system','light','dark'].forEach(t => {
+    const btn = document.getElementById('theme-btn-' + t);
+    if (btn) btn.classList.toggle('active', t === theme);
+  });
+}
+
+if (window.matchMedia) {
+  window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', () => {
+    if (localStorage.getItem(SK_THEME) === 'system') setTheme('system', false);
+  });
+}
+
+// ═══════════════════════════════════════════════════════
+// EXPIRATION PICKER STATE
+// ═══════════════════════════════════════════════════════
+let selectedFileDurationDays = 30;
+let customFileExpiryTs = null;
+let selectedNoteDurationDays = 30;
+let customNoteExpiryTs = null;
+
+function toggleExpiryDropdown(type) {
+  const dd = document.getElementById(type + 'ExpiryDropdown');
+  if (dd) dd.classList.toggle('show');
+}
+
+function selectExpiry(type, days, label) {
+  if (type === 'file') {
+    selectedFileDurationDays = days;
+    customFileExpiryTs = null;
+    document.getElementById('fileExpiryLabel').textContent = label;
+  } else {
+    selectedNoteDurationDays = days;
+    customNoteExpiryTs = null;
+    document.getElementById('noteExpiryLabel').textContent = label;
+  }
+  const dd = document.getElementById(type + 'ExpiryDropdown');
+  if (dd) {
+    dd.querySelectorAll('.expiry-opt').forEach(el => el.classList.remove('active'));
+    dd.classList.remove('show');
+  }
+  event.currentTarget?.classList?.add('active');
+}
+
+function applyCustomDate(type, dateStr) {
+  if (!dateStr) return;
+  const ts = new Date(dateStr).getTime() + (23 * 3600 + 59 * 60) * 1000;
+  if (ts <= Date.now()) { toast('Custom date must be in the future'); return; }
+  const days = daysLeft(ts);
+  const label = `${formatDate(ts)} (${days}d)`;
+  if (type === 'file') {
+    customFileExpiryTs = ts;
+    document.getElementById('fileExpiryLabel').textContent = label;
+  } else {
+    customNoteExpiryTs = ts;
+    document.getElementById('noteExpiryLabel').textContent = label;
+  }
+  const dd = document.getElementById(type + 'ExpiryDropdown');
+  if (dd) dd.classList.remove('show');
+}
+
+document.addEventListener('click', e => {
+  if (!e.target.closest('#fileExpiryPickerWrap')) {
+    document.getElementById('fileExpiryDropdown')?.classList.remove('show');
+  }
+  if (!e.target.closest('#noteExpiryPickerWrap')) {
+    document.getElementById('noteExpiryDropdown')?.classList.remove('show');
+  }
 });
 
-// ─── GENERATE ──────────────────────────
+// ═══════════════════════════════════════════════════════
+// COLLECTIONS STATE & MANAGEMENT
+// ═══════════════════════════════════════════════════════
+let curActiveCollection = 'all';
+let curTypeFilter = 'all';
+let selectedLinkColl = '';
+let selectedFileColl = '';
+let selectedNoteColl = '';
+
+function renderCollectionDropdowns() {
+  const cols = getCollections();
+  ['linkCollectionSelect','fileCollectionSelect','noteCollectionSelect'].forEach(id => {
+    const el = document.getElementById(id);
+    if (!el) return;
+    const curVal = el.value;
+    el.innerHTML = '<option value="">(None - Unorganized)</option>' +
+      cols.map(c => `<option value="${esc(c.id)}">${esc(c.name)}</option>`).join('');
+    el.value = curVal;
+  });
+}
+
+function renderCollectionsBar() {
+  const cols = getCollections();
+  const bar = document.getElementById('collectionsBar');
+  if (!bar) return;
+
+  bar.innerHTML = `
+    <div class="coll-pill ${curActiveCollection==='all'?'active':''}" onclick="setCollectionFilter('all')">
+      All Collections
+    </div>
+    <div class="coll-pill ${curActiveCollection==='none'?'active':''}" onclick="setCollectionFilter('none')">
+      Unorganized
+    </div>
+    ${cols.map(c => `
+      <div class="coll-pill ${curActiveCollection===c.id?'active':''}" onclick="setCollectionFilter('${esc(c.id)}')">
+        ${esc(c.name)}
+      </div>
+    `).join('')}
+    <button class="btn-new-coll" onclick="createNewCollection()">+ New</button>
+  `;
+}
+
+function setCollectionFilter(collId) {
+  curActiveCollection = collId;
+  renderCollectionsBar();
+  filterHistory();
+}
+
+function setTypeFilter(type) {
+  curTypeFilter = type;
+  ['all','link','file','note'].forEach(t => {
+    document.getElementById('type-tab-' + t)?.classList.toggle('active', t === type);
+  });
+  filterHistory();
+}
+
+function handleCollectionSelect(type, val) {
+  if (type === 'link') selectedLinkColl = val;
+  if (type === 'file') selectedFileColl = val;
+  if (type === 'note') selectedNoteColl = val;
+}
+
+function createNewCollection() {
+  const name = prompt('Enter a name for the new collection (e.g. "Research 2026"):');
+  if (!name || !name.trim()) return;
+  const trimmed = name.trim();
+  const cols = getCollections();
+  const id = 'col-' + Math.random().toString(36).substring(2, 9);
+  cols.push({ id, name: trimmed, createdAt: Date.now() });
+  saveCollections(cols);
+  renderCollectionsBar();
+  renderCollectionDropdowns();
+  toast(`Collection "${trimmed}" created`);
+}
+
+// ═══════════════════════════════════════════════════════
+// GLOBAL STATE
+// ═══════════════════════════════════════════════════════
+let curCode = null;
+let curFileCode = null;
+let curNoteCode = null;
+let curNoteText = '';
+let rdTimer = null;
+let linkQrOn = false;
+let fileQrOn = false;
+let noteQrOn = false;
+let selectedFile = null;
+let quill = null;
+
+// ═══════════════════════════════════════════════════════
+// TAB SWITCHING
+// ═══════════════════════════════════════════════════════
+function switchTab(tab) {
+  ['link','file','note'].forEach(t => {
+    document.getElementById('tab-'+t)?.classList.toggle('active', t===tab);
+    document.getElementById('section-'+t)?.classList.toggle('active', t===tab);
+    document.getElementById('tab-'+t)?.setAttribute('aria-selected', t===tab);
+  });
+  setTimeout(setAllPrefixLabels, 50);
+}
+
+// ═══════════════════════════════════════════════════════
+// PREFIX LABELS
+// ═══════════════════════════════════════════════════════
+function setAllPrefixLabels() {
+  const base = `${BASE_HOST}/`;
+  ['linkPrefixLabel','filePrefixLabel','notePrefixLabel'].forEach(id => {
+    const el = document.getElementById(id);
+    if (el) el.textContent = base;
+  });
+  [['linkPrefixLabel','codeInput'],['filePrefixLabel','fileCodeInput'],['notePrefixLabel','noteCodeInput']].forEach(([lbl,inp]) => {
+    const l = document.getElementById(lbl);
+    const i = document.getElementById(inp);
+    if (l && i) i.style.paddingLeft = (l.offsetWidth + 24) + 'px';
+  });
+}
+
+// ═══════════════════════════════════════════════════════
+// FIRESTORE CODE LOOKUP
+// ═══════════════════════════════════════════════════════
+const existsInColl = async (coll, code) => {
+  if (!window.db || !window.getDoc || !window.doc) return false;
+  try { const snap = await getDoc(doc(db, coll, code)); return snap.exists(); } catch { return false; }
+};
+
+async function makeCode(prefix) {
+  let c = prefix + '-' + randSuf();
+  let t = 0;
+  while (t < 50) {
+    const inLinks = await existsInColl('links', c);
+    const inFiles = await existsInColl('files', c);
+    const inNotes = await existsInColl('notes', c);
+    if (!inLinks && !inFiles && !inNotes) break;
+    c = prefix + '-' + randSuf();
+    t++;
+  }
+  return c;
+}
+
+// ═══════════════════════════════════════════════════════
+// INIT
+// ═══════════════════════════════════════════════════════
+document.addEventListener('DOMContentLoaded', () => {
+  initTheme();
+  renderCollectionsBar();
+  renderCollectionDropdowns();
+  setupDropZone();
+  initQuill();
+  setAllPrefixLabels();
+  checkRoute();
+  filterHistory();
+
+  const ci = document.getElementById('codeInput');
+  if (ci) ci.addEventListener('input', function() {
+    document.getElementById('sufPrev').textContent = this.value.trim() ? '-'+randSuf() : '-??';
+  });
+  const fi = document.getElementById('fileCodeInput');
+  if (fi) fi.addEventListener('input', function() {
+    document.getElementById('filesSufPrev').textContent = this.value.trim() ? '-'+randSuf() : '-??';
+  });
+  const ni = document.getElementById('noteCodeInput');
+  if (ni) ni.addEventListener('input', function() {
+    document.getElementById('notesSufPrev').textContent = this.value.trim() ? '-'+randSuf() : '-??';
+  });
+  ['urlInput','codeInput'].forEach(id => {
+    const el = document.getElementById(id);
+    if (el) el.addEventListener('keydown', e => { if (e.key === 'Enter') handleGen(); });
+  });
+});
+window.addEventListener('resize', setAllPrefixLabels);
+window.addEventListener('load', setAllPrefixLabels);
+
+// ═══════════════════════════════════════════════════════
+// 1. LINK SHORTENER
+// ═══════════════════════════════════════════════════════
 async function handleGen() {
+  if (!window.db || !window.setDoc || !window.doc) { toast('Connecting to database... please try again'); return; }
   const ui = document.getElementById('urlInput');
   const ci = document.getElementById('codeInput');
   const ue = document.getElementById('urlErr');
   const ce = document.getElementById('codeErr');
   const btn = document.getElementById('genBtn');
-
   ue.classList.remove('show'); ce.classList.remove('show');
   ui.classList.remove('err'); ci.classList.remove('err');
 
   const url = ui.value.trim();
   const raw = ci.value.trim();
   let ok = true;
-
-  if (!url || !isUrl(url)) { ue.classList.add('show'); ui.classList.add('err'); ok=false; }
-  if (raw && !isCode(raw)) { ce.classList.add('show'); ci.classList.add('err'); ok=false; }
+  if (!url || !isUrl(url)) { ue.classList.add('show'); ui.classList.add('err'); ok = false; }
+  if (raw && !isCode(raw)) { ce.classList.add('show'); ci.classList.add('err'); ok = false; }
   if (!ok) return;
 
-  btn.classList.add('loading'); btn.disabled=true;
-  const pw=document.getElementById('progWrap'); const pb=document.getElementById('progBar');
-  pw.classList.add('show'); pb.style.width='0%';
-  await delay(40); pb.style.width='55%';
-  await delay(300); pb.style.width='100%';
-  await delay(200);
+  btn.classList.add('loading'); btn.disabled = true;
+  const pw = document.getElementById('progWrap'); const pb = document.getElementById('progBar');
+  pw.classList.add('show'); pb.style.width = '30%';
 
-  const base = raw || 'link';
-  const code = makeCode(base);
-  const entry = { shortCode:code, originalUrl:url, createdAt:Date.now(), clicks:0 };
+  let code = raw;
+  if (!code) code = await makeCode('link');
+  else if (await existsInColl('links', raw) || await existsInColl('files', raw) || await existsInColl('notes', raw)) {
+    ce.classList.add('show'); ci.classList.add('err');
+    btn.classList.remove('loading'); btn.disabled = false;
+    pw.classList.remove('show'); pb.style.width = '0%';
+    toast('That custom name is already taken'); return;
+  }
+
+  pb.style.width = '80%';
+  const now = Date.now();
+  const collId = selectedLinkColl || null;
+  const entry = { shortCode: code, originalUrl: url, createdAt: now, clicks: 0, type: 'link', collectionId: collId };
+  await setDoc(doc(db, 'links', code), { originalUrl: url, createdAt: now, clicks: 0, collectionId: collId });
+
   const links = getLinks(); links.unshift(entry); saveLinks(links);
-  curCode = code;
+  pb.style.width = '100%';
 
-  // reset QR
-  qrOn=false;
+  curCode = code;
+  linkQrOn = false;
   document.getElementById('qrWrap').classList.remove('show');
   document.getElementById('qrBtn').classList.remove('on');
+  document.getElementById('downloadQRBtn').style.display = 'none';
 
   showResult(code, url);
-  renderHistory();
+  filterHistory();
 
-  btn.classList.remove('loading'); btn.disabled=false;
-  pw.classList.remove('show'); pb.style.width='0%';
-  document.getElementById('resultCard').scrollIntoView({behavior:'smooth',block:'nearest'});
+  btn.classList.remove('loading'); btn.disabled = false;
+  setTimeout(() => { pw.classList.remove('show'); pb.style.width = '0%'; }, 200);
+  document.getElementById('resultCard').scrollIntoView({ behavior: 'smooth', block: 'nearest' });
 }
 
 function showResult(code, url) {
-  const card=document.getElementById('resultCard');
+  const card = document.getElementById('resultCard');
   card.classList.remove('show'); void card.offsetHeight; card.classList.add('show');
   document.getElementById('rCode').textContent = getCleanUrl(code);
   document.getElementById('rOrig').textContent = url;
-  document.getElementById('resultSub').textContent = 'Just now · 0 clicks';
+  document.getElementById('resultSub').textContent = 'Just now \u00B7 0 clicks';
 }
 
-// ─── COPY ──────────────────────────────
-function copyRes() {
-  if (!curCode) return;
-  const entry = getLinks().find(l=>l.shortCode===curCode);
-  if (entry) doCopy(getCleanUrl(curCode));
-}
-function doCopy(t) {
+function copyShort() { if (!curCode) return; doCopy(getCleanUrl(curCode)); }
+function openRes() { if (curCode) doRedirect(curCode); }
+
+async function doRedirect(code) {
   try {
-    if (navigator.clipboard && navigator.clipboard.writeText) {
-      navigator.clipboard.writeText(t).catch(()=>fbCopy(t));
-    } else { fbCopy(t); }
-  } catch { fbCopy(t); }
-  toast('✓ Copied!');
-}
-function fbCopy(t) {
-  const el=document.createElement('textarea');
-  el.value=t; el.style.position='fixed'; el.style.opacity='0';
-  document.body.appendChild(el); el.focus(); el.select();
-  document.execCommand('copy'); document.body.removeChild(el);
-}
-
-// Copy button: copy the full working link (includes encoded destination) so shared links work across devices
-function copyShort() {
-  if (!curCode) return;
-  const entry = getLinks().find(l=>l.shortCode===curCode);
-  if (entry) doCopy(getCleanUrl(curCode));
-  else doCopy(getCleanUrl(curCode));
-}
-
-// ─── OPEN / REDIRECT ───────────────────
-function openRes() { if(curCode) doRedirect(curCode); }
-
-function doRedirect(code) {
-  const links = getLinks();
-  const item = links.find(l=>l.shortCode===code);
-  if (!item) { toast('⚠ Link not found'); return; }
-
-  item.clicks = (item.clicks||0)+1;
-  saveLinks(links);
-  renderHistory();
-
-  // Update result subtitle if it matches
-  if (curCode===code) {
-    document.getElementById('resultSub').textContent =
-      'Just now · '+item.clicks+' click'+(item.clicks!==1?'s':'');
-  }
-
-  // Show overlay
-  document.getElementById('rdDest').textContent = item.originalUrl;
-  document.getElementById('rdPage').classList.add('show');
-
-  clearTimeout(rdTimer);
-  rdTimer = setTimeout(() => {
-    document.getElementById('rdPage').classList.remove('show');
-    window.open(item.originalUrl, '_blank', 'noopener,noreferrer');
-  }, 900);
-}
-
-function cancelRd() {
-  clearTimeout(rdTimer);
-  document.getElementById('rdPage').classList.remove('show');
-}
-
-// ─── QR CODE ───────────────────────────
-// Uses qrserver.com API — free, no signup, no CORS issues
-function toggleQR() {
-  qrOn = !qrOn;
-  const wrap = document.getElementById('qrWrap');
-  const btn = document.getElementById('qrBtn');
-  const downloadBtn = document.getElementById('downloadQRBtn');
-  if (qrOn) {
-    wrap.classList.add('show');
-    btn.classList.add('on');
-    if (downloadBtn) downloadBtn.style.display = 'inline-flex';
-    if (curCode) {
-      const entry = getLinks().find(l=>l.shortCode===curCode);
-      // Use the visible short URL for QR so scans show the short link
-      const text = encodeURIComponent(getCleanUrl(curCode));
-      const src = `https://api.qrserver.com/v1/create-qr-code/?size=160x160&data=${text}&color=080a0c&bgcolor=ffffff&qzone=2&format=png`;
-      const img = document.getElementById('qrImg');
-      img.src = '';
-      // Small delay to let the element reset
-      setTimeout(() => { img.src = src; }, 10);
-      img.onerror = () => {
-        // Fallback to a different free QR service
-        img.onerror = null;
-        img.src = `https://chart.googleapis.com/chart?chs=160x160&cht=qr&chl=${text}&choe=UTF-8`;
-      };
-    }
-  } else {
-    wrap.classList.remove('show');
-    btn.classList.remove('on');
-    if (downloadBtn) downloadBtn.style.display = 'none';
+    const ref = doc(db, 'links', code);
+    const snap = await getDoc(ref);
+    if (!snap.exists()) { toast('Link not found'); return; }
+    const data = snap.data();
+    const clicks = (data.clicks || 0) + 1;
+    await setDoc(ref, { clicks }, { merge: true });
+    if (curCode === code) document.getElementById('resultSub').textContent = 'Just now \u00B7 ' + clicks + ' click' + (clicks !== 1 ? 's' : '');
+    document.getElementById('rdDest').textContent = data.originalUrl;
+    document.getElementById('rdPage').classList.add('show');
+    clearTimeout(rdTimer);
+    rdTimer = setTimeout(() => {
+      document.getElementById('rdPage').classList.remove('show');
+      window.open(data.originalUrl, '_blank', 'noopener,noreferrer');
+    }, 800);
+  } catch (err) {
+    console.error(err); toast('Could not redirect');
   }
 }
+function cancelRd() { clearTimeout(rdTimer); document.getElementById('rdPage').classList.remove('show'); }
 
-// ─── TOAST ─────────────────────────────
-let toastT;
-async function downloadQR() {
-  if (!curCode) { toast('Generate a link first'); return; }
-  const img = document.getElementById('qrImg');
-  if (!img.src) {
-    toast('Open QR first');
+// ═══════════════════════════════════════════════════════
+// 2. FILE SHARE & GOFILE INTEGRATION
+// ═══════════════════════════════════════════════════════
+function setupDropZone() {
+  const dz = document.getElementById('dropZone');
+  if (!dz) return;
+  dz.addEventListener('dragover', e => { e.preventDefault(); dz.classList.add('drag-over'); });
+  dz.addEventListener('dragleave', () => dz.classList.remove('drag-over'));
+  dz.addEventListener('drop', e => {
+    e.preventDefault(); dz.classList.remove('drag-over');
+    const f = e.dataTransfer.files[0];
+    if (f) applyFile(f);
+  });
+}
+
+function handleFileSelect(e) {
+  const f = e.target.files[0];
+  if (f) applyFile(f);
+}
+
+function applyFile(f) {
+  if (f.size > MAX_FILE_SIZE) {
+    toast(`File exceeds 1 GB limit (${formatBytes(f.size)})`);
     return;
   }
+  selectedFile = f;
+  const ext = f.name.split('.').pop().toLowerCase();
+  const badge = document.getElementById('fileTypeBadge');
+  const cls = getFileBadgeClass(f.type, ext);
+  badge.className = 'file-type-badge ' + cls;
+  badge.textContent = ext.substring(0, 4) || 'FILE';
+  document.getElementById('fileNameText').textContent = f.name;
+  document.getElementById('fileMetaText').textContent = formatBytes(f.size) + ' \u00B7 ' + (f.type || 'application/octet-stream');
+  document.getElementById('filePreview').classList.add('show');
+  document.getElementById('dropZone').style.display = 'none';
+  document.getElementById('uploadProgWrap').classList.remove('show');
+  document.getElementById('uploadStatus').classList.remove('show');
+}
+
+function clearFile() {
+  selectedFile = null;
+  document.getElementById('fileInput').value = '';
+  document.getElementById('filePreview').classList.remove('show');
+  document.getElementById('dropZone').style.display = '';
+  document.getElementById('uploadProgWrap').classList.remove('show');
+  document.getElementById('uploadStatus').classList.remove('show');
+}
+
+function getFileBadgeClass(mimeType, ext) {
+  if (/pdf/.test(mimeType)) return 'ftb-pdf';
+  if (/^image\//.test(mimeType)) return 'ftb-img';
+  if (/^video\//.test(mimeType)) return 'ftb-vid';
+  if (/^audio\//.test(mimeType)) return 'ftb-aud';
+  if (/zip|rar|tar|gzip|7z|bzip/.test(mimeType) || /zip|rar|tar|gz|7z|bz2/.test(ext)) return 'ftb-zip';
+  if (/javascript|typescript|python|java|c\+\+|php|ruby|go|rust|swift|kotlin|html|css|json|xml|yaml|sh/.test(mimeType) || /js|ts|py|java|cpp|c|php|rb|go|rs|swift|kt|html|css|json|xml|yaml|sh|sql/.test(ext)) return 'ftb-code';
+  if (/word|doc|text|plain/.test(mimeType) || /doc|docx|txt|rtf|md/.test(ext)) return 'ftb-doc';
+  return 'ftb-other';
+}
+
+function getFileIconSvg(mimeType, ext) {
+  if (/^image\//.test(mimeType)) return `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" width="30" height="30"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>`;
+  if (/^video\//.test(mimeType)) return `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" width="30" height="30"><polygon points="23 7 16 12 23 17 23 7"/><rect x="1" y="5" width="15" height="14" rx="2"/></svg>`;
+  if (/^audio\//.test(mimeType)) return `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" width="30" height="30"><path d="M9 18V5l12-2v13"/><circle cx="6" cy="18" r="3"/><circle cx="18" cy="16" r="3"/></svg>`;
+  if (/pdf/.test(mimeType)) return `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" width="30" height="30"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>`;
+  return `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" width="30" height="30"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>`;
+}
+
+// ── DIRECT GOFILE UPLOAD ──
+async function uploadToGoFile(file, onProgress) {
+  // Step 1: Discover active GoFile store node
+  let server = 'store8';
   try {
-    const response = await fetch(img.src);
-    if (!response.ok) throw new Error('Failed to download QR');
-    const blob = await response.blob();
-    const blobUrl = URL.createObjectURL(blob);
-    const link = document.createElement('a');
-    link.href = blobUrl;
-    link.download = `${curCode}-qr.png`;
-    document.body.appendChild(link);
-    link.click();
-    document.body.removeChild(link);
-    URL.revokeObjectURL(blobUrl);
-    toast('QR saved');
+    const sRes = await fetch('https://api.gofile.io/servers');
+    const sData = await sRes.json();
+    if (sData.status === 'ok' && sData.data?.servers?.length) {
+      server = sData.data.servers[0].name;
+    }
+  } catch (err) {
+    console.warn('Could not query dynamic GoFile servers, using fallback store:', err);
+  }
+
+  // Step 2: Upload direct from browser to GoFile storage node
+  const formData = new FormData();
+  formData.append('file', file);
+
+  return new Promise((resolve, reject) => {
+    const xhr = new XMLHttpRequest();
+    xhr.upload.onprogress = e => {
+      if (e.lengthComputable) {
+        onProgress(Math.round((e.loaded / e.total) * 100));
+      }
+    };
+    xhr.onload = () => {
+      try {
+        const res = JSON.parse(xhr.responseText);
+        if (res.status === 'ok' && res.data) {
+          resolve({
+            id: res.data.id || res.data.fileId,
+            code: res.data.code,
+            fileName: res.data.name || res.data.fileName || file.name,
+            downloadPage: res.data.downloadPage,
+            parentFolder: res.data.parentFolder,
+            guestToken: res.data.guestToken || '',
+            server: server,
+            host: 'gofile'
+          });
+        } else {
+          reject(new Error(res.status || 'Upload to GoFile failed'));
+        }
+      } catch (e) {
+        reject(new Error('Invalid response from GoFile'));
+      }
+    };
+    xhr.onerror = () => reject(new Error('Network error connecting to GoFile storage'));
+    xhr.open('POST', `https://${server}.gofile.io/contents/uploadfile`);
+    xhr.send(formData);
+  });
+}
+
+async function handleFileUpload() {
+  if (!window.db || !window.setDoc || !window.doc) { toast('Connecting to database... please try again'); return; }
+  if (!selectedFile) { toast('Please choose a file first'); return; }
+
+  const ci = document.getElementById('fileCodeInput');
+  const ce = document.getElementById('fileCodeErr');
+  const btn = document.getElementById('fileGenBtn');
+  ce.classList.remove('show'); ci.classList.remove('err');
+  const raw = ci.value.trim();
+  if (raw && !isCode(raw)) { ce.classList.add('show'); ci.classList.add('err'); return; }
+
+  btn.classList.add('loading'); btn.disabled = true;
+
+  let code = raw;
+  if (!code) code = await makeCode('f');
+  else {
+    const taken = await existsInColl('files', raw) || await existsInColl('links', raw) || await existsInColl('notes', raw);
+    if (taken) {
+      ce.classList.add('show'); ci.classList.add('err');
+      btn.classList.remove('loading'); btn.disabled = false;
+      toast('That custom name is already taken'); return;
+    }
+  }
+
+  const pw = document.getElementById('uploadProgWrap');
+  const pb = document.getElementById('uploadProgBar');
+  const ps = document.getElementById('uploadStatus');
+  pw.classList.add('show'); ps.classList.add('show');
+  pb.style.width = '0%';
+
+  try {
+    ps.textContent = 'Connecting to high-speed storage...';
+    
+    // Direct browser-to-GoFile upload pipeline
+    const gfData = await uploadToGoFile(selectedFile, pct => {
+      pb.style.width = pct + '%';
+      ps.textContent = `Uploading... ${pct}%`;
+    });
+
+    const now = Date.now();
+    const expiresAt = customFileExpiryTs || (now + selectedFileDurationDays * ONE_DAY);
+    const collId = selectedFileColl || null;
+
+    const meta = {
+      fileName: selectedFile.name,
+      fileSize: selectedFile.size,
+      fileType: selectedFile.type || 'application/octet-stream',
+      gofileId: gfData.id,
+      gofileCode: gfData.code,
+      downloadPage: gfData.downloadPage,
+      guestToken: gfData.guestToken,
+      server: gfData.server,
+      host: 'gofile',
+      collectionId: collId,
+      createdAt: now,
+      expiresAt,
+      clicks: 0
+    };
+
+    pb.style.width = '100%';
+    ps.textContent = 'Saving link...';
+
+    await setDoc(doc(db, 'files', code), meta);
+
+    const localEntry = {
+      shortCode: code,
+      fileName: selectedFile.name,
+      fileSize: selectedFile.size,
+      fileType: selectedFile.type,
+      createdAt: now,
+      expiresAt,
+      type: 'file',
+      collectionId: collId
+    };
+    const files = getFiles(); files.unshift(localEntry); saveFiles(files);
+
+    curFileCode = code;
+    fileQrOn = false;
+    document.getElementById('fileQrWrap').classList.remove('show');
+    document.getElementById('fileQrBtn').classList.remove('on');
+    document.getElementById('fileDownloadQRBtn').style.display = 'none';
+
+    showFileResult(code, selectedFile.name, expiresAt);
+    filterHistory();
+    ps.textContent = 'Upload complete';
+    setTimeout(() => { pw.classList.remove('show'); ps.classList.remove('show'); }, 1800);
+    document.getElementById('fileResultCard').scrollIntoView({ behavior: 'smooth', block: 'nearest' });
   } catch (err) {
     console.error(err);
-    toast('QR download failed');
+    toast('Upload failed: ' + (err.message || 'Unknown error'));
+    pw.classList.remove('show'); ps.classList.remove('show');
   }
+  btn.classList.remove('loading'); btn.disabled = false;
 }
 
-function toast(msg) {
-  const t=document.getElementById('toast');
-  t.textContent=msg; t.classList.add('show');
-  clearTimeout(toastT);
-  toastT=setTimeout(()=>t.classList.remove('show'),2000);
+function showFileResult(code, fileName, expiresAt) {
+  const card = document.getElementById('fileResultCard');
+  card.classList.remove('show'); void card.offsetHeight; card.classList.add('show');
+  document.getElementById('fCode').textContent = getCleanUrl(code);
+  document.getElementById('fName').textContent = fileName;
+  document.getElementById('fileResultSub').textContent = 'Just now \u00B7 expires ' + formatDate(expiresAt);
+  const ei = expiryText(expiresAt);
+  const warn = document.getElementById('fileExpiryWarn');
+  document.getElementById('fileExpiryText').textContent = ei.text;
+  warn.classList.toggle('critical', ei.critical);
 }
 
-// ─── HISTORY ───────────────────────────
-function renderHistory() {
-  const links = getLinks();
-  document.getElementById('hCount').textContent = links.length;
-  const el = document.getElementById('hList');
-  if (!links.length) {
-    el.innerHTML=`<div class="h-empty"><span class="eicon">⌁</span>No links yet — generate your first one above</div>`;
-    return;
-  }
-  el.innerHTML = links.map((l,i) => `
-    <div class="h-item" style="animation-delay:${i*0.04}s">
-      <div class="h-dot"></div>
-      <div class="h-info">
-        <span class="h-short">${esc(getCleanUrl(l.shortCode))}</span>
-        <span class="h-orig">${esc(l.originalUrl)}</span>
-        <div class="h-meta">
-          <span>${ago(l.createdAt)}</span><span>·</span>
-          <span><span class="hclicks">${l.clicks||0}</span> clicks</span>
-        </div>
-      </div>
-      <div class="h-acts">
-        <button class="bicon" title="Copy" onclick="doCopy('${getActualUrl(l.shortCode, l.originalUrl)}')">⧉</button>
-        <button class="bicon" title="Open & redirect" onclick="doRedirect('${esc(l.shortCode)}')">↗</button>
-        <button class="bicon del" title="Delete" onclick="delItem('${esc(l.shortCode)}')">✕</button>
-      </div>
-    </div>
-  `).join('');
+function copyFileLink() { if (!curFileCode) return; doCopy(getCleanUrl(curFileCode)); }
+function openFileRes() { if (curFileCode) window.open(getCleanUrl(curFileCode), '_blank', 'noopener,noreferrer'); }
+
+// ═══════════════════════════════════════════════════════
+// 3. NOTE PUBLISHING
+// ═══════════════════════════════════════════════════════
+function initQuill() {
+  if (typeof Quill === 'undefined') { setTimeout(initQuill, 200); return; }
+  quill = new Quill('#quillEditor', {
+    theme: 'snow',
+    placeholder: 'Write your note, code, or documentation here...',
+    modules: {
+      toolbar: [
+        ['bold','italic','underline','strike'],
+        ['blockquote','code-block'],
+        [{ header: [1,2,3,false] }],
+        [{ list:'ordered' },{ list:'bullet' }],
+        ['link'],
+        ['clean']
+      ]
+    }
+  });
+  quill.on('text-change', updateNoteStats);
 }
 
-function delItem(code) {
-  saveLinks(getLinks().filter(l=>l.shortCode!==code));
-  if (curCode===code) { document.getElementById('resultCard').classList.remove('show'); curCode=null; }
-  renderHistory();
-  toast('Link deleted');
+function updateNoteStats() {
+  if (!quill) return;
+  const text = quill.getText().trim();
+  const words = text ? text.split(/\s+/).filter(Boolean).length : 0;
+  const chars = text.length;
+  document.getElementById('wordCount').textContent = words + ' word' + (words===1?'':'s');
+  document.getElementById('charCount').textContent = chars + ' char' + (chars===1?'':'s');
 }
 
-function clearAll() {
-  if (!getLinks().length) return;
-  if (confirm('Delete all saved links? This cannot be undone.')) {
-    saveLinks([]);
-    document.getElementById('resultCard').classList.remove('show');
-    curCode=null; renderHistory(); toast('All links cleared');
-  }
-}
+async function handleNoteGen() {
+  if (!window.db || !window.setDoc || !window.doc) { toast('Connecting to database... please try again'); return; }
+  if (!quill) { toast('Editor is loading...'); return; }
+  const html = quill.root.innerHTML;
+  const text = quill.getText().trim();
+  if (!text) { toast('Please write something in your note first'); return; }
 
-// ─── ROUTE REDIRECT ─────────────────────
-function getRouteInfo() {
-  const url = new URL(window.location.href);
-  const encoded = url.searchParams.get('u');
-  const code = url.pathname.replace(/^\//,'').replace(/\/$/, '');
-  if (encoded) {
-    try {
-      return {
-        code: code || undefined,
-        originalUrl: decodeUrlValue(decodeURIComponent(encoded)),
-      };
-    } catch (err) {
-      console.warn('Invalid encoded URL:', err);
-      return null;
+  const ci = document.getElementById('noteCodeInput');
+  const ce = document.getElementById('noteCodeErr');
+  const btn = document.getElementById('noteGenBtn');
+  ce.classList.remove('show'); ci.classList.remove('err');
+  const raw = ci.value.trim();
+  if (raw && !isCode(raw)) { ce.classList.add('show'); ci.classList.add('err'); return; }
+
+  btn.classList.add('loading'); btn.disabled = true;
+
+  let code = raw;
+  if (!code) code = await makeCode('n');
+  else {
+    const taken = await existsInColl('notes', raw) || await existsInColl('links', raw) || await existsInColl('files', raw);
+    if (taken) {
+      ce.classList.add('show'); ci.classList.add('err');
+      btn.classList.remove('loading'); btn.disabled = false;
+      toast('That custom name is already taken'); return;
     }
   }
 
-  let routeCode = code;
-  if (!routeCode || routeCode==='index.html' || routeCode==='history-section' || routeCode==='about') {
-    routeCode = window.location.hash.replace('#','').trim();
+  const now = Date.now();
+  const expiresAt = customNoteExpiryTs || (now + selectedNoteDurationDays * ONE_DAY);
+  const words = text.split(/\s+/).filter(Boolean).length;
+  const collId = selectedNoteColl || null;
+
+  const noteMeta = { html, text, wordCount: words, createdAt: now, expiresAt, clicks: 0, collectionId: collId };
+  await setDoc(doc(db, 'notes', code), noteMeta);
+
+  const preview = text.substring(0, 80) + (text.length > 80 ? '...' : '');
+  const localEntry = { shortCode: code, preview, wordCount: words, createdAt: now, expiresAt, type: 'note', collectionId: collId };
+  const notes = getNotes(); notes.unshift(localEntry); saveNotes(notes);
+
+  curNoteCode = code;
+  curNoteText = text;
+  noteQrOn = false;
+  document.getElementById('noteQrWrap').classList.remove('show');
+  document.getElementById('noteQrBtn').classList.remove('on');
+  document.getElementById('noteDownloadQRBtn').style.display = 'none';
+
+  showNoteResult(code, preview, expiresAt);
+  filterHistory();
+
+  btn.classList.remove('loading'); btn.disabled = false;
+  document.getElementById('noteResultCard').scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+}
+
+function showNoteResult(code, preview, expiresAt) {
+  const card = document.getElementById('noteResultCard');
+  card.classList.remove('show'); void card.offsetHeight; card.classList.add('show');
+  document.getElementById('nCode').textContent = getCleanUrl(code);
+  document.getElementById('nPreview').textContent = preview;
+  document.getElementById('noteResultSub').textContent = 'Just now \u00B7 expires ' + formatDate(expiresAt);
+  const ei = expiryText(expiresAt);
+  document.getElementById('noteExpiryText').textContent = ei.text;
+  document.getElementById('noteExpiryWarn').classList.toggle('critical', ei.critical);
+}
+
+function copyNoteLink() { if (!curNoteCode) return; doCopy(getCleanUrl(curNoteCode)); }
+function openNoteRes() { if (curNoteCode) window.open(getCleanUrl(curNoteCode), '_blank', 'noopener,noreferrer'); }
+function downloadNoteCreatorTxt() {
+  if (!curNoteText) return;
+  const blob = new Blob([curNoteText], { type: 'text/plain' });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a'); a.href = url;
+  a.download = (curNoteCode || 'note') + '.txt';
+  document.body.appendChild(a); a.click(); document.body.removeChild(a);
+  URL.revokeObjectURL(url);
+  toast('Downloaded .txt');
+}
+
+// ═══════════════════════════════════════════════════════
+// 4. EMAIL SHARING SYSTEM
+// ═══════════════════════════════════════════════════════
+let pendingEmailShare = null;
+
+function openEmailShareModal(type) {
+  let link = '', title = '', expiresAt = null;
+  if (type === 'link') {
+    link = curCode ? getCleanUrl(curCode) : '';
+    title = document.getElementById('rOrig')?.textContent || 'Short Link';
+  } else if (type === 'file') {
+    link = curFileCode ? getCleanUrl(curFileCode) : '';
+    title = document.getElementById('fName')?.textContent || 'Shared File';
+  } else {
+    link = curNoteCode ? getCleanUrl(curNoteCode) : '';
+    title = document.getElementById('nPreview')?.textContent || 'Rich Note';
   }
-  if (!routeCode || routeCode==='history-section' || routeCode==='about') return null;
-  return { code: routeCode };
+
+  if (!link) { toast('Generate a link first'); return; }
+
+  pendingEmailShare = { type, link, title, expiresAt };
+  document.getElementById('emailItemTitle').textContent = title;
+  document.getElementById('emailItemLink').textContent = link;
+  document.getElementById('emailRecipient').value = '';
+  document.getElementById('emailMessage').value = '';
+  const status = document.getElementById('emailStatus');
+  status.className = 'modal-status';
+  status.textContent = '';
+  document.getElementById('emailModal').classList.add('show');
+}
+
+function closeEmailModal() {
+  document.getElementById('emailModal').classList.remove('show');
+  pendingEmailShare = null;
+}
+
+async function submitEmailShare() {
+  if (!pendingEmailShare) return;
+  const to = document.getElementById('emailRecipient').value.trim();
+  const message = document.getElementById('emailMessage').value.trim();
+  const status = document.getElementById('emailStatus');
+  const btn = document.getElementById('btnSendEmail');
+
+  if (!to || !to.includes('@')) {
+    status.className = 'modal-status show err';
+    status.textContent = 'Please enter a valid recipient email address.';
+    return;
+  }
+
+  btn.disabled = true;
+  status.className = 'modal-status show';
+  status.textContent = 'Sending email...';
+
+  try {
+    const res = await fetch('/api/share-email', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        to,
+        link: pendingEmailShare.link,
+        title: pendingEmailShare.title,
+        type: pendingEmailShare.type,
+        expiresAt: pendingEmailShare.expiresAt,
+        message
+      })
+    });
+
+    const data = await res.json();
+    if (data.ok) {
+      status.className = 'modal-status show ok';
+      status.textContent = 'Email successfully sent!';
+      toast('Email sent successfully');
+      setTimeout(closeEmailModal, 1500);
+    } else if (data.simulated) {
+      status.className = 'modal-status show ok';
+      status.textContent = data.message;
+      toast('Email simulated (server configured)');
+    } else {
+      status.className = 'modal-status show err';
+      status.textContent = data.error || 'Failed to send email.';
+    }
+  } catch (err) {
+    status.className = 'modal-status show err';
+    status.textContent = 'Could not deliver email: ' + err.message;
+  }
+  btn.disabled = false;
+}
+
+// ═══════════════════════════════════════════════════════
+// 5. QR CODE ENGINE
+// ═══════════════════════════════════════════════════════
+function toggleQR(type) {
+  let on, wrapId, btnId, dlBtnId, imgId, url;
+  if (type === 'link') {
+    linkQrOn = !linkQrOn; on = linkQrOn;
+    wrapId = 'qrWrap'; btnId = 'qrBtn'; dlBtnId = 'downloadQRBtn'; imgId = 'qrImg';
+    url = curCode ? getCleanUrl(curCode) : '';
+  } else if (type === 'file') {
+    fileQrOn = !fileQrOn; on = fileQrOn;
+    wrapId = 'fileQrWrap'; btnId = 'fileQrBtn'; dlBtnId = 'fileDownloadQRBtn'; imgId = 'fileQrImg';
+    url = curFileCode ? getCleanUrl(curFileCode) : '';
+  } else {
+    noteQrOn = !noteQrOn; on = noteQrOn;
+    wrapId = 'noteQrWrap'; btnId = 'noteQrBtn'; dlBtnId = 'noteDownloadQRBtn'; imgId = 'noteQrImg';
+    url = curNoteCode ? getCleanUrl(curNoteCode) : '';
+  }
+  const wrap = document.getElementById(wrapId);
+  const btn = document.getElementById(btnId);
+  const dlBtn = document.getElementById(dlBtnId);
+  wrap?.classList.toggle('show', on);
+  btn?.classList.toggle('on', on);
+  if (dlBtn) dlBtn.style.display = on ? 'inline-flex' : 'none';
+
+  if (on && url) {
+    const img = document.getElementById(imgId);
+    const enc = encodeURIComponent(url);
+    img.src = `https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=${enc}&color=0f172a&bgcolor=ffffff&qzone=2&format=png`;
+  }
+}
+
+async function downloadQR(imgId) {
+  const img = document.getElementById(imgId);
+  if (!img || !img.src) { toast('Open QR code first'); return; }
+  try {
+    const resp = await fetch(img.src);
+    const blob = await resp.blob();
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a'); a.href = url; a.download = 'snipp-qr.png';
+    document.body.appendChild(a); a.click(); document.body.removeChild(a);
+    URL.revokeObjectURL(url);
+    toast('QR saved to downloads');
+  } catch { toast('Could not download QR'); }
+}
+
+// ═══════════════════════════════════════════════════════
+// 6. WORKSPACE HISTORY FILTERING & SEARCH
+// ═══════════════════════════════════════════════════════
+function filterHistory() {
+  const query = (document.getElementById('histSearchInput')?.value || '').toLowerCase().trim();
+  const links = getLinks();
+  const files = getFiles();
+  const notes = getNotes();
+
+  const allItems = [
+    ...links.map(l => ({ ...l, type: 'link' })),
+    ...files.map(f => ({ ...f, type: 'file' })),
+    ...notes.map(n => ({ ...n, type: 'note' }))
+  ].sort((a,b) => (b.createdAt || 0) - (a.createdAt || 0));
+
+  document.getElementById('hTotalCount').textContent = allItems.length;
+
+  const cols = getCollections();
+  const colMap = Object.fromEntries(cols.map(c => [c.id, c.name]));
+
+  const filtered = allItems.filter(item => {
+    // Type filter
+    if (curTypeFilter !== 'all' && item.type !== curTypeFilter) return false;
+    // Collection filter
+    if (curActiveCollection === 'none' && item.collectionId) return false;
+    if (curActiveCollection !== 'all' && curActiveCollection !== 'none' && item.collectionId !== curActiveCollection) return false;
+    // Query search
+    if (query) {
+      const matchShort = (item.shortCode || '').toLowerCase().includes(query);
+      const matchOrig = (item.originalUrl || item.fileName || item.preview || '').toLowerCase().includes(query);
+      const collName = (colMap[item.collectionId] || '').toLowerCase();
+      const matchColl = collName.includes(query);
+      if (!matchShort && !matchOrig && !matchColl) return false;
+    }
+    return true;
+  });
+
+  const listEl = document.getElementById('unifiedHistoryList');
+  if (!filtered.length) {
+    listEl.innerHTML = `<div class="h-empty">No items match the current filter or search query.</div>`;
+    return;
+  }
+
+  listEl.innerHTML = filtered.map(item => {
+    const expired = isExpired(item.expiresAt);
+    const expTag = item.expiresAt ? (
+      expired ? `<span class="h-expiry-tag expired">Expired</span>` :
+      `<span class="h-expiry-tag warn">${daysLeft(item.expiresAt)}d left</span>`
+    ) : '';
+    const collName = colMap[item.collectionId] ? `<span class="h-coll-tag">${esc(colMap[item.collectionId])}</span>` : '';
+    const displayTitle = item.type === 'link' ? item.originalUrl : (item.type === 'file' ? item.fileName : item.preview);
+
+    return `
+      <div class="h-item">
+        <div class="h-type-dot ${item.type}"></div>
+        <div class="h-info" onclick="doCopy('${getCleanUrl(item.shortCode)}')">
+          <span class="h-short ${item.type}">${esc(getCleanUrl(item.shortCode))}</span>
+          <span class="h-orig">${esc(displayTitle || '')}</span>
+          <div class="h-meta">
+            <span>${ago(item.createdAt)}</span>
+            <span>&middot;</span>
+            <span>${item.clicks || 0} clicks</span>
+            ${collName}
+            ${expTag}
+          </div>
+        </div>
+        <div class="h-acts">
+          <button class="bicon" title="Copy link" onclick="doCopy('${getCleanUrl(item.shortCode)}')">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
+          </button>
+          <button class="bicon" title="Open" onclick="window.open('${getCleanUrl(item.shortCode)}','_blank','noopener,noreferrer')">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+          </button>
+          <button class="bicon del" title="Remove" onclick="deleteHistoryItem('${item.type}','${esc(item.shortCode)}')">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/></svg>
+          </button>
+        </div>
+      </div>
+    `;
+  }).join('');
+}
+
+function deleteHistoryItem(type, code) {
+  if (type === 'link') saveLinks(getLinks().filter(l => l.shortCode !== code));
+  else if (type === 'file') saveFiles(getFiles().filter(f => f.shortCode !== code));
+  else saveNotes(getNotes().filter(n => n.shortCode !== code));
+  filterHistory();
+  toast('Item removed from history');
+}
+
+function clearCurrentHistory() {
+  if (!confirm('Clear local history? (Items remain on database until expiration)')) return;
+  saveLinks([]); saveFiles([]); saveNotes([]);
+  filterHistory();
+  toast('History cleared');
+}
+
+// ═══════════════════════════════════════════════════════
+// 7. ROUTE RESOLUTION & BRANDED EXPERIENCES
+// ═══════════════════════════════════════════════════════
+function getRoutePath() {
+  const p = window.location.pathname.replace(/^\//, '').replace(/\/$/, '');
+  if (!p || p === 'index.html' || p === '404.html') return null;
+  return decodeURIComponent(p);
 }
 
 function showError(message) {
@@ -827,55 +3188,348 @@ function showError(message) {
   const desc = document.getElementById('errorDesc');
   if (desc) desc.textContent = message;
   if (page) page.classList.add('show');
+  hideRouteLoader();
 }
 
 function closeError() {
-  const page = document.getElementById('errorPage');
-  if (page) page.classList.remove('show');
-  window.location.href = '/';
+  document.getElementById('errorPage')?.classList.remove('show');
+  document.documentElement.classList.remove('route-active');
+  window.history.replaceState(null, '', '/');
+}
+function goHome() { window.location.href = '/'; }
+function hideRouteLoader() {
+  document.getElementById('routeLoader')?.classList.remove('show');
 }
 
-function checkRoute() {
-  const route = getRouteInfo();
-  if (!route) return;
+async function checkRoute() {
+  const code = getRoutePath();
+  if (!code) return;
 
-  const links = getLinks();
-  let item = links.find(l=>l.shortCode===route.code);
-  const originalUrl = route.originalUrl || (item && item.originalUrl);
-  if (!originalUrl) {
-    showError('This short link is invalid or not available. Please create a new one or try again.');
-    return;
+  let waited = 0;
+  while ((!window.db || !window.getDoc || !window.doc) && waited < 5000) {
+    await delay(150); waited += 150;
   }
+  if (!window.db) { showError('Could not reach database. Please refresh and try again.'); return; }
 
-  if (item) {
-    item.clicks = (item.clicks||0)+1;
-    saveLinks(links.map(l=>l.shortCode===route.code?item:l));
-  } else if (route.originalUrl) {
-    item = { shortCode: route.code, originalUrl, createdAt:Date.now(), clicks:1 };
-    links.unshift(item);
-    saveLinks(links);
+  if (code.startsWith('f-') || code.startsWith('f/')) {
+    await handleFileRoute(code);
+  } else if (code.startsWith('n-') || code.startsWith('n/')) {
+    await handleNoteRoute(code);
+  } else {
+    // Check Link -> File -> Note
+    try {
+      const linkSnap = await getDoc(doc(db, 'links', code));
+      if (linkSnap.exists()) {
+        const data = linkSnap.data();
+        const clicks = (data.clicks || 0) + 1;
+        await setDoc(doc(db, 'links', code), { clicks }, { merge: true });
+        document.getElementById('rdDest').textContent = data.originalUrl;
+        document.getElementById('rdPage').classList.add('show');
+        hideRouteLoader();
+        setTimeout(() => { window.location.href = data.originalUrl; }, 1000);
+        return;
+      }
+    } catch (e) {}
+
+    try {
+      const fileSnap = await getDoc(doc(db, 'files', code));
+      if (fileSnap.exists()) { await handleFileRoute(code, fileSnap.data()); return; }
+    } catch (e) {}
+
+    try {
+      const noteSnap = await getDoc(doc(db, 'notes', code));
+      if (noteSnap.exists()) { await handleNoteRoute(code, noteSnap.data()); return; }
+    } catch (e) {}
+
+    showError('Link not found or has expired. Please verify the URL.');
   }
-
-  if (window.location.pathname.replace(/\/$/, '') !== `/${route.code}`) {
-    window.history.replaceState(null, '', `/${route.code}`);
-  }
-
-  document.getElementById('rdDest').textContent = originalUrl;
-  document.getElementById('rdPage').classList.add('show');
-  rdTimer=setTimeout(()=>{
-    document.getElementById('rdPage').classList.remove('show');
-    window.location.href=originalUrl;
-  },1200);
 }
 
-// ─── INIT ──────────────────────────────
-document.addEventListener('DOMContentLoaded',()=>{
-  checkRoute();
-  renderHistory();
-  ['urlInput','codeInput'].forEach(id=>{
-    document.getElementById(id).addEventListener('keydown',e=>{ if(e.key==='Enter') handleGen(); });
-  });
-});
+async function handleFileRoute(code, data) {
+  try {
+    if (!data) {
+      const snap = await getDoc(doc(db, 'files', code));
+      if (!snap.exists()) { showError('File link not found or has expired.'); return; }
+      data = snap.data();
+    }
+    try { await setDoc(doc(db, 'files', code), { clicks: (data.clicks || 0) + 1 }, { merge: true }); } catch (_) {}
+
+    if (isExpired(data.expiresAt)) {
+      showError(`This file expired on ${formatDate(data.expiresAt)}. Content is no longer available.`);
+      return;
+    }
+    showFileDlPage(code, data);
+  } catch (err) {
+    console.error(err);
+    showError('Could not load file information.');
+  }
+}
+
+async function handleNoteRoute(code, data) {
+  try {
+    if (!data) {
+      const snap = await getDoc(doc(db, 'notes', code));
+      if (!snap.exists()) { showError('Note not found or has expired.'); return; }
+      data = snap.data();
+    }
+    try { await setDoc(doc(db, 'notes', code), { clicks: (data.clicks || 0) + 1 }, { merge: true }); } catch (_) {}
+
+    if (isExpired(data.expiresAt)) {
+      showError(`This note expired on ${formatDate(data.expiresAt)}. Content is no longer available.`);
+      return;
+    }
+    showNoteViewPage(code, data);
+  } catch (err) {
+    console.error(err);
+    showError('Could not load note content.');
+  }
+}
+
+function showFileDlPage(code, data) {
+  const ext = (data.fileName || '').split('.').pop().toLowerCase();
+  const iconDiv = document.getElementById('dlFileIcon');
+  iconDiv.innerHTML = getFileIconSvg(data.fileType || '', ext);
+
+  document.getElementById('dlFileName').textContent = data.fileName || 'Download File';
+  document.getElementById('dlFileMeta').textContent = formatBytes(data.fileSize) + ' \u00B7 ' + (data.fileType || 'file') + ' \u00B7 Uploaded ' + formatDate(data.createdAt);
+  document.getElementById('dlClicks').textContent = 'Downloaded ' + ((data.clicks || 0) + 1) + ' times';
+
+  const ei = expiryText(data.expiresAt);
+  const expiryEl = document.getElementById('dlExpiry');
+  document.getElementById('dlExpiryText').textContent = ei.text;
+  expiryEl.classList.toggle('urgent', ei.critical);
+
+  // Setup download button
+  const dlBtn = document.getElementById('dlBtn');
+  if (data.host === 'gofile') {
+    // Routes through our backend resolver
+    dlBtn.href = `/api/gofile-download?id=${encodeURIComponent(data.gofileId||'')}&page=${encodeURIComponent(data.downloadPage||'')}&name=${encodeURIComponent(data.fileName||'download')}`;
+    dlBtn.target = '_blank';
+  } else if (data.directLink) {
+    dlBtn.href = `/download-file?url=${encodeURIComponent(data.directLink)}&name=${encodeURIComponent(data.fileName||'download')}`;
+    dlBtn.target = '_self';
+  } else {
+    dlBtn.href = data.downloadPage || '#';
+    dlBtn.target = '_blank';
+  }
+
+  // Previews
+  const previewPanel = document.getElementById('dlPreviewPanel');
+  const previewBody = document.getElementById('dlPreviewBody');
+  previewPanel.classList.remove('show');
+  previewBody.innerHTML = '';
+
+  if (['png','jpg','jpeg','gif','webp','svg'].includes(ext) && data.directLink) {
+    previewBody.innerHTML = `<img src="${esc(data.directLink)}" alt="${esc(data.fileName)}" />`;
+    previewPanel.classList.add('show');
+  }
+
+  document.getElementById('fileDlPage').classList.add('show');
+  hideRouteLoader();
+}
+
+function togglePreviewCollapse() {
+  const pb = document.getElementById('dlPreviewBody');
+  const btn = document.getElementById('btnTogglePreview');
+  if (pb.style.display === 'none') {
+    pb.style.display = 'block';
+    btn.textContent = 'Collapse';
+  } else {
+    pb.style.display = 'none';
+    btn.textContent = 'Expand';
+  }
+}
+
+function showNoteViewPage(code, data) {
+  const metaEl = document.getElementById('nvMeta');
+  const d = daysLeft(data.expiresAt);
+  metaEl.innerHTML = `
+    <span>Published ${formatDate(data.createdAt)}</span>
+    <span>&middot;</span>
+    <span>${data.wordCount || 0} words</span>
+    <span>&middot;</span>
+    <span class="nv-expiry-tag ${d<=3?'urgent':''}">Expires ${formatDate(data.expiresAt)} (${d}d left)</span>
+  `;
+  document.getElementById('nvContent').innerHTML = data.html || '<p>Empty note.</p>';
+  window._nvPlainText = data.text || '';
+  document.getElementById('noteViewPage').classList.add('show');
+  hideRouteLoader();
+}
+
+function copyNoteText() {
+  const text = window._nvPlainText || document.getElementById('nvContent')?.innerText || '';
+  if (text) { doCopy(text); }
+}
+
+function downloadNoteAsTxt() {
+  const text = window._nvPlainText || document.getElementById('nvContent')?.innerText || '';
+  if (!text) return;
+  const blob = new Blob([text], { type: 'text/plain' });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a'); a.href = url; a.download = 'snipp-note.txt';
+  document.body.appendChild(a); a.click(); document.body.removeChild(a);
+  URL.revokeObjectURL(url);
+  toast('Downloaded .txt');
+}
+
+// ═══════════════════════════════════════════════════════
+// COPY & TOAST
+// ═══════════════════════════════════════════════════════
+function doCopy(text) {
+  try {
+    if (navigator.clipboard?.writeText) {
+      navigator.clipboard.writeText(text).catch(() => fbCopy(text));
+    } else fbCopy(text);
+  } catch { fbCopy(text); }
+  toast('Copied to clipboard');
+}
+function fbCopy(t) {
+  const el = document.createElement('textarea'); el.value = t;
+  el.style.cssText = 'position:fixed;opacity:0'; document.body.appendChild(el);
+  el.focus(); el.select(); document.execCommand('copy'); document.body.removeChild(el);
+}
+let toastT;
+function toast(msg) {
+  const t = document.getElementById('toast');
+  t.textContent = msg; t.classList.add('show');
+  clearTimeout(toastT); toastT = setTimeout(() => t.classList.remove('show'), 2200);
+}
 </script>
+</body>
+</html>
+
+
+<!-- Additional UI Script Enhancements -->
+<script>
+// Enhance switchTab to drive 3D Card Stack & Tab Loader Bar
+(function() {
+  const origSwitchTab = window.switchTab;
+  window.switchTab = function(tab) {
+    if (typeof origSwitchTab === 'function') {
+      origSwitchTab(tab);
+    }
+    // Update 3D card deck
+    const stack = document.getElementById('hero3dStack');
+    if (stack) {
+      stack.setAttribute('data-active', tab);
+      ['link','file','note'].forEach(t => {
+        const c = document.getElementById('card3d-' + t);
+        if (c) c.classList.toggle('active', t === tab);
+      });
+    }
+    // Trigger loader shimmer
+    const bar = document.getElementById('tabLoaderBar');
+    if (bar) {
+      bar.classList.remove('loading');
+      void bar.offsetWidth; // trigger reflow
+      bar.classList.add('loading');
+      setTimeout(() => bar.classList.remove('loading'), 450);
+    }
+  };
+
+  // Enhance setTheme to update Navbar Theme Icon
+  const origSetTheme = window.setTheme;
+  window.setTheme = function(theme, save = true) {
+    if (typeof origSetTheme === 'function') {
+      origSetTheme(theme, save);
+    }
+    const iconSpan = document.getElementById('navThemeIcon');
+    if (iconSpan) {
+      const isDark = document.documentElement.getAttribute('data-theme') === 'dark';
+      if (isDark) {
+        iconSpan.innerHTML = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>';
+      } else {
+        iconSpan.innerHTML = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg>';
+      }
+    }
+  };
+
+  // Cycle Theme function
+  window.cycleTheme = function() {
+    const cur = localStorage.getItem('snipp_theme_v1') || 'system';
+    const next = cur === 'light' ? 'dark' : (cur === 'dark' ? 'system' : 'light');
+    setTheme(next);
+    toast('Theme: ' + next.charAt(0).toUpperCase() + next.slice(1));
+  };
+
+  // Quick navigation helpers
+  window.focusSearch = function() {
+    const inp = document.getElementById('histSearchInput');
+    if (inp) {
+      inp.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      inp.focus();
+    }
+  };
+
+  window.focusCollections = function() {
+    const bar = document.getElementById('collectionsBar');
+    if (bar) {
+      bar.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    }
+  };
+
+  window.focusAbout = function() {
+    const ab = document.getElementById('about');
+    if (ab) ab.scrollIntoView({ behavior: 'smooth' });
+  };
+
+  // Enhance showFileResult to trigger side-by-side grid
+  const origShowFileResult = window.showFileResult;
+  window.showFileResult = function(code, name, expiresAt) {
+    if (typeof origShowFileResult === 'function') {
+      origShowFileResult(code, name, expiresAt);
+    }
+    const grid = document.getElementById('fileGridLayout');
+    if (grid) grid.classList.add('has-result');
+  };
+
+  // Enhance clearFile to remove side-by-side grid
+  const origClearFile = window.clearFile;
+  window.clearFile = function() {
+    if (typeof origClearFile === 'function') {
+      origClearFile();
+    }
+    const grid = document.getElementById('fileGridLayout');
+    if (grid) grid.classList.remove('has-result');
+  };
+
+  // Lightning Cutting Download Button Effect
+  window.handleLightningDownload = function(e) {
+    const btn = document.getElementById('dlBtn');
+    if (!btn || btn.classList.contains('slicing')) return;
+    
+    // Prevent immediate navigation
+    e.preventDefault();
+    const targetUrl = btn.getAttribute('href');
+
+    btn.classList.add('slicing');
+    
+    // Optional Web Audio synthesized laser/electric cut sound
+    try {
+      const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+      const osc = audioCtx.createOscillator();
+      const gain = audioCtx.createGain();
+      osc.type = 'sawtooth';
+      osc.frequency.setValueAtTime(600, audioCtx.currentTime);
+      osc.frequency.exponentialRampToValueAtTime(120, audioCtx.currentTime + 0.35);
+      gain.gain.setValueAtTime(0.08, audioCtx.currentTime);
+      gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.35);
+      osc.connect(gain);
+      gain.connect(audioCtx.destination);
+      osc.start();
+      osc.stop(audioCtx.currentTime + 0.35);
+    } catch (err) {}
+
+    // After 1.2s, snap back together and start download
+    setTimeout(() => {
+      btn.classList.remove('slicing');
+      if (targetUrl && targetUrl !== '#') {
+        window.location.href = targetUrl;
+      }
+    }, 1200);
+  };
+})();
+</script>
+
 </body>
 </html>

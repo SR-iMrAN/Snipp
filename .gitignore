@@ -1,0 +1,15 @@
+# Firebase local config
+firebase-config.local.js
+
+# Environment files
+.env
+firebase-env.js
+
+# Editor/OS files
+.DS_Store
+Thumbs.db
+node_modules/
+
+# Local test scratch & backups
+scratch/
+*.backup.html

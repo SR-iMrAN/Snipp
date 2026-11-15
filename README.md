@@ -4,22 +4,22 @@ Lightweight, privacy-first URL shortener designed to run as a static single-page
 
 ## Summary
 - Shorten long URLs into compact, friendly links.
-- History is stored locally in the browser (`localStorage`).
-- Links generated for sharing include the destination encoded in the URL so they work across devices (no backend required).
-- QR code generation and download supported for sharing/scanning.
+- Links are stored in Firebase Firestore so short URLs work globally across devices.
+- Local history may still be shown in the browser, but the redirect target comes from Firestore.
+- QR code generation and download are supported for sharing/scanning.
 - Clean path short URLs are supported when deployed (Netlify `/_redirects` or `netlify.toml` used).
 
 ## Features
 - Generate a short code (custom or auto-generated suffix).
-- Copy the shareable short link (the real redirect target is embedded in the link via `?u=` encoding).
+- Copy the shareable short link and open it directly; the redirect destination is stored in Firebase.
 - Open the destination via an in-app redirect overlay.
 - Show saved history (local only) with click counts.
 - Generate QR code for each short link and download it as PNG.
 - SPA-friendly routing with 404 fallback and Netlify redirect support.
 
 ## Limitations
-- History and click counts are stored in the browser's `localStorage` on the device where links are created.
-- To make short links persistent across browsers/devices (history synced), you'll need a server/backend or a cloud storage service.
+- Link destinations are stored in Firebase Firestore, so the service requires a valid Firebase project and config.
+- Local history is still browser-specific unless you extend the app to sync history from Firestore.
 
 ## Local development
 1. Install a static server (e.g. `serve`) and run with SPA fallback:
@@ -48,7 +48,20 @@ Note: Some simple dev servers that do not support SPA fallbacks will return `Can
 1. Paste a long URL into the input.
 2. Optionally enter a custom code (letters, numbers, underscore, dash).
 3. Click **Generate Short Link**.
-4. Copy the link or open it. Use the QR button to view and download the QR image.
+4. Copy the short link or open it. Use the QR button to view and download the QR image.
+
+## Firebase setup
+- Copy `firebase-config.example.js` to `firebase-config.local.js` and replace the placeholder values with your Firebase Web App config.
+- Or create `firebase-env.js` from `firebase-env.example.js` and set `EXPO_PUBLIC_FIREBASE_*` globals before `firebase-setup.js` loads.
+- `firebase-config.local.js` and `firebase-env.js` are ignored by `.gitignore`, so your private Firebase config stays local.
+- If you use `firebase-env.js`, add this before the module script loader in `index.html`:
+
+```html
+<script src="./firebase-env.js"></script>
+<script type="module" src="./firebase-setup.js"></script>
+```
+
+- Deploy or run locally with a static server.
 
 ## Error handling
 - If an invalid or unknown code is visited, the app shows an in-page error overlay with a link back to Home.
