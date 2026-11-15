@@ -602,42 +602,88 @@
   }
 
   /* ── TAB BAR ── */
+  /* ── APPLE GLASS STYLE TAB BAR CAPSULE ── */
   .tab-bar {
     display: flex;
+    align-items: center;
     gap: 8px;
-    background: var(--tab-bar-bg);
-    padding: 5px;
-    border-radius: 18px;
+    background: rgba(222, 226, 234, 0.48);
+    backdrop-filter: blur(28px) saturate(190%);
+    -webkit-backdrop-filter: blur(28px) saturate(190%);
+    padding: 6px;
+    border-radius: var(--radius-full);
     margin-bottom: 24px;
+    border: 1.5px solid rgba(255, 255, 255, 0.85);
+    box-shadow: inset 0 1.5px 2px rgba(0, 0, 0, 0.03), 0 6px 20px rgba(0, 0, 0, 0.04);
+    position: relative;
   }
+  [data-theme="dark"] .tab-bar {
+    background: rgba(18, 22, 30, 0.55);
+    border-color: rgba(255, 255, 255, 0.09);
+    box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.35), 0 6px 20px rgba(0, 0, 0, 0.25);
+  }
+
+  /* 3 Individual Floating Glass Bubbles */
   .tab-btn {
     flex: 1;
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    gap: 8px;
-    padding: 12px 18px;
-    border-radius: 14px;
-    border: none;
-    background: transparent;
+    gap: 9px;
+    height: 48px;
+    padding: 0 20px;
+    border-radius: var(--radius-full);
+    border: 1px solid rgba(255, 255, 255, 0.85);
+    background: rgba(255, 255, 255, 0.65);
     color: var(--text-dim);
-    font-size: 14px;
+    font-size: 14.5px;
     font-weight: 600;
+    font-family: var(--font-sans);
     cursor: pointer;
-    transition: all 0.22s cubic-bezier(0.16, 1, 0.3, 1);
+    transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+    backdrop-filter: blur(14px) saturate(180%);
+    -webkit-backdrop-filter: blur(14px) saturate(180%);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.03), inset 0 1.5px 1.5px rgba(255, 255, 255, 0.95);
+    user-select: none;
+  }
+  [data-theme="dark"] .tab-btn {
+    background: rgba(255, 255, 255, 0.06);
+    border-color: rgba(255, 255, 255, 0.08);
+    color: #94a3b8;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.25), inset 0 1px 1px rgba(255, 255, 255, 0.1);
   }
   .tab-btn svg {
-    width: 17px; height: 17px;
-    stroke-width: 2.2;
+    width: 18px !important;
+    height: 18px !important;
+    stroke-width: 2.2 !important;
+    flex-shrink: 0;
     transition: transform 0.2s ease;
   }
-  .tab-btn:hover {
+  .tab-btn:hover:not(.active) {
+    background: rgba(255, 255, 255, 0.92);
+    border-color: rgba(255, 255, 255, 1);
     color: var(--text);
+    transform: translateY(-1px);
+    box-shadow: 0 6px 16px -2px rgba(0, 0, 0, 0.06), inset 0 1.5px 1.5px rgba(255, 255, 255, 1);
   }
-  .tab-btn.active {
-    background: var(--accent-gradient);
+  [data-theme="dark"] .tab-btn:hover:not(.active) {
+    background: rgba(255, 255, 255, 0.12);
+    border-color: rgba(255, 255, 255, 0.15);
     color: #ffffff;
-    box-shadow: 0 4px 14px var(--accent-glow);
+    box-shadow: 0 6px 16px -2px rgba(0, 0, 0, 0.4);
+  }
+
+  /* Active One is Lustrous Greenish Glass Bubble */
+  .tab-btn.active {
+    background: linear-gradient(180deg, #187747 0%, #115e37 100%);
+    color: #ffffff;
+    border: 1px solid rgba(255, 255, 255, 0.42);
+    box-shadow: 0 6px 18px rgba(18, 107, 63, 0.42), inset 0 1.5px 2px rgba(255, 255, 255, 0.45);
+    transform: translateY(-0.5px);
+  }
+  .tab-btn.active:hover {
+    background: linear-gradient(180deg, #1b854f 0%, #136a3e 100%);
+    box-shadow: 0 8px 24px rgba(18, 107, 63, 0.5), inset 0 1.5px 2px rgba(255, 255, 255, 0.55);
   }
   .tab-btn.active svg {
     color: #ffffff;
@@ -786,27 +832,164 @@
   .btn-gen-pill.loading .btext, .btn-gen-pill.loading svg { display: none; }
 
   /* Compact Collection selector for Link Tab */
+  /* ── STYLED CUSTOM GLASS COLLECTION DROPDOWN ── */
   .link-collection-row {
     display: flex;
     align-items: center;
     justify-content: flex-end;
-    gap: 8px;
-    margin-top: 10px;
+    gap: 10px;
+    margin-top: 14px;
+    position: relative;
+    z-index: 15;
   }
-  .link-collection-row span {
-    font-size: 12px;
+  .link-collection-row .coll-label {
+    font-size: 12.5px;
+    font-weight: 500;
     color: var(--text-muted);
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    user-select: none;
   }
+  .custom-glass-select-wrap {
+    position: relative;
+    display: inline-block;
+  }
+  .custom-glass-select-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 10px;
+    height: 36px;
+    padding: 0 12px 0 14px;
+    border-radius: 12px;
+    background: rgba(255, 255, 255, 0.72);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    border: 1px solid rgba(255, 255, 255, 0.9);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.03), inset 0 1px 1px rgba(255, 255, 255, 0.9);
+    color: var(--text);
+    font-size: 12.5px;
+    font-weight: 600;
+    font-family: var(--font-sans);
+    cursor: pointer;
+    transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+    min-width: 175px;
+  }
+  [data-theme="dark"] .custom-glass-select-btn {
+    background: rgba(255, 255, 255, 0.07);
+    border-color: rgba(255, 255, 255, 0.1);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.25), inset 0 1px 1px rgba(255, 255, 255, 0.1);
+    color: #f1f5f9;
+  }
+  .custom-glass-select-btn:hover {
+    background: rgba(255, 255, 255, 0.95);
+    border-color: var(--border-focus);
+    box-shadow: 0 4px 14px rgba(0, 0, 0, 0.06);
+    transform: translateY(-1px);
+  }
+  [data-theme="dark"] .custom-glass-select-btn:hover {
+    background: rgba(255, 255, 255, 0.12);
+    border-color: rgba(255, 255, 255, 0.2);
+  }
+  .custom-glass-select-arrow {
+    color: var(--text-muted);
+    transition: transform 0.22s cubic-bezier(0.16, 1, 0.3, 1);
+    flex-shrink: 0;
+  }
+  .custom-glass-select-btn[aria-expanded="true"] .custom-glass-select-arrow {
+    transform: rotate(180deg);
+  }
+
+  /* Floating Apple Glass Dropdown Menu */
+  .custom-glass-menu {
+    position: absolute;
+    top: calc(100% + 6px);
+    right: 0;
+    min-width: 220px;
+    max-height: 250px;
+    overflow-y: auto;
+    background: rgba(255, 255, 255, 0.92);
+    backdrop-filter: blur(28px) saturate(190%);
+    -webkit-backdrop-filter: blur(28px) saturate(190%);
+    border: 1px solid rgba(255, 255, 255, 0.95);
+    border-radius: 16px;
+    box-shadow: 0 16px 36px -4px rgba(0, 0, 0, 0.12), 0 4px 12px rgba(0, 0, 0, 0.04), inset 0 1px 1.5px rgba(255, 255, 255, 1);
+    padding: 6px;
+    z-index: 100;
+    animation: glassMenuPop 0.18s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+  [data-theme="dark"] .custom-glass-menu {
+    background: rgba(22, 27, 36, 0.94);
+    border-color: rgba(255, 255, 255, 0.12);
+    box-shadow: 0 16px 36px -4px rgba(0, 0, 0, 0.5), inset 0 1px 1px rgba(255, 255, 255, 0.1);
+  }
+  @keyframes glassMenuPop {
+    0% { opacity: 0; transform: translateY(-6px) scale(0.97); }
+    100% { opacity: 1; transform: translateY(0) scale(1); }
+  }
+
+  .custom-glass-menu-item {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 8px;
+    padding: 8px 12px;
+    border-radius: 10px;
+    font-size: 12.5px;
+    font-weight: 500;
+    color: var(--text);
+    cursor: pointer;
+    transition: all 0.15s ease;
+    user-select: none;
+  }
+  .custom-glass-menu-item:hover {
+    background: rgba(23, 112, 67, 0.1);
+    color: var(--accent);
+  }
+  [data-theme="dark"] .custom-glass-menu-item:hover {
+    background: rgba(34, 197, 94, 0.15);
+    color: #4ade80;
+  }
+  .custom-glass-menu-item.selected {
+    background: rgba(23, 112, 67, 0.14);
+    color: var(--accent);
+    font-weight: 600;
+  }
+  [data-theme="dark"] .custom-glass-menu-item.selected {
+    background: rgba(34, 197, 94, 0.2);
+    color: #4ade80;
+  }
+  .custom-glass-menu-item .check-icon {
+    width: 14px; height: 14px;
+    color: var(--accent);
+    flex-shrink: 0;
+  }
+  .visually-hidden-select {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border: 0;
+  }
+
+  /* Fallback styled selects */
   .collection-select-sm {
-    height: 32px;
-    padding: 0 10px;
-    border-radius: 8px;
-    background: var(--input-bg);
+    height: 36px;
+    padding: 0 32px 0 12px;
+    border-radius: 10px;
+    background: var(--surface);
     border: 1px solid var(--border-subtle);
-    color: var(--text-dim);
+    color: var(--text);
     font-size: 12px;
     outline: none;
     cursor: pointer;
+    -webkit-appearance: none;
+    appearance: none;
   }
 
   /* Error messages */
@@ -1864,6 +2047,50 @@
     vertical-align: middle;
   }
 
+
+  /* ── PERMANENT LINK EXPIRY NOTICE ── */
+  .link-expiry-notice {
+    display: flex;
+    align-items: center;
+    gap: 9px;
+    padding: 10px 14px;
+    border-radius: 12px;
+    background: rgba(23, 112, 67, 0.08);
+    border: 1px solid rgba(23, 112, 67, 0.22);
+    color: var(--accent);
+    font-size: 12px;
+    font-family: var(--font-sans);
+    margin-bottom: 14px;
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+  }
+  [data-theme="dark"] .link-expiry-notice {
+    background: rgba(23, 112, 67, 0.16);
+    border-color: rgba(34, 197, 94, 0.28);
+    color: #4ade80;
+  }
+  .link-expiry-notice svg {
+    flex-shrink: 0;
+  }
+  .result-retention-pill {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    font-size: 11px;
+    font-weight: 600;
+    color: var(--accent);
+    background: rgba(23, 112, 67, 0.08);
+    border: 1px solid rgba(23, 112, 67, 0.2);
+    padding: 3px 9px;
+    border-radius: var(--radius-full);
+    margin-top: 4px;
+  }
+  [data-theme="dark"] .result-retention-pill {
+    background: rgba(34, 197, 94, 0.15);
+    border-color: rgba(34, 197, 94, 0.28);
+    color: #4ade80;
+  }
+
 </style>
 </head>
 <body>
@@ -2001,6 +2228,12 @@
         <!-- ══ TAB 1: LINK ══ -->
         <div class="tab-section active" id="section-link">
           
+          <!-- Permanent Link Retention Notice Badge -->
+          <div class="link-expiry-notice">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 14 14"/></svg>
+            <span><strong>Permanent Link:</strong> Shortened links never expire &mdash; they stay active permanently without time limits.</span>
+          </div>
+
           <!-- Long URL Input (Mockup with link icon) -->
           <div class="input-with-icon-wrap">
             <svg class="input-icon-left" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>
@@ -2035,10 +2268,20 @@
 
           <!-- Compact Collection Picker Row -->
           <div class="link-collection-row">
-            <span>Collection:</span>
-            <select id="linkCollectionSelect" class="collection-select-sm" onchange="handleCollectionSelect('link', this.value)">
-              <option value="">(None - Unorganized)</option>
-            </select>
+            <span class="coll-label">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/></svg>
+              Collection:
+            </span>
+            <div class="custom-glass-select-wrap" id="linkCollCustomWrap">
+              <button type="button" class="custom-glass-select-btn" id="linkCollTriggerBtn" onclick="toggleCustomCollMenu('link')" aria-haspopup="listbox" aria-expanded="false">
+                <span class="custom-glass-select-val" id="linkCollLabelText">(None - Unorganized)</span>
+                <svg class="custom-glass-select-arrow" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
+              </button>
+              <div class="custom-glass-menu" id="linkCollMenu" role="listbox" style="display: none;"></div>
+              <select id="linkCollectionSelect" class="collection-select-sm visually-hidden-select" onchange="handleCollectionSelect('link', this.value)">
+                <option value="">(None - Unorganized)</option>
+              </select>
+            </div>
           </div>
 
           <div class="upload-prog-wrap" id="progWrap"><div class="upload-prog-bar" id="progBar"></div></div>
@@ -2053,7 +2296,7 @@
                 <div class="result-info">
                   <div class="result-short-url" id="rCode"></div>
                   <div class="result-dest-url" id="rOrig"></div>
-                  <div class="result-sub" id="resultSub">Active &middot; 0 clicks</div>
+                  <div class="result-sub" id="resultSub">Permanent Link &middot; Never expires &middot; 0 clicks</div>
                 </div>
               </div>
 
@@ -2827,7 +3070,79 @@ function renderCollectionDropdowns() {
       cols.map(c => `<option value="${esc(c.id)}">${esc(c.name)}</option>`).join('');
     el.value = curVal;
   });
+  renderCustomCollDropdown('link', 'linkCollectionSelect', 'linkCollMenu', 'linkCollLabelText');
 }
+
+function renderCustomCollDropdown(type, selectId, menuId, labelId) {
+  const select = document.getElementById(selectId);
+  const menu = document.getElementById(menuId);
+  const label = document.getElementById(labelId);
+  if (!menu) return;
+
+  const cols = getCollections();
+  const curVal = select ? select.value : '';
+  
+  let currentLabel = '(None - Unorganized)';
+  const matched = cols.find(c => c.id === curVal);
+  if (matched) currentLabel = matched.name;
+  if (label) label.textContent = currentLabel;
+
+  const allItems = [{ id: '', name: '(None - Unorganized)' }, ...cols];
+  menu.innerHTML = allItems.map(item => {
+    const isSel = item.id === curVal;
+    return `
+      <div class="custom-glass-menu-item ${isSel ? 'selected' : ''}" onclick="selectCustomCollItem('${type}', '${esc(item.id)}', '${esc(item.name)}')">
+        <span>${esc(item.name)}</span>
+        ${isSel ? '<svg class="check-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>' : ''}
+      </div>
+    `;
+  }).join('');
+}
+
+function selectCustomCollItem(type, id, name) {
+  if (type === 'link') {
+    const select = document.getElementById('linkCollectionSelect');
+    if (select) {
+      select.value = id;
+    }
+    const label = document.getElementById('linkCollLabelText');
+    if (label) label.textContent = name;
+    handleCollectionSelect('link', id);
+    closeCustomCollMenu('link');
+    renderCustomCollDropdown('link', 'linkCollectionSelect', 'linkCollMenu', 'linkCollLabelText');
+  }
+}
+
+function toggleCustomCollMenu(type) {
+  const menu = document.getElementById(type + 'CollMenu');
+  const btn = document.getElementById(type + 'CollTriggerBtn');
+  if (!menu) return;
+  const isClosed = menu.style.display === 'none' || !menu.style.display;
+  document.querySelectorAll('.custom-glass-menu').forEach(m => m.style.display = 'none');
+  document.querySelectorAll('.custom-glass-select-btn').forEach(b => b.setAttribute('aria-expanded', 'false'));
+  if (isClosed) {
+    menu.style.display = 'block';
+    if (btn) btn.setAttribute('aria-expanded', 'true');
+  } else {
+    menu.style.display = 'none';
+    if (btn) btn.setAttribute('aria-expanded', 'false');
+  }
+}
+
+function closeCustomCollMenu(type) {
+  const menu = document.getElementById(type + 'CollMenu');
+  const btn = document.getElementById(type + 'CollTriggerBtn');
+  if (menu) menu.style.display = 'none';
+  if (btn) btn.setAttribute('aria-expanded', 'false');
+}
+
+// Global click outside listener for custom glass dropdowns
+document.addEventListener('click', function(e) {
+  if (!e.target.closest('.custom-glass-select-wrap')) {
+    document.querySelectorAll('.custom-glass-menu').forEach(function(m) { m.style.display = 'none'; });
+    document.querySelectorAll('.custom-glass-select-btn').forEach(function(b) { b.setAttribute('aria-expanded', 'false'); });
+  }
+});
 
 function renderCollectionsBar() {
   const cols = getCollections();
@@ -3038,7 +3353,7 @@ function showResult(code, url) {
   card.classList.remove('show'); void card.offsetHeight; card.classList.add('show');
   document.getElementById('rCode').textContent = getCleanUrl(code);
   document.getElementById('rOrig').textContent = url;
-  document.getElementById('resultSub').textContent = 'Just now \u00B7 0 clicks';
+  document.getElementById('resultSub').textContent = 'Permanent Link \u00B7 Never expires \u00B7 0 clicks';
 }
 
 function copyShort() { if (!curCode) return; doCopy(getCleanUrl(curCode)); }
