@@ -3,6 +3,8 @@ firebase-config.local.js
 
 # Environment files
 .env
+.env.*
+.env.local
 firebase-env.js
 
 # Editor/OS files

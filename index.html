@@ -3276,6 +3276,39 @@
 <div class="toast" id="toast"></div>
 
 <!-- Application Scripts -->
+<!-- Auto-import .env file into window and EmailJS / services configuration -->
+<script>
+(async function loadDotEnv() {
+  try {
+    const res = await fetch('/.env');
+    if (res.ok) {
+      const text = await res.text();
+      text.split('\n').forEach(line => {
+        const trimmed = line.trim();
+        if (trimmed && !trimmed.startsWith('#')) {
+          const eq = trimmed.indexOf('=');
+          if (eq !== -1) {
+            const key = trimmed.slice(0, eq).trim();
+            const val = trimmed.slice(eq + 1).trim().replace(/^["']|["']$/g, '');
+            window[key] = val;
+            if (key === 'EMAILJS_SERVICE_ID' || key === 'EMAILJS_TEMPLATE_ID' || key === 'EMAILJS_PUBLIC_KEY') {
+              window.SNIPLINK_EMAILJS = window.SNIPLINK_EMAILJS || {};
+              if (key === 'EMAILJS_SERVICE_ID' && val) window.SNIPLINK_EMAILJS.serviceId = val;
+              if (key === 'EMAILJS_TEMPLATE_ID' && val) window.SNIPLINK_EMAILJS.templateId = val;
+              if (key === 'EMAILJS_PUBLIC_KEY' && val) {
+                window.SNIPLINK_EMAILJS.publicKey = val;
+                if (window.emailjs) window.emailjs.init(val);
+              }
+            }
+          }
+        }
+      });
+    }
+  } catch (err) {
+    // Silently continue if .env is not accessible
+  }
+})();
+</script>
 <script src="./firebase-env.js"></script>
 <script type="module" src="./firebase-setup.js"></script>
 <script src="https://cdn.quilljs.com/1.3.7/quill.min.js"></script>
@@ -4213,7 +4246,11 @@ async function submitEmailShare() {
   const savedEjs = localStorage.getItem('sniplink_emailjs');
   const ejsConfig = (window.SNIPLINK_EMAILJS && window.SNIPLINK_EMAILJS.publicKey) 
     ? window.SNIPLINK_EMAILJS 
-    : (savedEjs ? JSON.parse(savedEjs) : null);
+    : (window.EMAILJS_PUBLIC_KEY ? {
+        serviceId: window.EMAILJS_SERVICE_ID,
+        templateId: window.EMAILJS_TEMPLATE_ID,
+        publicKey: window.EMAILJS_PUBLIC_KEY
+      } : (savedEjs ? JSON.parse(savedEjs) : null));
 
   if (ejsConfig && ejsConfig.publicKey && ejsConfig.serviceId && ejsConfig.templateId && window.emailjs) {
     try {
