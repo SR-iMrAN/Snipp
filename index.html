@@ -9,6 +9,7 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Space+Mono:wght@400;700&family=Syne:wght@600;700;800&display=swap" rel="stylesheet"/>
 <link href="https://cdn.quilljs.com/1.3.7/quill.snow.css" rel="stylesheet"/>
+<script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
 <style>
   :root {
     --font-sans: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
@@ -629,19 +630,19 @@
     z-index: 2;
     display: flex;
     align-items: center;
-    gap: 14px;
-    padding: 9px 12px;
-    height: 86px;
+    gap: 12px;
+    padding: 10px 14px;
+    height: 90px;
     border-radius: var(--radius-full);
-    background: rgba(230, 236, 245, 0.65);
-    backdrop-filter: blur(28px) saturate(180%);
-    -webkit-backdrop-filter: blur(28px) saturate(180%);
-    border: 2px solid rgba(255, 255, 255, 0.95);
+    background: rgba(235, 240, 248, 0.42);
+    backdrop-filter: blur(32px) saturate(160%);
+    -webkit-backdrop-filter: blur(32px) saturate(160%);
+    border: 1.5px solid rgba(255, 255, 255, 0.72);
     box-shadow: 
-      0 20px 48px -10px rgba(100, 116, 139, 0.16),
-      0 4px 16px rgba(100, 116, 139, 0.05),
-      inset 0 2.5px 4px rgba(255, 255, 255, 1),
-      inset 0 -2.5px 4px rgba(190, 205, 225, 0.75);
+      0 16px 40px -10px rgba(100, 116, 139, 0.10),
+      0 2px 10px rgba(100, 116, 139, 0.04),
+      inset 0 1.5px 3px rgba(255, 255, 255, 0.85),
+      inset 0 -1.5px 3px rgba(200, 212, 228, 0.45);
     margin-bottom: 0;
     user-select: none;
   }
@@ -659,18 +660,19 @@
      ═════════════════════════════════════════════════════════════════ */
   .tab-glider {
     position: absolute;
-    top: 9px;
-    bottom: 9px;
-    left: 12px;
-    width: calc((100% - 24px - 28px) / 3);
+    top: 10px;
+    bottom: 10px;
+    left: 14px;
+    width: calc((100% - 28px - 24px) / 3);
     border-radius: var(--radius-full);
-    background: linear-gradient(180deg, #10b981 0%, #059669 42%, #047857 100%);
-    border: 1.5px solid rgba(255, 255, 255, 0.9);
+    background: linear-gradient(180deg, #22c55e 0%, #16a34a 35%, #15803d 70%, #166534 100%);
+    border: 1.5px solid rgba(255, 255, 255, 0.75);
     box-shadow: 
-      0 14px 36px rgba(16, 185, 129, 0.58),
-      0 0 22px rgba(52, 211, 153, 0.4),
-      inset 0 2.5px 4px rgba(255, 255, 255, 0.98),
-      inset 0 -2.5px 5px rgba(110, 231, 183, 0.9);
+      0 0 48px rgba(34, 197, 94, 0.55),
+      0 0 20px rgba(74, 222, 128, 0.40),
+      0 8px 28px rgba(16, 185, 129, 0.50),
+      inset 0 2px 4px rgba(255, 255, 255, 0.90),
+      inset 0 -3px 6px rgba(110, 231, 183, 0.80);
     pointer-events: none;
     z-index: 1;
     overflow: hidden;
@@ -691,10 +693,10 @@
     transform: translateX(0);
   }
   .tab-bar[data-active="1"] .tab-glider {
-    transform: translateX(calc(100% + 14px));
+    transform: translateX(calc(100% + 12px));
   }
   .tab-bar[data-active="2"] .tab-glider {
-    transform: translateX(calc(200% + 28px));
+    transform: translateX(calc(200% + 24px));
   }
 
   .tab-glider svg.glider-wave {
@@ -711,14 +713,16 @@
     position: relative;
     z-index: 2;
     flex: 1;
-    height: 68px;
+    height: 70px;
     border-radius: var(--radius-full);
-    background: linear-gradient(180deg, rgba(240, 245, 252, 0.65) 0%, rgba(220, 230, 244, 0.45) 50%, rgba(235, 242, 250, 0.65) 100%);
-    border: 1.5px solid rgba(255, 255, 255, 0.98);
+    background: linear-gradient(180deg, rgba(255, 255, 255, 0.45) 0%, rgba(240, 244, 250, 0.28) 50%, rgba(255, 255, 255, 0.40) 100%);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border: 1.5px solid rgba(255, 255, 255, 0.85);
     box-shadow: 
-      0 4px 14px rgba(100, 116, 139, 0.08),
-      inset 0 2px 3.5px rgba(255, 255, 255, 1),
-      inset 0 -2px 4px rgba(185, 202, 222, 0.6);
+      0 4px 16px rgba(100, 116, 139, 0.06),
+      inset 0 2px 4px rgba(255, 255, 255, 0.95),
+      inset 0 -2px 5px rgba(200, 215, 235, 0.50);
     cursor: pointer;
     overflow: hidden;
     outline: none;
@@ -2473,84 +2477,71 @@
             
             <!-- Sliding Emerald Liquid Glass Glider -->
             <div class="tab-glider" id="tabGlider" aria-hidden="true">
-              <svg class="glider-wave" viewBox="0 0 286 130" fill="none" preserveAspectRatio="none">
+              <svg class="glider-wave" viewBox="0 0 300 100" fill="none" preserveAspectRatio="none">
                 <defs>
-                  <linearGradient id="bubbleGradLeft" x1="40%" y1="0%" x2="60%" y2="100%">
+                  <linearGradient id="gBlobL" x1="30%" y1="0%" x2="70%" y2="100%">
                     <stop offset="0%" stop-color="#a7f3d0" stop-opacity="1"/>
-                    <stop offset="40%" stop-color="#4ade80" stop-opacity="0.95"/>
+                    <stop offset="45%" stop-color="#4ade80" stop-opacity="0.9"/>
                     <stop offset="100%" stop-color="#15803d" stop-opacity="0.1"/>
                   </linearGradient>
-                  <linearGradient id="bubbleGradRight" x1="0%" y1="100%" x2="100%" y2="0%">
+                  <linearGradient id="gBlobR" x1="0%" y1="100%" x2="100%" y2="0%">
                     <stop offset="0%" stop-color="#22c55e" stop-opacity="0.2"/>
-                    <stop offset="45%" stop-color="#4ade80" stop-opacity="0.9"/>
+                    <stop offset="50%" stop-color="#4ade80" stop-opacity="0.85"/>
                     <stop offset="100%" stop-color="#a7f3d0" stop-opacity="1"/>
                   </linearGradient>
-                  <linearGradient id="topSpecGrad" x1="0%" y1="0%" x2="100%" y2="100%">
-                    <stop offset="0%" stop-color="#ffffff" stop-opacity="0.98"/>
-                    <stop offset="65%" stop-color="#a7f3d0" stop-opacity="0.3"/>
+                  <linearGradient id="gTopSpec" x1="0%" y1="0%" x2="100%" y2="100%">
+                    <stop offset="0%" stop-color="#ffffff" stop-opacity="0.95"/>
+                    <stop offset="60%" stop-color="#a7f3d0" stop-opacity="0.25"/>
                     <stop offset="100%" stop-color="#ffffff" stop-opacity="0"/>
                   </linearGradient>
-                  <linearGradient id="waveShadow" x1="50%" y1="0%" x2="50%" y2="100%">
-                    <stop offset="0%" stop-color="#042a14" stop-opacity="0.45"/>
+                  <linearGradient id="gTopShadow" x1="50%" y1="0%" x2="50%" y2="100%">
+                    <stop offset="0%" stop-color="#042a14" stop-opacity="0.35"/>
                     <stop offset="100%" stop-color="#0e562b" stop-opacity="0"/>
                   </linearGradient>
                 </defs>
-
-                <!-- 1. Top Specular Rim Curve -->
-                <path d="M 30 20 C 70 12, 140 12, 210 16 C 242 18, 258 24, 265 30" stroke="rgba(255, 255, 255, 0.95)" stroke-width="2.5" stroke-linecap="round"/>
-                
-                <!-- 2. Top-Left Crescent Highlight Bulb -->
-                <path d="M 20 45 C 14 30, 26 18, 48 14 C 75 10, 115 12, 140 18 C 100 24, 52 28, 25 48 Z" fill="url(#topSpecGrad)"/>
-
-                <!-- 3. Upper S-Wave: Arches from left rim across top -->
-                <path d="M 16 68 C 26 40, 56 24, 90 23 C 135 22, 175 32, 215 44 C 245 53, 266 66, 275 78" stroke="rgba(255, 255, 255, 0.92)" stroke-width="2.5" stroke-linecap="round"/>
-                <path d="M 16 68 C 26 40, 56 24, 90 23 C 135 22, 175 32, 215 44 C 245 53, 266 66, 275 78 L 275 0 L 16 0 Z" fill="url(#waveShadow)"/>
-
-                <!-- 4. Bottom-Left Luminous Mint Bubble -->
-                <path d="M 28 128 C 45 96, 78 84, 112 86 C 142 88, 162 110, 174 128 Z" fill="url(#bubbleGradLeft)"/>
-                <path d="M 28 128 C 45 96, 78 84, 112 86 C 142 88, 162 110, 174 128" stroke="#a7f3d0" stroke-width="3" stroke-linecap="round"/>
-                <path d="M 30 126 C 46 98, 78 86, 112 88 C 141 90, 160 110, 172 126" stroke="#ffffff" stroke-width="1.8" stroke-linecap="round"/>
-
-                <!-- 5. Bottom-Right Luminous Mint Caustic Curve -->
-                <path d="M 174 128 C 195 104, 230 90, 262 96 C 274 100, 280 114, 282 128 Z" fill="url(#bubbleGradRight)"/>
-                <path d="M 174 128 C 195 104, 230 90, 262 96" stroke="#a7f3d0" stroke-width="2.5" stroke-linecap="round"/>
-                <path d="M 215 124 C 242 118, 265 100, 275 74" stroke="rgba(255, 255, 255, 0.98)" stroke-width="2.5" stroke-linecap="round"/>
+                <!-- Top specular rim -->
+                <path d="M 25 16 C 80 6, 170 6, 275 16" stroke="rgba(255,255,255,0.92)" stroke-width="2.5" stroke-linecap="round"/>
+                <!-- Top-left crescent -->
+                <path d="M 15 32 C 12 20, 28 10, 55 8 C 85 6, 120 8, 140 13 C 105 17, 50 20, 18 35 Z" fill="url(#gTopSpec)"/>
+                <!-- Upper wave + shadow fill -->
+                <path d="M 12 55 C 22 30, 55 18, 92 17 C 140 16, 180 25, 220 36 C 250 44, 272 55, 282 65" stroke="rgba(255,255,255,0.88)" stroke-width="2.5" stroke-linecap="round"/>
+                <path d="M 12 55 C 22 30, 55 18, 92 17 C 140 16, 180 25, 220 36 C 250 44, 272 55, 282 65 L 282 0 L 12 0 Z" fill="url(#gTopShadow)"/>
+                <!-- Large bottom-left organic green blob -->
+                <path d="M 8 98 C 12 58, 48 35, 95 32 C 138 30, 162 55, 172 98 Z" fill="url(#gBlobL)"/>
+                <path d="M 10 96 C 15 60, 50 37, 95 34 C 136 32, 158 56, 168 96" stroke="#a7f3d0" stroke-width="3" stroke-linecap="round" fill="none"/>
+                <path d="M 12 94 C 17 62, 52 39, 95 36 C 134 34, 155 57, 165 94" stroke="#ffffff" stroke-width="1.8" stroke-linecap="round" fill="none"/>
+                <!-- Bottom-right organic green blob -->
+                <path d="M 168 98 C 178 68, 210 48, 248 45 C 272 43, 288 58, 292 98 Z" fill="url(#gBlobR)"/>
+                <path d="M 170 96 C 180 70, 212 50, 248 47 C 270 45, 285 60, 290 96" stroke="#a7f3d0" stroke-width="2.5" stroke-linecap="round" fill="none"/>
+                <path d="M 220 92 C 248 84, 272 68, 284 48" stroke="rgba(255,255,255,0.95)" stroke-width="2.5" stroke-linecap="round"/>
               </svg>
             </div>
 
             <!-- ══ TAB 1: LINK (Transparent Liquid Glass / Emerald when active) ══ -->
             <button class="tab-btn active" id="tab-link" role="tab" onclick="switchTab('link')" aria-selected="true">
-              <svg class="tab-wave" viewBox="0 0 286 130" fill="none" preserveAspectRatio="none">
+              <svg class="tab-wave" viewBox="0 0 300 100" fill="none" preserveAspectRatio="none">
                 <defs>
-                  <linearGradient id="bubbleGradWhiteL" x1="40%" y1="0%" x2="60%" y2="100%">
-                    <stop offset="0%" stop-color="#ffffff" stop-opacity="1"/>
-                    <stop offset="45%" stop-color="#ffffff" stop-opacity="0.85"/>
-                    <stop offset="100%" stop-color="#ffffff" stop-opacity="0.2"/>
+                  <linearGradient id="blobL1" x1="30%" y1="0%" x2="70%" y2="100%">
+                    <stop offset="0%" stop-color="#ffffff" stop-opacity="0.95"/>
+                    <stop offset="60%" stop-color="#ffffff" stop-opacity="0.7"/>
+                    <stop offset="100%" stop-color="#ffffff" stop-opacity="0.15"/>
                   </linearGradient>
-                  <linearGradient id="topSpecGradWhiteL" x1="0%" y1="0%" x2="100%" y2="100%">
-                    <stop offset="0%" stop-color="#ffffff" stop-opacity="1"/>
-                    <stop offset="65%" stop-color="#ffffff" stop-opacity="0.45"/>
-                    <stop offset="100%" stop-color="#ffffff" stop-opacity="0"/>
-                  </linearGradient>
-                  <linearGradient id="bubbleGradWhiteR" x1="0%" y1="100%" x2="100%" y2="0%">
-                    <stop offset="0%" stop-color="#ffffff" stop-opacity="0.2"/>
-                    <stop offset="50%" stop-color="#ffffff" stop-opacity="0.85"/>
-                    <stop offset="100%" stop-color="#ffffff" stop-opacity="1"/>
+                  <linearGradient id="blobR1" x1="0%" y1="100%" x2="100%" y2="0%">
+                    <stop offset="0%" stop-color="#ffffff" stop-opacity="0.15"/>
+                    <stop offset="50%" stop-color="#ffffff" stop-opacity="0.7"/>
+                    <stop offset="100%" stop-color="#ffffff" stop-opacity="0.95"/>
                   </linearGradient>
                 </defs>
-                <!-- 1. Top Specular Rim Curve -->
-                <path d="M 30 20 C 70 12, 140 12, 210 16 C 242 18, 258 24, 265 30" stroke="rgba(255, 255, 255, 1)" stroke-width="2.8" stroke-linecap="round"/>
-                <!-- 2. Top-Left Crescent Highlight Bulb -->
-                <path d="M 20 45 C 14 30, 26 18, 48 14 C 75 10, 115 12, 140 18 C 100 24, 52 28, 25 48 Z" fill="url(#topSpecGradWhiteL)"/>
-                <!-- 3. Upper S-Wave -->
-                <path d="M 16 68 C 26 40, 56 24, 90 23 C 135 22, 175 32, 215 44 C 245 53, 266 66, 275 78" stroke="rgba(255, 255, 255, 0.98)" stroke-width="2.8" stroke-linecap="round"/>
-                <!-- 4. Bottom-Left Bubble -->
-                <path d="M 28 128 C 45 96, 78 84, 112 86 C 142 88, 162 110, 174 128 Z" fill="url(#bubbleGradWhiteL)"/>
-                <path d="M 28 128 C 45 96, 78 84, 112 86 C 142 88, 162 110, 174 128" stroke="rgba(255, 255, 255, 1)" stroke-width="3" stroke-linecap="round"/>
-                <!-- 5. Bottom-Right Contour -->
-                <path d="M 174 128 C 195 104, 230 90, 262 96 C 274 100, 280 114, 282 128 Z" fill="url(#bubbleGradWhiteR)"/>
-                <path d="M 174 128 C 195 104, 230 90, 262 96" stroke="rgba(255, 255, 255, 1)" stroke-width="2.2" stroke-linecap="round"/>
-                <path d="M 215 124 C 242 118, 265 100, 275 74" stroke="rgba(255, 255, 255, 1)" stroke-width="2.8" stroke-linecap="round"/>
+                <!-- Large left organic blob -->
+                <path d="M 10 98 C 15 55, 45 30, 90 28 C 130 26, 155 55, 165 98 Z" fill="url(#blobL1)"/>
+                <path d="M 12 96 C 18 56, 48 32, 90 30 C 128 28, 152 56, 162 96" stroke="rgba(255,255,255,0.95)" stroke-width="2.5" stroke-linecap="round" fill="none"/>
+                <!-- Large right organic blob -->
+                <path d="M 160 98 C 170 65, 200 45, 240 42 C 268 40, 285 60, 290 98 Z" fill="url(#blobR1)"/>
+                <path d="M 162 96 C 172 66, 202 46, 240 44 C 266 42, 282 60, 288 96" stroke="rgba(255,255,255,0.95)" stroke-width="2.2" stroke-linecap="round" fill="none"/>
+                <!-- Top specular rim -->
+                <path d="M 25 18 C 80 8, 170 8, 275 18" stroke="rgba(255,255,255,0.9)" stroke-width="2.5" stroke-linecap="round"/>
+                <!-- Top-left crescent -->
+                <path d="M 15 35 C 12 22, 28 12, 55 10 C 85 8, 125 10, 145 15 C 105 20, 50 24, 18 38 Z" fill="rgba(255,255,255,0.65)"/>
               </svg>
               <span class="tab-btn-content">
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>
@@ -2560,32 +2551,25 @@
 
             <!-- ══ TAB 2: FILE (Transparent Glass / Emerald when active) ══ -->
             <button class="tab-btn" id="tab-file" role="tab" onclick="switchTab('file')" aria-selected="false">
-              <svg class="tab-wave" viewBox="0 0 286 130" fill="none" preserveAspectRatio="none">
+              <svg class="tab-wave" viewBox="0 0 300 100" fill="none" preserveAspectRatio="none">
                 <defs>
-                  <linearGradient id="bubbleGradWhiteFL" x1="40%" y1="0%" x2="60%" y2="100%">
-                    <stop offset="0%" stop-color="#ffffff" stop-opacity="1"/>
-                    <stop offset="45%" stop-color="#ffffff" stop-opacity="0.85"/>
-                    <stop offset="100%" stop-color="#ffffff" stop-opacity="0.2"/>
+                  <linearGradient id="blobFL" x1="30%" y1="0%" x2="70%" y2="100%">
+                    <stop offset="0%" stop-color="#ffffff" stop-opacity="0.95"/>
+                    <stop offset="60%" stop-color="#ffffff" stop-opacity="0.7"/>
+                    <stop offset="100%" stop-color="#ffffff" stop-opacity="0.15"/>
                   </linearGradient>
-                  <linearGradient id="topSpecGradWhiteFL" x1="0%" y1="0%" x2="100%" y2="100%">
-                    <stop offset="0%" stop-color="#ffffff" stop-opacity="1"/>
-                    <stop offset="65%" stop-color="#ffffff" stop-opacity="0.45"/>
-                    <stop offset="100%" stop-color="#ffffff" stop-opacity="0"/>
-                  </linearGradient>
-                  <linearGradient id="bubbleGradWhiteFR" x1="0%" y1="100%" x2="100%" y2="0%">
-                    <stop offset="0%" stop-color="#ffffff" stop-opacity="0.2"/>
-                    <stop offset="50%" stop-color="#ffffff" stop-opacity="0.85"/>
-                    <stop offset="100%" stop-color="#ffffff" stop-opacity="1"/>
+                  <linearGradient id="blobFR" x1="0%" y1="100%" x2="100%" y2="0%">
+                    <stop offset="0%" stop-color="#ffffff" stop-opacity="0.15"/>
+                    <stop offset="50%" stop-color="#ffffff" stop-opacity="0.7"/>
+                    <stop offset="100%" stop-color="#ffffff" stop-opacity="0.95"/>
                   </linearGradient>
                 </defs>
-                <path d="M 30 20 C 70 12, 140 12, 210 16 C 242 18, 258 24, 265 30" stroke="rgba(255, 255, 255, 1)" stroke-width="2.8" stroke-linecap="round"/>
-                <path d="M 20 45 C 14 30, 26 18, 48 14 C 75 10, 115 12, 140 18 C 100 24, 52 28, 25 48 Z" fill="url(#topSpecGradWhiteFL)"/>
-                <path d="M 16 68 C 26 40, 56 24, 90 23 C 135 22, 175 32, 215 44 C 245 53, 266 66, 275 78" stroke="rgba(255, 255, 255, 0.98)" stroke-width="2.8" stroke-linecap="round"/>
-                <path d="M 28 128 C 45 96, 78 84, 112 86 C 142 88, 162 110, 174 128 Z" fill="url(#bubbleGradWhiteFL)"/>
-                <path d="M 28 128 C 45 96, 78 84, 112 86 C 142 88, 162 110, 174 128" stroke="rgba(255, 255, 255, 1)" stroke-width="3" stroke-linecap="round"/>
-                <path d="M 174 128 C 195 104, 230 90, 262 96 C 274 100, 280 114, 282 128 Z" fill="url(#bubbleGradWhiteFR)"/>
-                <path d="M 174 128 C 195 104, 230 90, 262 96" stroke="rgba(255, 255, 255, 1)" stroke-width="2.2" stroke-linecap="round"/>
-                <path d="M 215 124 C 242 118, 265 100, 275 74" stroke="rgba(255, 255, 255, 1)" stroke-width="2.8" stroke-linecap="round"/>
+                <path d="M 10 98 C 15 55, 45 30, 90 28 C 130 26, 155 55, 165 98 Z" fill="url(#blobFL)"/>
+                <path d="M 12 96 C 18 56, 48 32, 90 30 C 128 28, 152 56, 162 96" stroke="rgba(255,255,255,0.95)" stroke-width="2.5" stroke-linecap="round" fill="none"/>
+                <path d="M 160 98 C 170 65, 200 45, 240 42 C 268 40, 285 60, 290 98 Z" fill="url(#blobFR)"/>
+                <path d="M 162 96 C 172 66, 202 46, 240 44 C 266 42, 282 60, 288 96" stroke="rgba(255,255,255,0.95)" stroke-width="2.2" stroke-linecap="round" fill="none"/>
+                <path d="M 25 18 C 80 8, 170 8, 275 18" stroke="rgba(255,255,255,0.9)" stroke-width="2.5" stroke-linecap="round"/>
+                <path d="M 15 35 C 12 22, 28 12, 55 10 C 85 8, 125 10, 145 15 C 105 20, 50 24, 18 38 Z" fill="rgba(255,255,255,0.65)"/>
               </svg>
               <span class="tab-btn-content">
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg>
@@ -2595,37 +2579,25 @@
 
             <!-- ══ TAB 3: NOTE (Transparent Glass / Emerald when active) ══ -->
             <button class="tab-btn" id="tab-note" role="tab" onclick="switchTab('note')" aria-selected="false">
-              <svg class="tab-wave" viewBox="0 0 286 130" fill="none" preserveAspectRatio="none">
+              <svg class="tab-wave" viewBox="0 0 300 100" fill="none" preserveAspectRatio="none">
                 <defs>
-                  <linearGradient id="bubbleGradWhiteNL" x1="40%" y1="0%" x2="60%" y2="100%">
-                    <stop offset="0%" stop-color="#ffffff" stop-opacity="1"/>
-                    <stop offset="45%" stop-color="#ffffff" stop-opacity="0.85"/>
-                    <stop offset="100%" stop-color="#ffffff" stop-opacity="0.2"/>
+                  <linearGradient id="blobNL" x1="30%" y1="0%" x2="70%" y2="100%">
+                    <stop offset="0%" stop-color="#ffffff" stop-opacity="0.95"/>
+                    <stop offset="60%" stop-color="#ffffff" stop-opacity="0.7"/>
+                    <stop offset="100%" stop-color="#ffffff" stop-opacity="0.15"/>
                   </linearGradient>
-                  <linearGradient id="topSpecGradWhiteNL" x1="0%" y1="0%" x2="100%" y2="100%">
-                    <stop offset="0%" stop-color="#ffffff" stop-opacity="1"/>
-                    <stop offset="65%" stop-color="#ffffff" stop-opacity="0.45"/>
-                    <stop offset="100%" stop-color="#ffffff" stop-opacity="0"/>
-                  </linearGradient>
-                  <linearGradient id="bubbleGradWhiteNR" x1="0%" y1="100%" x2="100%" y2="0%">
-                    <stop offset="0%" stop-color="#ffffff" stop-opacity="0.2"/>
-                    <stop offset="50%" stop-color="#ffffff" stop-opacity="0.85"/>
-                    <stop offset="100%" stop-color="#ffffff" stop-opacity="1"/>
+                  <linearGradient id="blobNR" x1="0%" y1="100%" x2="100%" y2="0%">
+                    <stop offset="0%" stop-color="#ffffff" stop-opacity="0.15"/>
+                    <stop offset="50%" stop-color="#ffffff" stop-opacity="0.7"/>
+                    <stop offset="100%" stop-color="#ffffff" stop-opacity="0.95"/>
                   </linearGradient>
                 </defs>
-                <!-- 1. Top Specular Rim Curve -->
-                <path d="M 30 20 C 70 12, 140 12, 210 16 C 242 18, 258 24, 265 30" stroke="rgba(255, 255, 255, 1)" stroke-width="2.8" stroke-linecap="round"/>
-                <!-- 2. Top-Left Crescent Highlight Bulb -->
-                <path d="M 20 45 C 14 30, 26 18, 48 14 C 75 10, 115 12, 140 18 C 100 24, 52 28, 25 48 Z" fill="url(#topSpecGradWhiteNL)"/>
-                <!-- 3. Upper S-Wave -->
-                <path d="M 16 68 C 26 40, 56 24, 90 23 C 135 22, 175 32, 215 44 C 245 53, 266 66, 275 78" stroke="rgba(255, 255, 255, 0.98)" stroke-width="2.8" stroke-linecap="round"/>
-                <!-- 4. Bottom-Left Bubble -->
-                <path d="M 28 128 C 45 96, 78 84, 112 86 C 142 88, 162 110, 174 128 Z" fill="url(#bubbleGradWhiteNL)"/>
-                <path d="M 28 128 C 45 96, 78 84, 112 86 C 142 88, 162 110, 174 128" stroke="rgba(255, 255, 255, 1)" stroke-width="3" stroke-linecap="round"/>
-                <!-- 5. Bottom-Right Contour -->
-                <path d="M 174 128 C 195 104, 230 90, 262 96 C 274 100, 280 114, 282 128 Z" fill="url(#bubbleGradWhiteNR)"/>
-                <path d="M 174 128 C 195 104, 230 90, 262 96" stroke="rgba(255, 255, 255, 1)" stroke-width="2.2" stroke-linecap="round"/>
-                <path d="M 215 124 C 242 118, 265 100, 275 74" stroke="rgba(255, 255, 255, 1)" stroke-width="2.8" stroke-linecap="round"/>
+                <path d="M 10 98 C 15 55, 45 30, 90 28 C 130 26, 155 55, 165 98 Z" fill="url(#blobNL)"/>
+                <path d="M 12 96 C 18 56, 48 32, 90 30 C 128 28, 152 56, 162 96" stroke="rgba(255,255,255,0.95)" stroke-width="2.5" stroke-linecap="round" fill="none"/>
+                <path d="M 160 98 C 170 65, 200 45, 240 42 C 268 40, 285 60, 290 98 Z" fill="url(#blobNR)"/>
+                <path d="M 162 96 C 172 66, 202 46, 240 44 C 266 42, 282 60, 288 96" stroke="rgba(255,255,255,0.95)" stroke-width="2.2" stroke-linecap="round" fill="none"/>
+                <path d="M 25 18 C 80 8, 170 8, 275 18" stroke="rgba(255,255,255,0.9)" stroke-width="2.5" stroke-linecap="round"/>
+                <path d="M 15 35 C 12 22, 28 12, 55 10 C 85 8, 125 10, 145 15 C 105 20, 50 24, 18 38 Z" fill="rgba(255,255,255,0.65)"/>
               </svg>
               <span class="tab-btn-content">
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
@@ -4174,22 +4146,34 @@ function downloadNoteCreatorTxt() {
 // ═══════════════════════════════════════════════════════
 let pendingEmailShare = null;
 
+// Optional EmailJS client-side configuration:
+// You can set window.SNIPLINK_EMAILJS = { serviceId: '...', templateId: '...', publicKey: '...' }
+// or store in localStorage: localStorage.setItem('sniplink_emailjs', JSON.stringify({ serviceId, templateId, publicKey }))
+window.SNIPLINK_EMAILJS = window.SNIPLINK_EMAILJS || {
+  serviceId: '',
+  templateId: '',
+  publicKey: ''
+};
+
 function openEmailShareModal(type) {
-  let link = '', title = '', expiresAt = null;
+  let link = '', title = '', originalUrl = '', expiresAt = null;
   if (type === 'link') {
     link = curCode ? getCleanUrl(curCode) : '';
-    title = document.getElementById('rOrig')?.textContent || 'Short Link';
+    title = 'Short Link';
+    originalUrl = document.getElementById('rOrig')?.textContent?.trim() || document.getElementById('urlInput')?.value?.trim() || link;
   } else if (type === 'file') {
     link = curFileCode ? getCleanUrl(curFileCode) : '';
-    title = document.getElementById('fName')?.textContent || 'Shared File';
+    title = document.getElementById('fName')?.textContent?.trim() || 'Shared File';
+    originalUrl = title;
   } else {
     link = curNoteCode ? getCleanUrl(curNoteCode) : '';
-    title = document.getElementById('nPreview')?.textContent || 'Rich Note';
+    title = document.getElementById('nPreview')?.textContent?.trim() || 'Rich Note';
+    originalUrl = 'Note Publication';
   }
 
   if (!link) { toast('Generate a link first'); return; }
 
-  pendingEmailShare = { type, link, title, expiresAt };
+  pendingEmailShare = { type, link, title, originalUrl, expiresAt };
   document.getElementById('emailItemTitle').textContent = title;
   document.getElementById('emailItemLink').textContent = link;
   document.getElementById('emailRecipient').value = '';
@@ -4222,6 +4206,40 @@ async function submitEmailShare() {
   status.className = 'modal-status show';
   status.textContent = 'Sending email...';
 
+  const qrCodeUrl = `https://api.qrserver.com/v1/create-qr-code/?size=180x180&margin=8&data=${encodeURIComponent(pendingEmailShare.link)}`;
+  const originalLink = pendingEmailShare.originalUrl || pendingEmailShare.link;
+
+  // 1. Try EmailJS client-side if configured
+  const savedEjs = localStorage.getItem('sniplink_emailjs');
+  const ejsConfig = (window.SNIPLINK_EMAILJS && window.SNIPLINK_EMAILJS.publicKey) 
+    ? window.SNIPLINK_EMAILJS 
+    : (savedEjs ? JSON.parse(savedEjs) : null);
+
+  if (ejsConfig && ejsConfig.publicKey && ejsConfig.serviceId && ejsConfig.templateId && window.emailjs) {
+    try {
+      emailjs.init(ejsConfig.publicKey);
+      await emailjs.send(ejsConfig.serviceId, ejsConfig.templateId, {
+        to_email: to,
+        recipient_email: to,
+        short_link: pendingEmailShare.link,
+        original_link: originalLink,
+        qr_code_url: qrCodeUrl,
+        message: message || '',
+        title: pendingEmailShare.title || 'Shared Content',
+        type: pendingEmailShare.type || 'link'
+      });
+      status.className = 'modal-status show ok';
+      status.textContent = 'Email successfully sent!';
+      toast('Email sent successfully');
+      setTimeout(closeEmailModal, 1500);
+      btn.disabled = false;
+      return;
+    } catch (ejsErr) {
+      console.warn('EmailJS delivery error, trying server API fallback:', ejsErr);
+    }
+  }
+
+  // 2. Default / Fallback: Server-side API (/api/share-email via Resend)
   try {
     const res = await fetch('/api/share-email', {
       method: 'POST',
@@ -4229,6 +4247,8 @@ async function submitEmailShare() {
       body: JSON.stringify({
         to,
         link: pendingEmailShare.link,
+        originalUrl: originalLink,
+        qrCodeUrl: qrCodeUrl,
         title: pendingEmailShare.title,
         type: pendingEmailShare.type,
         expiresAt: pendingEmailShare.expiresAt,
