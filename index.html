@@ -3276,9 +3276,9 @@
 <div class="toast" id="toast"></div>
 
 <!-- Application Scripts -->
-<!-- Auto-import .env file into window and EmailJS / services configuration -->
+<!-- Auto-import .env file into window and EmailJS configuration -->
 <script>
-(async function loadDotEnv() {
+window.loadDotEnv = async function() {
   try {
     const res = await fetch('/.env');
     if (res.ok) {
@@ -3307,7 +3307,8 @@
   } catch (err) {
     // Silently continue if .env is not accessible
   }
-})();
+};
+window.loadDotEnv();
 </script>
 <script src="./firebase-env.js"></script>
 <script type="module" src="./firebase-setup.js"></script>
@@ -4239,10 +4240,11 @@ async function submitEmailShare() {
   status.className = 'modal-status show';
   status.textContent = 'Sending email...';
 
-  const qrCodeUrl = `https://api.qrserver.com/v1/create-qr-code/?size=180x180&margin=8&data=${encodeURIComponent(pendingEmailShare.link)}`;
-  const originalLink = pendingEmailShare.originalUrl || pendingEmailShare.link;
+  // Ensure latest .env values are loaded
+  if (typeof window.loadDotEnv === 'function') {
+    await window.loadDotEnv();
+  }
 
-  // 1. Try EmailJS client-side if configured
   const savedEjs = localStorage.getItem('sniplink_emailjs');
   const ejsConfig = (window.SNIPLINK_EMAILJS && window.SNIPLINK_EMAILJS.publicKey) 
     ? window.SNIPLINK_EMAILJS 
@@ -4252,64 +4254,51 @@ async function submitEmailShare() {
         publicKey: window.EMAILJS_PUBLIC_KEY
       } : (savedEjs ? JSON.parse(savedEjs) : null));
 
-  if (ejsConfig && ejsConfig.publicKey && ejsConfig.serviceId && ejsConfig.templateId && window.emailjs) {
-    try {
-      emailjs.init(ejsConfig.publicKey);
-      await emailjs.send(ejsConfig.serviceId, ejsConfig.templateId, {
-        to_email: to,
-        recipient_email: to,
-        short_link: pendingEmailShare.link,
-        original_link: originalLink,
-        qr_code_url: qrCodeUrl,
-        message: message || '',
-        title: pendingEmailShare.title || 'Shared Content',
-        type: pendingEmailShare.type || 'link'
-      });
-      status.className = 'modal-status show ok';
-      status.textContent = 'Email successfully sent!';
-      toast('Email sent successfully');
-      setTimeout(closeEmailModal, 1500);
-      btn.disabled = false;
-      return;
-    } catch (ejsErr) {
-      console.warn('EmailJS delivery error, trying server API fallback:', ejsErr);
-    }
+  if (!ejsConfig || !ejsConfig.publicKey || !ejsConfig.serviceId || !ejsConfig.templateId) {
+    status.className = 'modal-status show err';
+    status.textContent = 'EmailJS is not configured. Please add EMAILJS_SERVICE_ID, EMAILJS_TEMPLATE_ID, and EMAILJS_PUBLIC_KEY to your .env file.';
+    btn.disabled = false;
+    return;
   }
 
-  // 2. Default / Fallback: Server-side API (/api/share-email via Resend)
+  if (!window.emailjs) {
+    status.className = 'modal-status show err';
+    status.textContent = 'EmailJS library failed to load. Please check your internet connection.';
+    btn.disabled = false;
+    return;
+  }
+
+  const qrCodeUrl = `https://api.qrserver.com/v1/create-qr-code/?size=180x180&margin=8&data=${encodeURIComponent(pendingEmailShare.link)}`;
+  const originalLink = pendingEmailShare.originalUrl || pendingEmailShare.link;
+
   try {
-    const res = await fetch('/api/share-email', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        to,
-        link: pendingEmailShare.link,
-        originalUrl: originalLink,
-        qrCodeUrl: qrCodeUrl,
-        title: pendingEmailShare.title,
-        type: pendingEmailShare.type,
-        expiresAt: pendingEmailShare.expiresAt,
-        message
-      })
+    emailjs.init(ejsConfig.publicKey);
+    await emailjs.send(ejsConfig.serviceId, ejsConfig.templateId, {
+      to: to,
+      email: to,
+      to_email: to,
+      recipient_email: to,
+      user_email: to,
+      reply_to: to,
+      to_name: to.split('@')[0],
+      short_link: pendingEmailShare.link,
+      original_link: originalLink,
+      qr_code_url: qrCodeUrl,
+      message: message || '',
+      title: pendingEmailShare.title || 'Shared Content',
+      type: pendingEmailShare.type || 'link'
     });
 
-    const data = await res.json();
-    if (data.ok) {
-      status.className = 'modal-status show ok';
-      status.textContent = 'Email successfully sent!';
-      toast('Email sent successfully');
-      setTimeout(closeEmailModal, 1500);
-    } else if (data.simulated) {
-      status.className = 'modal-status show ok';
-      status.textContent = data.message;
-      toast('Email simulated (server configured)');
-    } else {
-      status.className = 'modal-status show err';
-      status.textContent = data.error || 'Failed to send email.';
-    }
-  } catch (err) {
+    status.className = 'modal-status show ok';
+    status.textContent = 'Email sent successfully!';
+    toast('Email sent successfully');
+    setTimeout(closeEmailModal, 1500);
+  } catch (ejsErr) {
+    console.error('EmailJS delivery error:', ejsErr);
     status.className = 'modal-status show err';
-    status.textContent = 'Could not deliver email: ' + err.message;
+    const errDetail = ejsErr?.text || ejsErr?.message || (typeof ejsErr === 'string' ? ejsErr : JSON.stringify(ejsErr));
+    status.textContent = 'Email delivery failed: ' + errDetail;
+    toast('Email delivery failed');
   }
   btn.disabled = false;
 }
