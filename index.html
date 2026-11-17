@@ -4245,6 +4245,42 @@ async function submitEmailShare() {
     await window.loadDotEnv();
   }
 
+  const qrCodeUrl = `https://api.qrserver.com/v1/create-qr-code/?size=180x180&margin=8&data=${encodeURIComponent(pendingEmailShare.link)}`;
+  const originalLink = pendingEmailShare.originalUrl || pendingEmailShare.link;
+
+  // 1. Primary: Google Apps Script Webhook (Direct Gmail delivery, 100% clean with NO ads or footers)
+  const gasUrl = window.GMAIL_WEBHOOK_URL || (typeof GMAIL_WEBHOOK_URL !== 'undefined' ? GMAIL_WEBHOOK_URL : null);
+  if (gasUrl && gasUrl.startsWith('https://script.google.com/')) {
+    try {
+      await fetch(gasUrl, {
+        method: 'POST',
+        mode: 'no-cors',
+        headers: {
+          'Content-Type': 'text/plain;charset=utf-8'
+        },
+        body: JSON.stringify({
+          to: to,
+          short_link: pendingEmailShare.link,
+          original_link: originalLink,
+          qr_code_url: qrCodeUrl,
+          message: message || '',
+          title: pendingEmailShare.title || 'Shared Content',
+          type: pendingEmailShare.type || 'link'
+        })
+      });
+
+      status.className = 'modal-status show ok';
+      status.textContent = 'Email sent successfully via Gmail!';
+      toast('Email sent successfully');
+      setTimeout(closeEmailModal, 1500);
+      btn.disabled = false;
+      return;
+    } catch (gasErr) {
+      console.warn('Google Apps Script webhook failed, attempting EmailJS fallback:', gasErr);
+    }
+  }
+
+  // 2. Secondary: EmailJS Fallback
   const savedEjs = localStorage.getItem('sniplink_emailjs');
   const ejsConfig = (window.SNIPLINK_EMAILJS && window.SNIPLINK_EMAILJS.publicKey) 
     ? window.SNIPLINK_EMAILJS 
@@ -4256,7 +4292,7 @@ async function submitEmailShare() {
 
   if (!ejsConfig || !ejsConfig.publicKey || !ejsConfig.serviceId || !ejsConfig.templateId) {
     status.className = 'modal-status show err';
-    status.textContent = 'EmailJS is not configured. Please add EMAILJS_SERVICE_ID, EMAILJS_TEMPLATE_ID, and EMAILJS_PUBLIC_KEY to your .env file.';
+    status.textContent = 'Email delivery is not configured. Please add GMAIL_WEBHOOK_URL or EmailJS keys to your .env file.';
     btn.disabled = false;
     return;
   }
@@ -4267,9 +4303,6 @@ async function submitEmailShare() {
     btn.disabled = false;
     return;
   }
-
-  const qrCodeUrl = `https://api.qrserver.com/v1/create-qr-code/?size=180x180&margin=8&data=${encodeURIComponent(pendingEmailShare.link)}`;
-  const originalLink = pendingEmailShare.originalUrl || pendingEmailShare.link;
 
   try {
     emailjs.init(ejsConfig.publicKey);
