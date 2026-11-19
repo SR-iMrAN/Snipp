@@ -611,9 +611,9 @@
   }
   .tab-ambient-caustics {
     position: absolute;
-    inset: -26px -32px;
-    width: calc(100% + 64px);
-    height: calc(100% + 52px);
+    inset: -32px -20px;
+    width: calc(100% + 40px);
+    height: calc(100% + 64px);
     pointer-events: none;
     z-index: 1;
     overflow: visible;
@@ -630,21 +630,22 @@
     z-index: 2;
     display: flex;
     align-items: center;
-    gap: 12px;
-    padding: 10px 14px;
-    height: 90px;
+    gap: 14px;
+    padding: 12px 14px;
+    height: 98px;
     border-radius: var(--radius-full);
-    background: rgba(235, 240, 248, 0.42);
-    backdrop-filter: blur(32px) saturate(160%);
-    -webkit-backdrop-filter: blur(32px) saturate(160%);
-    border: 1.5px solid rgba(255, 255, 255, 0.72);
+    background: rgba(255, 255, 255, 0.40);
+    backdrop-filter: blur(28px) saturate(180%);
+    -webkit-backdrop-filter: blur(28px) saturate(180%);
+    border: 1.5px solid rgba(255, 255, 255, 0.88);
     box-shadow: 
-      0 16px 40px -10px rgba(100, 116, 139, 0.10),
-      0 2px 10px rgba(100, 116, 139, 0.04),
-      inset 0 1.5px 3px rgba(255, 255, 255, 0.85),
-      inset 0 -1.5px 3px rgba(200, 212, 228, 0.45);
+      0 12px 36px -4px rgba(100, 116, 139, 0.12),
+      0 4px 16px rgba(100, 116, 139, 0.05),
+      inset 0 1.5px 3px rgba(255, 255, 255, 0.95),
+      inset 0 -1.5px 3px rgba(180, 195, 215, 0.40);
     margin-bottom: 0;
     user-select: none;
+    box-sizing: border-box;
   }
   [data-theme="dark"] .tab-bar {
     background: rgba(22, 28, 38, 0.65);
@@ -660,32 +661,38 @@
      ═════════════════════════════════════════════════════════════════ */
   .tab-glider {
     position: absolute;
-    top: 10px;
-    bottom: 10px;
+    top: 12px;
+    bottom: 12px;
     left: 14px;
-    width: calc((100% - 28px - 24px) / 3);
+    width: calc((100% - 28px - 28px) / 3);
     border-radius: var(--radius-full);
-    background: linear-gradient(180deg, #22c55e 0%, #16a34a 35%, #15803d 70%, #166534 100%);
-    border: 1.5px solid rgba(255, 255, 255, 0.75);
+    background: linear-gradient(
+      155deg,
+      #05522e 0%,
+      #076b3d 30%,
+      #09834b 60%,
+      #109d5c 100%
+    );
+    border: 1.5px solid rgba(167, 243, 208, 0.75);
     box-shadow: 
-      0 0 48px rgba(34, 197, 94, 0.55),
-      0 0 20px rgba(74, 222, 128, 0.40),
-      0 8px 28px rgba(16, 185, 129, 0.50),
-      inset 0 2px 4px rgba(255, 255, 255, 0.90),
-      inset 0 -3px 6px rgba(110, 231, 183, 0.80);
+      0 0 20px rgba(22, 190, 105, 0.38),
+      0 8px 28px rgba(0, 120, 65, 0.32),
+      inset 0 1.5px 3.5px rgba(255, 255, 255, 0.70),
+      inset 0 -2px 6px rgba(0, 60, 30, 0.30);
     pointer-events: none;
     z-index: 1;
     overflow: hidden;
-    transition: transform 0.38s cubic-bezier(0.2, 1, 0.3, 1), box-shadow 0.38s ease;
+    transition: transform 0.35s cubic-bezier(0.2, 1, 0.3, 1), box-shadow 0.35s ease;
   }
 
   [data-theme="dark"] .tab-glider {
-    background: linear-gradient(180deg, #0e6337 0%, #0a4f2b 45%, #06381d 100%);
-    border: 1.5px solid rgba(255, 255, 255, 0.5);
+    background: linear-gradient(145deg, #065430 0%, #077843 45%, #0f8f53 100%);
+    border: 1.5px solid rgba(167, 243, 208, 0.6);
     box-shadow: 
-      0 14px 36px rgba(5, 150, 105, 0.45),
-      inset 0 2px 3.5px rgba(255, 255, 255, 0.8),
-      inset 0 -2px 3.5px rgba(110, 231, 183, 0.5);
+      0 0 20px rgba(22, 190, 105, 0.3),
+      0 12px 30px rgba(0, 80, 40, 0.4),
+      inset 0 1.5px 3px rgba(255, 255, 255, 0.5),
+      inset 0 -2px 4px rgba(0, 40, 20, 0.4);
   }
 
   /* Glider pure CSS translations */
@@ -693,10 +700,10 @@
     transform: translateX(0);
   }
   .tab-bar[data-active="1"] .tab-glider {
-    transform: translateX(calc(100% + 12px));
+    transform: translateX(calc(100% + 14px));
   }
   .tab-bar[data-active="2"] .tab-glider {
-    transform: translateX(calc(200% + 24px));
+    transform: translateX(calc(200% + 28px));
   }
 
   .tab-glider svg.glider-wave {
@@ -704,6 +711,7 @@
     inset: 0;
     width: 100%;
     height: 100%;
+    pointer-events: none;
   }
 
   /* ═════════════════════════════════════════════════════════════════
@@ -713,16 +721,15 @@
     position: relative;
     z-index: 2;
     flex: 1;
-    height: 70px;
+    height: 74px;
     border-radius: var(--radius-full);
-    background: linear-gradient(180deg, rgba(255, 255, 255, 0.45) 0%, rgba(240, 244, 250, 0.28) 50%, rgba(255, 255, 255, 0.40) 100%);
-    backdrop-filter: blur(12px);
-    -webkit-backdrop-filter: blur(12px);
-    border: 1.5px solid rgba(255, 255, 255, 0.85);
+    background: linear-gradient(180deg, rgba(255, 255, 255, 0.65) 0%, rgba(240, 245, 252, 0.42) 55%, rgba(255, 255, 255, 0.55) 100%);
+    border: 1.5px solid rgba(255, 255, 255, 0.88);
     box-shadow: 
-      0 4px 16px rgba(100, 116, 139, 0.06),
-      inset 0 2px 4px rgba(255, 255, 255, 0.95),
-      inset 0 -2px 5px rgba(200, 215, 235, 0.50);
+      0 6px 18px rgba(100, 116, 139, 0.08),
+      0 2px 6px rgba(140, 155, 175, 0.05),
+      inset 0 1.5px 3.5px rgba(255, 255, 255, 1),
+      inset 0 -2px 5px rgba(160, 175, 200, 0.25);
     cursor: pointer;
     overflow: hidden;
     outline: none;
@@ -730,7 +737,8 @@
     align-items: center;
     justify-content: center;
     user-select: none;
-    transition: background 0.3s ease, border-color 0.3s ease, transform 0.2s ease, box-shadow 0.2s ease;
+    transition: background 250ms ease, box-shadow 250ms ease, border-color 250ms ease, transform 0.2s ease;
+    box-sizing: border-box;
   }
 
   [data-theme="dark"] .tab-btn {
@@ -743,11 +751,11 @@
   }
 
   .tab-btn:not(.active):hover {
-    background: linear-gradient(180deg, rgba(245, 248, 255, 0.88) 0%, rgba(230, 238, 248, 0.65) 50%, rgba(242, 247, 253, 0.88) 100%);
+    background: rgba(255, 255, 255, 0.72);
     border-color: rgba(255, 255, 255, 1);
     transform: translateY(-1px);
     box-shadow: 
-      0 6px 18px rgba(100, 116, 139, 0.12),
+      0 8px 20px rgba(100, 116, 139, 0.12),
       inset 0 2px 3.5px #ffffff;
   }
 
@@ -768,7 +776,7 @@
     height: 100%;
     pointer-events: none;
     z-index: 1;
-    transition: opacity 0.3s ease;
+    transition: opacity 0.25s ease;
   }
   .tab-btn.active svg.tab-wave {
     opacity: 0;
@@ -786,24 +794,27 @@
     z-index: 3;
     display: inline-flex;
     align-items: center;
-    gap: 10px;
-    font-size: 16.5px;
+    justify-content: center;
+    gap: 14px;
+    font-size: 24px;
     font-weight: 600;
-    color: #1e293b;
-    transition: color 0.3s ease, transform 0.25s ease;
+    letter-spacing: -0.3px;
+    color: #1B2430;
+    transition: color 250ms ease;
   }
   [data-theme="dark"] .tab-btn-content {
     color: #f1f5f9;
   }
   .tab-btn-content svg {
-    width: 22px !important;
-    height: 22px !important;
+    width: 30px !important;
+    height: 30px !important;
     stroke-width: 2.2 !important;
     flex-shrink: 0;
     transition: transform 0.25s ease;
   }
   .tab-btn.active .tab-btn-content {
     color: #ffffff !important;
+    font-weight: 700;
   }
   .tab-btn.active .tab-btn-content svg {
     color: #ffffff !important;
@@ -1994,6 +2005,31 @@
     .file-grid-layout.has-result { grid-template-columns: 1fr; }
     .link-inputs-row-2 { flex-wrap: wrap; }
     .btn-gen-pill { width: 100%; justify-content: center; }
+    .tab-bar {
+      height: 80px;
+      padding: 10px 12px;
+      gap: 10px;
+    }
+    .tab-glider {
+      top: 10px;
+      bottom: 10px;
+      left: 12px;
+      width: calc((100% - 24px - 20px) / 3);
+    }
+    .tab-bar[data-active="0"] .tab-glider { transform: translateX(0); }
+    .tab-bar[data-active="1"] .tab-glider { transform: translateX(calc(100% + 10px)); }
+    .tab-bar[data-active="2"] .tab-glider { transform: translateX(calc(200% + 20px)); }
+    .tab-btn {
+      height: 60px;
+    }
+    .tab-btn-content {
+      gap: 10px;
+      font-size: 19px;
+    }
+    .tab-btn-content svg {
+      width: 24px !important;
+      height: 24px !important;
+    }
   }
   @media (max-width: 580px) {
     .nav-center-pills { display: none; }
@@ -2003,29 +2039,29 @@
     .layer-2 { inset: -4px; border-radius: 26px; }
     .hero-line-1, .hero-line-2 { white-space: normal; }
     .tab-bar {
-      height: 62px;
+      height: 64px;
       padding: 6px 8px;
-      gap: 6px;
+      gap: 8px;
     }
     .tab-glider {
       top: 6px;
       bottom: 6px;
       left: 8px;
-      width: calc((100% - 16px - 12px) / 3);
+      width: calc((100% - 16px - 16px) / 3);
     }
     .tab-bar[data-active="0"] .tab-glider { transform: translateX(0); }
-    .tab-bar[data-active="1"] .tab-glider { transform: translateX(calc(100% + 6px)); }
-    .tab-bar[data-active="2"] .tab-glider { transform: translateX(calc(200% + 12px)); }
+    .tab-bar[data-active="1"] .tab-glider { transform: translateX(calc(100% + 8px)); }
+    .tab-bar[data-active="2"] .tab-glider { transform: translateX(calc(200% + 16px)); }
     .tab-btn {
-      height: 50px;
+      height: 52px;
     }
     .tab-btn-content {
-      gap: 6px;
-      font-size: 13.5px;
+      gap: 8px;
+      font-size: 15px;
     }
     .tab-btn-content svg {
-      width: 17px !important;
-      height: 17px !important;
+      width: 19px !important;
+      height: 19px !important;
     }
   }
 
@@ -2634,9 +2670,9 @@
         <!-- ── LIQUID GLASS TAB BAR WRAPPER ── -->
         <div class="tab-liquid-wrapper">
           <!-- Ambient Liquid Caustic Wave Ribbons behind the Tab Bar -->
-          <svg class="tab-ambient-caustics" viewBox="0 0 800 150" fill="none" preserveAspectRatio="none">
-            <path d="M 30 70 C 80 15, 200 8, 380 38 C 540 68, 680 12, 770 55" stroke="rgba(255, 255, 255, 0.9)" stroke-width="3.5" filter="drop-shadow(0 4px 10px rgba(0,0,0,0.04))"/>
-            <path d="M 60 105 C 180 145, 380 90, 540 135 C 680 175, 750 125, 790 120" stroke="rgba(255, 255, 255, 0.92)" stroke-width="3.8" filter="drop-shadow(0 6px 14px rgba(0,0,0,0.05))"/>
+          <svg class="tab-ambient-caustics" viewBox="0 0 800 160" fill="none" preserveAspectRatio="none">
+            <path d="M 20 60 C 120 10, 260 5, 400 35 C 540 65, 680 15, 780 45" stroke="rgba(255, 255, 255, 0.88)" stroke-width="3.2" filter="drop-shadow(0 4px 8px rgba(0,0,0,0.03))"/>
+            <path d="M 50 95 C 160 130, 320 155, 400 140 C 480 125, 640 150, 750 105" stroke="rgba(255, 255, 255, 0.92)" stroke-width="3.5" filter="drop-shadow(0 4px 12px rgba(0,0,0,0.04))"/>
           </svg>
 
           <!-- Outer Liquid Glass Container (Single continuous tray) -->
@@ -2646,69 +2682,48 @@
             <div class="tab-glider" id="tabGlider" aria-hidden="true">
               <svg class="glider-wave" viewBox="0 0 300 100" fill="none" preserveAspectRatio="none">
                 <defs>
-                  <linearGradient id="gBlobL" x1="30%" y1="0%" x2="70%" y2="100%">
-                    <stop offset="0%" stop-color="#a7f3d0" stop-opacity="1"/>
-                    <stop offset="45%" stop-color="#4ade80" stop-opacity="0.9"/>
-                    <stop offset="100%" stop-color="#15803d" stop-opacity="0.1"/>
-                  </linearGradient>
-                  <linearGradient id="gBlobR" x1="0%" y1="100%" x2="100%" y2="0%">
-                    <stop offset="0%" stop-color="#22c55e" stop-opacity="0.2"/>
-                    <stop offset="50%" stop-color="#4ade80" stop-opacity="0.85"/>
-                    <stop offset="100%" stop-color="#a7f3d0" stop-opacity="1"/>
-                  </linearGradient>
-                  <linearGradient id="gTopSpec" x1="0%" y1="0%" x2="100%" y2="100%">
-                    <stop offset="0%" stop-color="#ffffff" stop-opacity="0.95"/>
-                    <stop offset="60%" stop-color="#a7f3d0" stop-opacity="0.25"/>
+                  <linearGradient id="gGreenTopSpec" x1="0%" y1="0%" x2="100%" y2="100%">
+                    <stop offset="0%" stop-color="#ffffff" stop-opacity="0.90"/>
+                    <stop offset="55%" stop-color="#a7f3d0" stop-opacity="0.35"/>
                     <stop offset="100%" stop-color="#ffffff" stop-opacity="0"/>
                   </linearGradient>
-                  <linearGradient id="gTopShadow" x1="50%" y1="0%" x2="50%" y2="100%">
-                    <stop offset="0%" stop-color="#042a14" stop-opacity="0.35"/>
-                    <stop offset="100%" stop-color="#0e562b" stop-opacity="0"/>
+                  <linearGradient id="gGreenBlobL" x1="20%" y1="0%" x2="80%" y2="100%">
+                    <stop offset="0%" stop-color="#a7f3d0" stop-opacity="0.75"/>
+                    <stop offset="45%" stop-color="#4ade80" stop-opacity="0.40"/>
+                    <stop offset="100%" stop-color="#047857" stop-opacity="0"/>
+                  </linearGradient>
+                  <linearGradient id="gGreenBlobR" x1="0%" y1="100%" x2="100%" y2="0%">
+                    <stop offset="0%" stop-color="#059669" stop-opacity="0"/>
+                    <stop offset="50%" stop-color="#4ade80" stop-opacity="0.45"/>
+                    <stop offset="100%" stop-color="#a7f3d0" stop-opacity="0.75"/>
                   </linearGradient>
                 </defs>
-                <!-- Top specular rim -->
-                <path d="M 25 16 C 80 6, 170 6, 275 16" stroke="rgba(255,255,255,0.92)" stroke-width="2.5" stroke-linecap="round"/>
-                <!-- Top-left crescent -->
-                <path d="M 15 32 C 12 20, 28 10, 55 8 C 85 6, 120 8, 140 13 C 105 17, 50 20, 18 35 Z" fill="url(#gTopSpec)"/>
-                <!-- Upper wave + shadow fill -->
-                <path d="M 12 55 C 22 30, 55 18, 92 17 C 140 16, 180 25, 220 36 C 250 44, 272 55, 282 65" stroke="rgba(255,255,255,0.88)" stroke-width="2.5" stroke-linecap="round"/>
-                <path d="M 12 55 C 22 30, 55 18, 92 17 C 140 16, 180 25, 220 36 C 250 44, 272 55, 282 65 L 282 0 L 12 0 Z" fill="url(#gTopShadow)"/>
-                <!-- Large bottom-left organic green blob -->
-                <path d="M 8 98 C 12 58, 48 35, 95 32 C 138 30, 162 55, 172 98 Z" fill="url(#gBlobL)"/>
-                <path d="M 10 96 C 15 60, 50 37, 95 34 C 136 32, 158 56, 168 96" stroke="#a7f3d0" stroke-width="3" stroke-linecap="round" fill="none"/>
-                <path d="M 12 94 C 17 62, 52 39, 95 36 C 134 34, 155 57, 165 94" stroke="#ffffff" stroke-width="1.8" stroke-linecap="round" fill="none"/>
-                <!-- Bottom-right organic green blob -->
-                <path d="M 168 98 C 178 68, 210 48, 248 45 C 272 43, 288 58, 292 98 Z" fill="url(#gBlobR)"/>
-                <path d="M 170 96 C 180 70, 212 50, 248 47 C 270 45, 285 60, 290 96" stroke="#a7f3d0" stroke-width="2.5" stroke-linecap="round" fill="none"/>
-                <path d="M 220 92 C 248 84, 272 68, 284 48" stroke="rgba(255,255,255,0.95)" stroke-width="2.5" stroke-linecap="round"/>
+                <!-- Top gloss crescent -->
+                <path d="M 18 42 C 18 20, 48 10, 90 8 C 135 8, 175 14, 195 20 C 150 22, 90 26, 25 48 Z" fill="url(#gGreenTopSpec)"/>
+                <!-- Top crest line -->
+                <path d="M 22 40 C 35 18, 75 10, 140 10 C 205 10, 255 18, 278 40" stroke="rgba(255, 255, 255, 0.95)" stroke-width="2.2" stroke-linecap="round"/>
+                <!-- Bottom left wave -->
+                <path d="M 35 98 C 55 98, 72 70, 95 70 C 118 70, 135 98, 155 98 Z" fill="url(#gGreenBlobL)"/>
+                <path d="M 35 98 C 55 98, 72 70, 95 70 C 118 70, 135 98, 155 98" stroke="#a7f3d0" stroke-width="2.4" stroke-linecap="round" fill="none"/>
+                <!-- Bottom right wave -->
+                <path d="M 150 98 C 185 98, 230 92, 260 78 C 275 70, 285 55, 288 45 C 292 65, 282 85, 260 94 C 230 98, 185 98, 150 98 Z" fill="url(#gGreenBlobR)"/>
+                <path d="M 150 98 C 185 98, 230 92, 260 78 C 275 70, 285 55, 288 45" stroke="#6ee7b7" stroke-width="2.4" stroke-linecap="round" fill="none"/>
               </svg>
             </div>
 
             <!-- ══ TAB 1: LINK (Transparent Liquid Glass / Emerald when active) ══ -->
             <button class="tab-btn active" id="tab-link" role="tab" onclick="switchTab('link')" aria-selected="true">
               <svg class="tab-wave" viewBox="0 0 300 100" fill="none" preserveAspectRatio="none">
-                <defs>
-                  <linearGradient id="blobL1" x1="30%" y1="0%" x2="70%" y2="100%">
-                    <stop offset="0%" stop-color="#ffffff" stop-opacity="0.95"/>
-                    <stop offset="60%" stop-color="#ffffff" stop-opacity="0.7"/>
-                    <stop offset="100%" stop-color="#ffffff" stop-opacity="0.15"/>
-                  </linearGradient>
-                  <linearGradient id="blobR1" x1="0%" y1="100%" x2="100%" y2="0%">
-                    <stop offset="0%" stop-color="#ffffff" stop-opacity="0.15"/>
-                    <stop offset="50%" stop-color="#ffffff" stop-opacity="0.7"/>
-                    <stop offset="100%" stop-color="#ffffff" stop-opacity="0.95"/>
-                  </linearGradient>
-                </defs>
-                <!-- Large left organic blob -->
-                <path d="M 10 98 C 15 55, 45 30, 90 28 C 130 26, 155 55, 165 98 Z" fill="url(#blobL1)"/>
-                <path d="M 12 96 C 18 56, 48 32, 90 30 C 128 28, 152 56, 162 96" stroke="rgba(255,255,255,0.95)" stroke-width="2.5" stroke-linecap="round" fill="none"/>
-                <!-- Large right organic blob -->
-                <path d="M 160 98 C 170 65, 200 45, 240 42 C 268 40, 285 60, 290 98 Z" fill="url(#blobR1)"/>
-                <path d="M 162 96 C 172 66, 202 46, 240 44 C 266 42, 282 60, 288 96" stroke="rgba(255,255,255,0.95)" stroke-width="2.2" stroke-linecap="round" fill="none"/>
-                <!-- Top specular rim -->
-                <path d="M 25 18 C 80 8, 170 8, 275 18" stroke="rgba(255,255,255,0.9)" stroke-width="2.5" stroke-linecap="round"/>
-                <!-- Top-left crescent -->
-                <path d="M 15 35 C 12 22, 28 12, 55 10 C 85 8, 125 10, 145 15 C 105 20, 50 24, 18 38 Z" fill="rgba(255,255,255,0.65)"/>
+                <!-- Top gloss crescent -->
+                <path d="M 18 42 C 18 20, 48 10, 90 8 C 135 8, 175 14, 195 20 C 150 22, 90 26, 25 48 Z" fill="rgba(255,255,255,0.85)"/>
+                <!-- Top crest line -->
+                <path d="M 22 40 C 35 18, 75 10, 140 10 C 205 10, 255 18, 278 40" stroke="#ffffff" stroke-width="2.4" stroke-linecap="round"/>
+                <!-- Bottom left wave with shadow -->
+                <path d="M 35 98 C 55 98, 72 70, 95 70 C 118 70, 135 98, 155 98 Z" fill="rgba(255,255,255,0.75)"/>
+                <path d="M 35 98 C 55 98, 72 70, 95 70 C 118 70, 135 98, 155 98" stroke="#ffffff" stroke-width="2.6" stroke-linecap="round" fill="none"/>
+                <!-- Bottom right wave -->
+                <path d="M 150 98 C 185 98, 230 92, 260 78 C 275 70, 285 55, 288 45 C 292 65, 282 85, 260 94 C 230 98, 185 98, 150 98 Z" fill="rgba(255,255,255,0.65)"/>
+                <path d="M 150 98 C 185 98, 230 92, 260 78 C 275 70, 285 55, 288 45" stroke="#ffffff" stroke-width="2.6" stroke-linecap="round" fill="none"/>
               </svg>
               <span class="tab-btn-content">
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>
@@ -2719,27 +2734,19 @@
             <!-- ══ TAB 2: FILE (Transparent Glass / Emerald when active) ══ -->
             <button class="tab-btn" id="tab-file" role="tab" onclick="switchTab('file')" aria-selected="false">
               <svg class="tab-wave" viewBox="0 0 300 100" fill="none" preserveAspectRatio="none">
-                <defs>
-                  <linearGradient id="blobFL" x1="30%" y1="0%" x2="70%" y2="100%">
-                    <stop offset="0%" stop-color="#ffffff" stop-opacity="0.95"/>
-                    <stop offset="60%" stop-color="#ffffff" stop-opacity="0.7"/>
-                    <stop offset="100%" stop-color="#ffffff" stop-opacity="0.15"/>
-                  </linearGradient>
-                  <linearGradient id="blobFR" x1="0%" y1="100%" x2="100%" y2="0%">
-                    <stop offset="0%" stop-color="#ffffff" stop-opacity="0.15"/>
-                    <stop offset="50%" stop-color="#ffffff" stop-opacity="0.7"/>
-                    <stop offset="100%" stop-color="#ffffff" stop-opacity="0.95"/>
-                  </linearGradient>
-                </defs>
-                <path d="M 10 98 C 15 55, 45 30, 90 28 C 130 26, 155 55, 165 98 Z" fill="url(#blobFL)"/>
-                <path d="M 12 96 C 18 56, 48 32, 90 30 C 128 28, 152 56, 162 96" stroke="rgba(255,255,255,0.95)" stroke-width="2.5" stroke-linecap="round" fill="none"/>
-                <path d="M 160 98 C 170 65, 200 45, 240 42 C 268 40, 285 60, 290 98 Z" fill="url(#blobFR)"/>
-                <path d="M 162 96 C 172 66, 202 46, 240 44 C 266 42, 282 60, 288 96" stroke="rgba(255,255,255,0.95)" stroke-width="2.2" stroke-linecap="round" fill="none"/>
-                <path d="M 25 18 C 80 8, 170 8, 275 18" stroke="rgba(255,255,255,0.9)" stroke-width="2.5" stroke-linecap="round"/>
-                <path d="M 15 35 C 12 22, 28 12, 55 10 C 85 8, 125 10, 145 15 C 105 20, 50 24, 18 38 Z" fill="rgba(255,255,255,0.65)"/>
+                <!-- Top gloss crescent -->
+                <path d="M 18 42 C 18 20, 48 10, 90 8 C 135 8, 175 14, 195 20 C 150 22, 90 26, 25 48 Z" fill="rgba(255,255,255,0.85)"/>
+                <!-- Top crest line -->
+                <path d="M 22 40 C 35 18, 75 10, 140 10 C 205 10, 255 18, 278 40" stroke="#ffffff" stroke-width="2.4" stroke-linecap="round"/>
+                <!-- Bottom left wave with shadow -->
+                <path d="M 35 98 C 55 98, 72 70, 95 70 C 118 70, 135 98, 155 98 Z" fill="rgba(255,255,255,0.75)"/>
+                <path d="M 35 98 C 55 98, 72 70, 95 70 C 118 70, 135 98, 155 98" stroke="#ffffff" stroke-width="2.6" stroke-linecap="round" fill="none"/>
+                <!-- Bottom right wave -->
+                <path d="M 150 98 C 185 98, 230 92, 260 78 C 275 70, 285 55, 288 45 C 292 65, 282 85, 260 94 C 230 98, 185 98, 150 98 Z" fill="rgba(255,255,255,0.65)"/>
+                <path d="M 150 98 C 185 98, 230 92, 260 78 C 275 70, 285 55, 288 45" stroke="#ffffff" stroke-width="2.6" stroke-linecap="round" fill="none"/>
               </svg>
               <span class="tab-btn-content">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg>
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>
                 File
               </span>
             </button>
@@ -2747,24 +2754,16 @@
             <!-- ══ TAB 3: NOTE (Transparent Glass / Emerald when active) ══ -->
             <button class="tab-btn" id="tab-note" role="tab" onclick="switchTab('note')" aria-selected="false">
               <svg class="tab-wave" viewBox="0 0 300 100" fill="none" preserveAspectRatio="none">
-                <defs>
-                  <linearGradient id="blobNL" x1="30%" y1="0%" x2="70%" y2="100%">
-                    <stop offset="0%" stop-color="#ffffff" stop-opacity="0.95"/>
-                    <stop offset="60%" stop-color="#ffffff" stop-opacity="0.7"/>
-                    <stop offset="100%" stop-color="#ffffff" stop-opacity="0.15"/>
-                  </linearGradient>
-                  <linearGradient id="blobNR" x1="0%" y1="100%" x2="100%" y2="0%">
-                    <stop offset="0%" stop-color="#ffffff" stop-opacity="0.15"/>
-                    <stop offset="50%" stop-color="#ffffff" stop-opacity="0.7"/>
-                    <stop offset="100%" stop-color="#ffffff" stop-opacity="0.95"/>
-                  </linearGradient>
-                </defs>
-                <path d="M 10 98 C 15 55, 45 30, 90 28 C 130 26, 155 55, 165 98 Z" fill="url(#blobNL)"/>
-                <path d="M 12 96 C 18 56, 48 32, 90 30 C 128 28, 152 56, 162 96" stroke="rgba(255,255,255,0.95)" stroke-width="2.5" stroke-linecap="round" fill="none"/>
-                <path d="M 160 98 C 170 65, 200 45, 240 42 C 268 40, 285 60, 290 98 Z" fill="url(#blobNR)"/>
-                <path d="M 162 96 C 172 66, 202 46, 240 44 C 266 42, 282 60, 288 96" stroke="rgba(255,255,255,0.95)" stroke-width="2.2" stroke-linecap="round" fill="none"/>
-                <path d="M 25 18 C 80 8, 170 8, 275 18" stroke="rgba(255,255,255,0.9)" stroke-width="2.5" stroke-linecap="round"/>
-                <path d="M 15 35 C 12 22, 28 12, 55 10 C 85 8, 125 10, 145 15 C 105 20, 50 24, 18 38 Z" fill="rgba(255,255,255,0.65)"/>
+                <!-- Top gloss crescent -->
+                <path d="M 18 42 C 18 20, 48 10, 90 8 C 135 8, 175 14, 195 20 C 150 22, 90 26, 25 48 Z" fill="rgba(255,255,255,0.85)"/>
+                <!-- Top crest line -->
+                <path d="M 22 40 C 35 18, 75 10, 140 10 C 205 10, 255 18, 278 40" stroke="#ffffff" stroke-width="2.4" stroke-linecap="round"/>
+                <!-- Bottom left wave with shadow -->
+                <path d="M 35 98 C 55 98, 72 70, 95 70 C 118 70, 135 98, 155 98 Z" fill="rgba(255,255,255,0.75)"/>
+                <path d="M 35 98 C 55 98, 72 70, 95 70 C 118 70, 135 98, 155 98" stroke="#ffffff" stroke-width="2.6" stroke-linecap="round" fill="none"/>
+                <!-- Bottom right wave -->
+                <path d="M 150 98 C 185 98, 230 92, 260 78 C 275 70, 285 55, 288 45 C 292 65, 282 85, 260 94 C 230 98, 185 98, 150 98 Z" fill="rgba(255,255,255,0.65)"/>
+                <path d="M 150 98 C 185 98, 230 92, 260 78 C 275 70, 285 55, 288 45" stroke="#ffffff" stroke-width="2.6" stroke-linecap="round" fill="none"/>
               </svg>
               <span class="tab-btn-content">
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
