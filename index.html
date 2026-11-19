@@ -4223,6 +4223,123 @@ function closeEmailModal() {
   pendingEmailShare = null;
 }
 
+function buildSnipLinkEmailHtml(params) {
+  const shortLink = params.shortLink || '';
+  const originalLink = params.originalLink || shortLink;
+  const qrCodeUrl = params.qrCodeUrl || '';
+  const message = params.message ? params.message.replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/\n/g, '<br>') : '';
+  return `<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Your SnipLink</title>
+</head>
+<body style="margin: 0; padding: 0; background-color: #f1f5f9; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;">
+  <table role="presentation" width="100%" border="0" cellspacing="0" cellpadding="0" style="background-color: #f1f5f9; padding: 36px 12px;">
+    <tr>
+      <td align="center">
+        <table role="presentation" width="100%" border="0" cellspacing="0" cellpadding="0" style="max-width: 520px; background-color: #ffffff; border-radius: 20px; border: 1px solid #e2e8f0; box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.05); overflow: hidden;">
+          <tr>
+            <td style="padding: 28px 32px 20px 32px; border-bottom: 1px solid #f1f5f9;">
+              <table role="presentation" width="100%" border="0" cellspacing="0" cellpadding="0">
+                <tr>
+                  <td>
+                    <span style="font-size: 20px; font-weight: 800; color: #0f172a; letter-spacing: -0.5px;">
+                      &#128279; SnipLink<span style="color: #10b981;">.</span>
+                    </span>
+                  </td>
+                  <td align="right">
+                    <span style="font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px; background-color: #ecfdf5; color: #059669; padding: 4px 10px; border-radius: 12px;">
+                      Secure Link
+                    </span>
+                  </td>
+                </tr>
+              </table>
+            </td>
+          </tr>
+          <tr>
+            <td style="padding: 28px 32px;">
+              <h1 style="margin: 0 0 12px 0; font-size: 18px; font-weight: 700; color: #0f172a;">
+                Here is your shortened link
+              </h1>
+              <p style="margin: 0 0 20px 0; font-size: 14px; line-height: 1.6; color: #475569;">
+                A link was generated and shared with you. You can click the button below, visit the short URL, or scan the QR code with your mobile phone.
+              </p>
+              ${message ? `
+              <div style="background-color: #f8fafc; border-left: 3px solid #10b981; padding: 12px 16px; border-radius: 8px; margin-bottom: 20px; font-size: 13px; color: #334155; line-height: 1.5;">
+                <strong style="color: #0f172a; display: block; margin-bottom: 4px; font-size: 11px; text-transform: uppercase; letter-spacing: 0.5px;">Personal Note:</strong>
+                ${message}
+              </div>` : ''}
+              <table role="presentation" width="100%" border="0" cellspacing="0" cellpadding="0" style="background: linear-gradient(180deg, #f8fafc 0%, #f1f5f9 100%); border: 1px solid #cbd5e1; border-radius: 14px; margin-bottom: 20px;">
+                <tr>
+                  <td style="padding: 16px 20px;">
+                    <div style="font-size: 11px; font-weight: 700; text-transform: uppercase; color: #64748b; letter-spacing: 0.5px; margin-bottom: 6px;">
+                      Shortened Link
+                    </div>
+                    <div style="font-size: 16px; font-weight: 700; color: #047857; word-break: break-all;">
+                      <a href="${shortLink}" target="_blank" style="color: #059669; text-decoration: none;">
+                        ${shortLink}
+                      </a>
+                    </div>
+                  </td>
+                </tr>
+              </table>
+              <table role="presentation" width="100%" border="0" cellspacing="0" cellpadding="0" style="background-color: #ffffff; border: 1px dashed #cbd5e1; border-radius: 12px; margin-bottom: 24px;">
+                <tr>
+                  <td style="padding: 14px 18px;">
+                    <div style="font-size: 11px; font-weight: 700; text-transform: uppercase; color: #64748b; letter-spacing: 0.5px; margin-bottom: 4px;">
+                      Original Destination Link
+                    </div>
+                    <div style="font-size: 13px; color: #334155; word-break: break-all; line-height: 1.5;">
+                      <a href="${originalLink}" target="_blank" style="color: #3b82f6; text-decoration: underline;">
+                        ${originalLink}
+                      </a>
+                    </div>
+                  </td>
+                </tr>
+              </table>
+              <table role="presentation" width="100%" border="0" cellspacing="0" cellpadding="0" style="background-color: #fafafa; border-radius: 14px; border: 1px solid #e2e8f0; margin-bottom: 24px; text-align: center;">
+                <tr>
+                  <td style="padding: 24px 16px;">
+                    <div style="font-size: 12px; font-weight: 700; color: #334155; margin-bottom: 12px; text-transform: uppercase; letter-spacing: 0.5px;">
+                      Scan QR Code with Mobile
+                    </div>
+                    <div style="display: inline-block; padding: 10px; background-color: #ffffff; border-radius: 12px; border: 1px solid #e2e8f0; box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);">
+                      <img src="${qrCodeUrl}" alt="QR Code" width="160" height="160" style="display: block; width: 160px; height: 160px; border: 0;" />
+                    </div>
+                    <div style="font-size: 11px; color: #94a3b8; margin-top: 8px;">
+                      Points directly to your short link
+                    </div>
+                  </td>
+                </tr>
+              </table>
+              <table role="presentation" width="100%" border="0" cellspacing="0" cellpadding="0">
+                <tr>
+                  <td align="center">
+                    <a href="${shortLink}" target="_blank" style="display: inline-block; background-color: #10b981; color: #ffffff; font-size: 14px; font-weight: 600; text-decoration: none; padding: 13px 32px; border-radius: 9999px; box-shadow: 0 4px 14px rgba(16, 185, 129, 0.4);">
+                      Open Short Link &rarr;
+                    </a>
+                  </td>
+                </tr>
+              </table>
+            </td>
+          </tr>
+          <tr>
+            <td style="padding: 20px 32px; background-color: #f8fafc; border-top: 1px solid #f1f5f9; text-align: center;">
+              <p style="margin: 0; font-size: 11px; color: #94a3b8; line-height: 1.5;">
+                Sent via <strong>SnipLink</strong> &bull; Fast, private 3-in-1 tool for short links, file sharing, and quick notes.
+              </p>
+            </td>
+          </tr>
+        </table>
+      </td>
+    </tr>
+  </table>
+</body>
+</html>`;
+}
+
 async function submitEmailShare() {
   if (!pendingEmailShare) return;
   const to = document.getElementById('emailRecipient').value.trim();
@@ -4247,6 +4364,12 @@ async function submitEmailShare() {
 
   const qrCodeUrl = `https://api.qrserver.com/v1/create-qr-code/?size=180x180&margin=8&data=${encodeURIComponent(pendingEmailShare.link)}`;
   const originalLink = pendingEmailShare.originalUrl || pendingEmailShare.link;
+  const renderedHtml = buildSnipLinkEmailHtml({
+    shortLink: pendingEmailShare.link,
+    originalLink: originalLink,
+    qrCodeUrl: qrCodeUrl,
+    message: message || ''
+  });
 
   // 1. Primary: Google Apps Script Webhook (Direct Gmail delivery, 100% clean with NO ads or footers)
   const gasUrl = window.GMAIL_WEBHOOK_URL || (typeof GMAIL_WEBHOOK_URL !== 'undefined' ? GMAIL_WEBHOOK_URL : null);
@@ -4260,6 +4383,8 @@ async function submitEmailShare() {
         },
         body: JSON.stringify({
           to: to,
+          html: renderedHtml,
+          body: `Your shortened link: ${pendingEmailShare.link}\nOriginal destination: ${originalLink}\n\nSent via SnipLink`,
           short_link: pendingEmailShare.link,
           original_link: originalLink,
           qr_code_url: qrCodeUrl,
