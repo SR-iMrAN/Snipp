@@ -2076,6 +2076,173 @@
     flex-shrink: 0;
   }
 
+  /* ── EMAIL BUTTON NEON BLUE HIGHLIGHT & INFORMATIONAL POPOVER ── */
+  .res-action-btn.email-button-highlight {
+    background: #EFF6FF;
+    color: #0755D8;
+    border: 2px solid #168BFF;
+    border-radius: 9999px;
+    box-shadow:
+      0 0 6px rgba(22, 139, 255, 0.35),
+      0 0 14px rgba(22, 139, 255, 0.18);
+    transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+  .res-action-btn.email-button-highlight svg {
+    stroke: #0755D8;
+    color: #0755D8;
+  }
+  .res-action-btn.email-button-highlight:hover {
+    background: #E0EFFF;
+    border-color: #0077FF;
+    color: #0546B7;
+    transform: translateY(-1px);
+    box-shadow:
+      0 0 8px rgba(22, 139, 255, 0.5),
+      0 0 18px rgba(22, 139, 255, 0.25);
+  }
+  html[data-theme="dark"] .res-action-btn.email-button-highlight {
+    background: rgba(22, 139, 255, 0.15);
+    color: #60A5FA;
+    border-color: #3B82F6;
+    box-shadow:
+      0 0 8px rgba(59, 130, 246, 0.4),
+      0 0 16px rgba(59, 130, 246, 0.2);
+  }
+  html[data-theme="dark"] .res-action-btn.email-button-highlight svg {
+    stroke: #60A5FA;
+    color: #60A5FA;
+  }
+
+  .email-popover-container {
+    position: relative;
+    width: 100%;
+    margin-top: 14px;
+    display: flex;
+    justify-content: flex-start;
+  }
+  .email-feature-popover {
+    position: relative;
+    width: 320px;
+    max-width: 100%;
+    min-height: 82px;
+    padding: 15px 18px;
+    border-radius: 22px;
+    background: linear-gradient(135deg, #F0F8FF, #E5F2FF);
+    border: 1.5px solid #168BFF;
+    box-shadow:
+      0 4px 12px rgba(22, 139, 255, 0.18),
+      0 0 8px rgba(22, 139, 255, 0.15);
+    display: flex;
+    align-items: center;
+    box-sizing: border-box;
+    cursor: pointer;
+    user-select: none;
+    animation: popoverFadeIn 0.2s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+    transition: transform 0.2s, box-shadow 0.2s;
+  }
+  .email-feature-popover:hover {
+    transform: translateY(-1px);
+    box-shadow:
+      0 6px 16px rgba(22, 139, 255, 0.24),
+      0 0 10px rgba(22, 139, 255, 0.2);
+  }
+  @keyframes popoverFadeIn {
+    from { opacity: 0; transform: translateY(4px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+  .popover-arrow {
+    position: absolute;
+    top: -9px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 20px;
+    height: 10px;
+    pointer-events: none;
+    z-index: 2;
+  }
+  .popover-arrow svg {
+    display: block;
+    width: 20px;
+    height: 10px;
+  }
+  .popover-inner {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    width: 100%;
+  }
+  .popover-icon {
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 38px;
+    height: 38px;
+  }
+  .popover-icon svg {
+    width: 34px;
+    height: 34px;
+    stroke: #0755D8;
+    color: #0755D8;
+  }
+  .popover-text {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    min-width: 0;
+  }
+  .popover-heading {
+    font-size: 19px;
+    font-weight: 700;
+    color: #0755D8;
+    line-height: 1.2;
+    letter-spacing: -0.3px;
+  }
+  .popover-desc {
+    font-size: 14.5px;
+    font-weight: 500;
+    color: #172554;
+    line-height: 1.3;
+    margin-top: 3px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+  html[data-theme="dark"] .email-feature-popover {
+    background: linear-gradient(135deg, #101c33 0%, #0d1627 100%);
+    border-color: #2563EB;
+    box-shadow: 0 4px 14px rgba(37, 99, 235, 0.25), 0 0 8px rgba(37, 99, 235, 0.2);
+  }
+  html[data-theme="dark"] .popover-arrow svg path:first-child {
+    stroke: #2563EB;
+    fill: #101c33;
+  }
+  html[data-theme="dark"] .popover-arrow svg rect {
+    fill: #101c33;
+  }
+  html[data-theme="dark"] .popover-icon svg {
+    stroke: #60A5FA;
+    color: #60A5FA;
+  }
+  html[data-theme="dark"] .popover-heading {
+    color: #60A5FA;
+  }
+  html[data-theme="dark"] .popover-desc {
+    color: #BFDBFE;
+  }
+  @media (max-width: 640px) {
+    .email-popover-container {
+      justify-content: center;
+    }
+    .email-feature-popover {
+      width: 100%;
+      margin-left: 0 !important;
+      padding: 14px 16px;
+    }
+    .popover-heading { font-size: 17px; }
+    .popover-desc { font-size: 13.5px; }
+  }
+
   /* ── UPGRADED WORKSPACE HISTORY: BOXED CARDS, DASHED SHAPES & MONO TYPOGRAPHY ── */
   .h-list {
     display: flex;
@@ -2688,7 +2855,7 @@
                   <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
                   <span>Copy</span>
                 </button>
-                <button class="res-action-btn" onclick="openEmailShareModal('link')" title="Share via Email">
+                <button class="res-action-btn email-button-highlight" id="linkEmailBtn" onclick="openEmailShareModal('link')" title="Share via Email">
                   <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
                   <span>Email</span>
                 </button>
@@ -2700,6 +2867,30 @@
                   <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
                   <span>Open</span>
                 </button>
+              </div>
+            </div>
+
+            <!-- Email Feature Popover (Image Reference) -->
+            <div class="email-popover-container" id="emailPopoverContainer">
+              <div class="email-feature-popover" id="emailFeaturePopover" onclick="openEmailShareModal('link')" title="Share via Email">
+                <div class="popover-arrow" id="popoverArrow">
+                  <svg viewBox="0 0 20 10" fill="none">
+                    <path d="M0 10 L10 1.5 L20 10" stroke="#168BFF" stroke-width="1.5" stroke-linejoin="round" fill="#F0F8FF"/>
+                    <rect x="0" y="8.5" width="20" height="2" fill="#F0F8FF"/>
+                  </svg>
+                </div>
+                <div class="popover-inner">
+                  <div class="popover-icon">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                      <rect width="20" height="16" x="2" y="4" rx="2"/>
+                      <path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/>
+                    </svg>
+                  </div>
+                  <div class="popover-text">
+                    <div class="popover-heading">Share via Email</div>
+                    <div class="popover-desc">Send directly to your inbox.</div>
+                  </div>
+                </div>
               </div>
             </div>
 
@@ -3805,12 +3996,43 @@ async function handleGen() {
   document.getElementById('resultCard').scrollIntoView({ behavior: 'smooth', block: 'nearest' });
 }
 
+function positionEmailPopover() {
+  const btn = document.getElementById('linkEmailBtn');
+  const popover = document.getElementById('emailFeaturePopover');
+  const arrow = document.getElementById('popoverArrow');
+  const card = document.getElementById('resultCard');
+  if (!btn || !popover || !arrow || !card) return;
+
+  const btnRect = btn.getBoundingClientRect();
+  const cardRect = card.getBoundingClientRect();
+  if (cardRect.width <= 0) return;
+
+  // Center of Email button relative to card
+  const btnCenterX = (btnRect.left + btnRect.width / 2) - cardRect.left;
+
+  // Center popover directly under Email button
+  let popoverLeft = btnCenterX - (popover.offsetWidth / 2);
+  const maxLeft = cardRect.width - popover.offsetWidth - 20; // 20px card padding
+  if (popoverLeft > maxLeft) popoverLeft = maxLeft;
+  if (popoverLeft < 20) popoverLeft = 20;
+
+  popover.style.marginLeft = popoverLeft + 'px';
+
+  // Arrow position relative to popover
+  const currentPopoverLeft = cardRect.left + popoverLeft;
+  const arrowX = (btnRect.left + btnRect.width / 2) - currentPopoverLeft;
+  const clampedArrow = Math.max(24, Math.min(popover.offsetWidth - 24, arrowX));
+  arrow.style.left = clampedArrow + 'px';
+}
+window.addEventListener('resize', positionEmailPopover);
+
 function showResult(code, url) {
   const card = document.getElementById('resultCard');
   card.classList.remove('show'); void card.offsetHeight; card.classList.add('show');
   document.getElementById('rCode').textContent = getCleanUrl(code);
   document.getElementById('rOrig').textContent = url;
   document.getElementById('resultSub').textContent = 'Permanent Link \u00B7 Never expires \u00B7 0 clicks';
+  requestAnimationFrame(positionEmailPopover);
 }
 
 function copyShort() { if (!curCode) return; doCopy(getCleanUrl(curCode)); }
