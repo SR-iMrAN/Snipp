@@ -3271,6 +3271,99 @@
     opacity: 0.35;
   }
 
+
+/* Actions Bar & Add New Pill */
+.ws-actions-row {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  margin-top: 20px;
+  margin-bottom: 12px;
+  position: relative;
+}
+.ws-add-dropdown-wrap {
+  position: relative;
+  display: inline-block;
+}
+.btn-add-new-pill {
+  display: inline-flex !important;
+  align-items: center !important;
+  gap: 8px !important;
+  background: var(--accent-gradient) !important;
+  color: #ffffff !important;
+  border: none !important;
+  border-radius: 9999px !important;
+  height: 40px !important;
+  padding: 0 20px !important;
+  font-family: var(--font-sans) !important;
+  font-size: 14px !important;
+  font-weight: 600 !important;
+  cursor: pointer !important;
+  box-shadow: 0 4px 14px var(--accent-glow) !important;
+  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1) !important;
+}
+.btn-add-new-pill:hover {
+  transform: translateY(-1px) !important;
+  box-shadow: 0 6px 20px var(--accent-glow) !important;
+}
+.btn-add-new-pill svg {
+  stroke: #ffffff !important;
+}
+.ws-add-new-menu {
+  left: 0 !important;
+  right: auto !important;
+  top: calc(100% + 8px) !important;
+  min-width: 220px !important;
+  z-index: 100 !important;
+  background: var(--surface) !important;
+  border: 1px solid var(--border) !important;
+  border-radius: 14px !important;
+  box-shadow: 0 12px 32px rgba(0,0,0,0.15) !important;
+}
+.ws-creator-collapse-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px 16px;
+  margin-bottom: 12px;
+  background: rgba(23, 112, 67, 0.08);
+  border: 1px solid rgba(23, 112, 67, 0.18);
+  border-radius: 14px;
+  backdrop-filter: blur(8px);
+}
+[data-theme="dark"] .ws-creator-collapse-bar {
+  background: rgba(23, 112, 67, 0.16);
+  border-color: rgba(74, 222, 128, 0.25);
+}
+.ws-creator-collapse-title {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--accent-green);
+}
+.ws-creator-close-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: var(--surface-subtle);
+  border: 1px solid var(--border-subtle);
+  border-radius: 9999px;
+  height: 28px;
+  padding: 0 12px;
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--text-dim);
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+.ws-creator-close-btn:hover {
+  background: var(--surface-hover);
+  color: var(--text);
+  border-color: var(--border-focus);
+}
+
 </style>
 </head>
 <body>
@@ -3506,6 +3599,35 @@
           </div>
         </div>
       </div>
+
+      <!-- ══ WORKSPACE ACTIONS BAR ══ -->
+      <div class="ws-actions-row" id="wsActionsBar">
+        <div class="ws-add-dropdown-wrap">
+          <button class="btn-add-new-pill" id="wsAddNewBtn" onclick="toggleWsAddNewMenu(event)">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+            <span>Add New</span>
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+          </button>
+          <div class="coll-dropdown-menu ws-add-new-menu" id="wsAddNewMenu" style="display:none;">
+            <div class="coll-dropdown-item" onclick="openWorkspaceCreator('link'); closeWsAddNewMenu();">
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>
+              <span>Create Short Link</span>
+            </div>
+            <div class="coll-dropdown-item" onclick="openWorkspaceCreator('file'); closeWsAddNewMenu();">
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>
+              <span>Upload File</span>
+            </div>
+            <div class="coll-dropdown-item" onclick="openWorkspaceCreator('note'); closeWsAddNewMenu();">
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M11 4H4a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
+              <span>Create Note</span>
+            </div>
+            <div class="coll-dropdown-item" style="border-top:1px solid var(--border-subtle);margin-top:4px;padding-top:8px;" onclick="openAddExistingItemsModal(); closeWsAddNewMenu();">
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+              <span>Add Existing Item</span>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
 
     <!-- Three Layers Glass Container (Annotated 1, 2, 3) -->
@@ -3516,6 +3638,19 @@
         
         <!-- Top Shimmer Progress Bar (Tab Transition Loader) -->
         <div class="tab-loader-bar" id="tabLoaderBar"></div>
+
+        <!-- Creator Collapse Bar when inside Workspace -->
+        <div class="ws-creator-collapse-bar" id="wsCreatorCollapseBar" style="display:none;">
+          <div class="ws-creator-collapse-title">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/></svg>
+            <span>Adding to <strong id="wsCreatorCollName">Collection</strong></span>
+          </div>
+          <button class="ws-creator-close-btn" onclick="closeWorkspaceCreator()" title="Close creator panel">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+            <span>Hide Panel</span>
+          </button>
+        </div>
+
 
         <!-- ── LIQUID GLASS TAB BAR WRAPPER ── -->
         <div class="tab-liquid-wrapper">
@@ -4100,16 +4235,9 @@
 
     <!-- ══ WORKSPACE ITEMS SECTION (Mockup Collection Workspace) ══ -->
     <div id="workspaceItemsSection" class="workspace-items-section" style="display:none;">
-      <div class="ws-items-header">
+      <div class="ws-items-header" style="margin-bottom:8px;">
         <div class="ws-items-title-group">
-          <h2 class="ws-items-title">Collection Items (<span id="wsItemsTotalCount">0</span>)</h2>
-          <p class="ws-items-sub">Items organized in this collection</p>
-        </div>
-        <div class="ws-items-actions">
-          <button class="btn-sub-pill" style="height:38px;padding:0 18px;gap:6px;display:inline-flex;align-items:center;" onclick="openAddExistingItemsModal()">
-            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
-            Add Existing Items
-          </button>
+          <h2 class="ws-items-title" style="font-size:20px;">Collection Items (<span id="wsItemsTotalCount">0</span>)</h2>
         </div>
       </div>
       
@@ -4587,28 +4715,8 @@ const getCollections = () => {
   let list = [];
   try {
     const c = JSON.parse(localStorage.getItem(SK_COLLECTIONS));
-    if (Array.isArray(c) && c.length) list = c;
+    if (Array.isArray(c)) list = c;
   } catch {}
-  if (!list.length) {
-    list = [
-      { id: 'summer-semester-2026', name: 'Summer Semester 2026', slug: 'summer-semester-2026', createdAt: Date.now() - 7200000, updatedAt: Date.now() - 7200000 },
-      { id: 'university', name: 'University', slug: 'university', createdAt: Date.now() - 86400000, updatedAt: Date.now() - 86400000 },
-      { id: 'projects', name: 'Projects', slug: 'projects', createdAt: Date.now() - 172800000, updatedAt: Date.now() - 172800000 },
-      { id: 'personal', name: 'Personal', slug: 'personal', createdAt: Date.now() - 259200000, updatedAt: Date.now() - 259200000 }
-    ];
-    localStorage.setItem(SK_COLLECTIONS, JSON.stringify(list));
-  } else {
-    let modified = false;
-    list.forEach(item => {
-      if (!item.slug) {
-        item.slug = slugify(item.name || item.id);
-        modified = true;
-      }
-      if (!item.createdAt) { item.createdAt = Date.now(); modified = true; }
-      if (!item.updatedAt) { item.updatedAt = item.createdAt; modified = true; }
-    });
-    if (modified) localStorage.setItem(SK_COLLECTIONS, JSON.stringify(list));
-  }
   return list;
 };
 const saveCollections = c => localStorage.setItem(SK_COLLECTIONS, JSON.stringify(c));
@@ -4786,30 +4894,8 @@ function getCollectionItemCount(collId) {
 }
 
 async function syncCollectionsWithFirestore() {
-  if (!window.db || !window.getDocs || !window.collection) return;
-  try {
-    const snap = await getDocs(collection(db, 'collections'));
-    if (snap && !snap.empty) {
-      const remoteCols = [];
-      snap.forEach(d => {
-        const data = d.data();
-        remoteCols.push({ id: d.id, ...data });
-      });
-      if (remoteCols.length > 0) {
-        const local = getCollections();
-        const mergedMap = new Map();
-        local.forEach(c => mergedMap.set(c.id, c));
-        remoteCols.forEach(c => mergedMap.set(c.id, c));
-        const merged = Array.from(mergedMap.values());
-        saveCollections(merged);
-        renderCollectionDropdowns();
-        renderCollectionsBar();
-        if (currentView === 'collections') renderCollectionsListView();
-      }
-    }
-  } catch (err) {
-    console.warn('Firestore collections sync skipped:', err);
-  }
+  // Private collections: do not download all collections from Firestore to prevent leaking other users' collections.
+  return;
 }
 
 // ═══════════════════════════════════════════════════════
@@ -4857,14 +4943,18 @@ function showHomeView() {
   const homeHero = document.getElementById('homeHeroView');
   const collView = document.getElementById('collectionsListView');
   const wsHeader = document.getElementById('workspaceHeaderView');
+  const wsActions = document.getElementById('wsActionsBar');
   const layeredCard = document.getElementById('layeredCardWrap');
+  const wsCollapse = document.getElementById('wsCreatorCollapseBar');
   const wsItems = document.getElementById('workspaceItemsSection');
   const historySec = document.getElementById('history-section');
 
   if (homeHero) homeHero.style.display = 'flex';
   if (collView) collView.style.display = 'none';
   if (wsHeader) wsHeader.style.display = 'none';
+  if (wsActions) wsActions.style.display = 'none';
   if (layeredCard) layeredCard.style.display = 'block';
+  if (wsCollapse) wsCollapse.style.display = 'none';
   if (wsItems) wsItems.style.display = 'none';
   if (historySec) historySec.style.display = 'block';
 
@@ -4883,19 +4973,29 @@ function showCollectionsView() {
   const homeHero = document.getElementById('homeHeroView');
   const collView = document.getElementById('collectionsListView');
   const wsHeader = document.getElementById('workspaceHeaderView');
+  const wsActions = document.getElementById('wsActionsBar');
   const layeredCard = document.getElementById('layeredCardWrap');
+  const wsCollapse = document.getElementById('wsCreatorCollapseBar');
   const wsItems = document.getElementById('workspaceItemsSection');
   const historySec = document.getElementById('history-section');
 
   if (homeHero) homeHero.style.display = 'none';
   if (collView) collView.style.display = 'block';
   if (wsHeader) wsHeader.style.display = 'none';
+  if (wsActions) wsActions.style.display = 'none';
   if (layeredCard) layeredCard.style.display = 'none';
+  if (wsCollapse) wsCollapse.style.display = 'none';
   if (wsItems) wsItems.style.display = 'none';
   if (historySec) historySec.style.display = 'none';
 
   renderCollectionsListView();
   window.scrollTo({ top: 0, behavior: 'smooth' });
+  const sp = new URLSearchParams(window.location.search);
+  if (sp.get('openMenu') === '1') {
+    setTimeout(() => toggleWsAddNewMenu(), 150);
+  } else if (sp.get('openCreator')) {
+    setTimeout(() => openWorkspaceCreator(sp.get('openCreator')), 150);
+  }
 }
 
 async function openCollectionBySlug(slug) {
@@ -4920,6 +5020,47 @@ async function openCollectionBySlug(slug) {
     return;
   }
 
+  // Fetch collection items from Firestore so any user opening by link sees all items
+  if (window.db && window.getDocs && window.query && window.where && window.collection) {
+    try {
+      const [linksSnap, filesSnap, notesSnap] = await Promise.all([
+        getDocs(query(collection(db, 'links'), where('collectionId', '==', col.id))),
+        getDocs(query(collection(db, 'files'), where('collectionId', '==', col.id))),
+        getDocs(query(collection(db, 'notes'), where('collectionId', '==', col.id)))
+      ]);
+      const remoteLinks = [];
+      linksSnap.forEach(d => remoteLinks.push({ shortCode: d.id, ...d.data(), type: 'link' }));
+      const remoteFiles = [];
+      filesSnap.forEach(d => remoteFiles.push({ shortCode: d.id, ...d.data(), type: 'file' }));
+      const remoteNotes = [];
+      notesSnap.forEach(d => remoteNotes.push({ shortCode: d.id, ...d.data(), type: 'note' }));
+
+      if (remoteLinks.length > 0) {
+        const curLinks = getLinks();
+        const map = new Map();
+        curLinks.forEach(l => map.set(l.shortCode, l));
+        remoteLinks.forEach(l => map.set(l.shortCode, l));
+        saveLinks(Array.from(map.values()));
+      }
+      if (remoteFiles.length > 0) {
+        const curFiles = getFiles();
+        const map = new Map();
+        curFiles.forEach(f => map.set(f.shortCode, f));
+        remoteFiles.forEach(f => map.set(f.shortCode, f));
+        saveFiles(Array.from(map.values()));
+      }
+      if (remoteNotes.length > 0) {
+        const curNotes = getNotes();
+        const map = new Map();
+        curNotes.forEach(n => map.set(n.shortCode, n));
+        remoteNotes.forEach(n => map.set(n.shortCode, n));
+        saveNotes(Array.from(map.values()));
+      }
+    } catch (err) {
+      console.warn('Could not fetch collection items from Firestore:', err);
+    }
+  }
+
   currentView = 'workspace';
   currentWorkspaceCollection = col;
 
@@ -4929,14 +5070,18 @@ async function openCollectionBySlug(slug) {
   const homeHero = document.getElementById('homeHeroView');
   const collView = document.getElementById('collectionsListView');
   const wsHeader = document.getElementById('workspaceHeaderView');
+  const wsActions = document.getElementById('wsActionsBar');
   const layeredCard = document.getElementById('layeredCardWrap');
+  const wsCollapse = document.getElementById('wsCreatorCollapseBar');
   const wsItems = document.getElementById('workspaceItemsSection');
   const historySec = document.getElementById('history-section');
 
   if (homeHero) homeHero.style.display = 'none';
   if (collView) collView.style.display = 'none';
   if (wsHeader) wsHeader.style.display = 'block';
-  if (layeredCard) layeredCard.style.display = 'block';
+  if (wsActions) wsActions.style.display = 'flex';
+  if (layeredCard) layeredCard.style.display = 'none'; // NEVER automatically displayed!
+  if (wsCollapse) wsCollapse.style.display = 'none';
   if (wsItems) wsItems.style.display = 'block';
   if (historySec) historySec.style.display = 'none';
 
@@ -4953,6 +5098,60 @@ async function openCollectionBySlug(slug) {
 
   renderWorkspaceItems();
   window.scrollTo({ top: 0, behavior: 'smooth' });
+
+  const sp = new URLSearchParams(window.location.search);
+  if (sp.get('openMenu') === '1') {
+    setTimeout(() => toggleWsAddNewMenu(), 150);
+  } else if (sp.get('openCreator')) {
+    setTimeout(() => openWorkspaceCreator(sp.get('openCreator')), 150);
+  }
+}
+
+function toggleWsAddNewMenu(e) {
+  if (e) e.stopPropagation();
+  const menu = document.getElementById('wsAddNewMenu');
+  if (!menu) return;
+  const isVisible = menu.style.display === 'block';
+  document.querySelectorAll('.coll-dropdown-menu').forEach(m => m.style.display = 'none');
+  if (!isVisible) {
+    menu.style.display = 'block';
+  }
+}
+
+function closeWsAddNewMenu() {
+  const menu = document.getElementById('wsAddNewMenu');
+  if (menu) menu.style.display = 'none';
+}
+
+function openWorkspaceCreator(type = 'link') {
+  const layeredCard = document.getElementById('layeredCardWrap');
+  const wsCollapse = document.getElementById('wsCreatorCollapseBar');
+  const nameEl = document.getElementById('wsCreatorCollName');
+  if (nameEl && currentWorkspaceCollection) nameEl.textContent = currentWorkspaceCollection.name;
+
+  if (layeredCard) {
+    layeredCard.style.display = 'block';
+    if (wsCollapse) wsCollapse.style.display = 'flex';
+    if (currentWorkspaceCollection) {
+      selectedLinkColl = currentWorkspaceCollection.id;
+      selectedFileColl = currentWorkspaceCollection.id;
+      selectedNoteColl = currentWorkspaceCollection.id;
+      renderCollectionDropdowns();
+    }
+    switchTab(type, false);
+    layeredCard.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    if (type === 'link') {
+      setTimeout(() => document.getElementById('urlInput')?.focus(), 100);
+    }
+  }
+}
+
+function closeWorkspaceCreator() {
+  const layeredCard = document.getElementById('layeredCardWrap');
+  const wsCollapse = document.getElementById('wsCreatorCollapseBar');
+  if (layeredCard) layeredCard.style.display = 'none';
+  if (wsCollapse) wsCollapse.style.display = 'none';
+  document.getElementById('workspaceItemsSection')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
 }
 
 function showCollectionNotFound(slug) {
