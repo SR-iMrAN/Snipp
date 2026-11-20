@@ -632,22 +632,22 @@
     align-items: center;
     gap: 14px;
     padding: 13px 16px;
-    height: 114px;
+    height: 116px;
     border-radius: var(--radius-full);
     background: linear-gradient(
       180deg,
-      rgba(255, 255, 255, 0.55) 0%,
-      rgba(238, 244, 252, 0.38) 50%,
-      rgba(255, 255, 255, 0.50) 100%
+      rgba(235, 239, 245, 0.45) 0%,
+      rgba(205, 212, 224, 0.35) 50%,
+      rgba(220, 226, 236, 0.45) 100%
     );
     backdrop-filter: blur(28px) saturate(180%);
     -webkit-backdrop-filter: blur(28px) saturate(180%);
-    border: 1.5px solid rgba(255, 255, 255, 0.92);
+    border: 1.5px solid rgba(255, 255, 255, 0.85);
     box-shadow: 
-      0 16px 42px -4px rgba(100, 116, 139, 0.14),
-      0 4px 18px rgba(100, 116, 139, 0.06),
-      inset 0 1.5px 3.5px rgba(255, 255, 255, 1),
-      inset 0 -2px 4px rgba(180, 195, 218, 0.40);
+      0 18px 45px -4px rgba(70, 85, 105, 0.18),
+      0 6px 20px rgba(70, 85, 105, 0.08),
+      inset 0 1.5px 3.5px rgba(255, 255, 255, 0.95),
+      inset 0 -2px 4.5px rgba(160, 175, 195, 0.45);
     margin-bottom: 0;
     user-select: none;
     box-sizing: border-box;
@@ -672,21 +672,21 @@
     width: calc((100% - 32px - 28px) / 3);
     border-radius: var(--radius-full);
     background: linear-gradient(
-      160deg,
-      #044828 0%,
-      #06663a 28%,
-      #087e47 60%,
-      #0e9655 100%
+      165deg,
+      #033f23 0%,
+      #066338 25%,
+      #0a7f47 55%,
+      #109d59 100%
     );
-    border: 1.5px solid rgba(167, 243, 208, 0.80);
+    border: 1.5px solid rgba(167, 243, 208, 0.85);
     box-shadow: 
-      0 0 35px rgba(22, 190, 105, 0.50),
-      0 0 16px rgba(74, 222, 128, 0.40),
-      0 12px 36px rgba(0, 120, 65, 0.38),
-      -8px 0 24px rgba(22, 190, 105, 0.28),
-      8px 0 24px rgba(22, 190, 105, 0.28),
-      inset 0 2px 4px rgba(255, 255, 255, 0.75),
-      inset 0 -2px 6px rgba(0, 60, 30, 0.35);
+      0 0 38px rgba(22, 190, 105, 0.55),
+      0 0 18px rgba(74, 222, 128, 0.45),
+      0 12px 36px rgba(0, 120, 65, 0.40),
+      -8px 0 24px rgba(22, 190, 105, 0.30),
+      8px 0 24px rgba(22, 190, 105, 0.30),
+      inset 0 2px 4.5px rgba(255, 255, 255, 0.80),
+      inset 0 -2px 6px rgba(0, 50, 25, 0.40);
     pointer-events: none;
     z-index: 1;
     overflow: hidden;
@@ -731,20 +731,22 @@
     position: relative;
     z-index: 2;
     flex: 1;
-    height: 88px;
+    height: 90px;
     border-radius: var(--radius-full);
     background: linear-gradient(
-      180deg,
-      rgba(255, 255, 255, 0.75) 0%,
-      rgba(235, 242, 250, 0.42) 50%,
-      rgba(248, 251, 255, 0.62) 100%
+      175deg,
+      rgba(215, 222, 232, 0.75) 0%,
+      rgba(180, 190, 205, 0.55) 45%,
+      rgba(165, 176, 192, 0.65) 100%
     );
-    border: 1.5px solid rgba(255, 255, 255, 0.90);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    border: 1.5px solid rgba(255, 255, 255, 0.75);
     box-shadow: 
-      0 6px 20px rgba(100, 116, 139, 0.08),
-      0 2px 8px rgba(140, 155, 175, 0.05),
-      inset 0 2px 4px rgba(255, 255, 255, 1),
-      inset 0 -2px 5px rgba(160, 175, 202, 0.28);
+      0 6px 18px rgba(70, 85, 105, 0.12),
+      0 2px 6px rgba(70, 85, 105, 0.06),
+      inset 0 1.5px 3.5px rgba(255, 255, 255, 0.90),
+      inset 0 -2px 5px rgba(120, 135, 160, 0.40);
     cursor: pointer;
     overflow: hidden;
     outline: none;
@@ -766,11 +768,16 @@
   }
 
   .tab-btn:not(.active):hover {
-    background: rgba(255, 255, 255, 0.85);
-    border-color: rgba(255, 255, 255, 1);
+    background: linear-gradient(
+      175deg,
+      rgba(225, 232, 242, 0.85) 0%,
+      rgba(190, 200, 215, 0.65) 45%,
+      rgba(175, 186, 202, 0.75) 100%
+    );
+    border-color: rgba(255, 255, 255, 0.95);
     transform: translateY(-1px);
     box-shadow: 
-      0 8px 24px rgba(100, 116, 139, 0.12),
+      0 8px 24px rgba(70, 85, 105, 0.16),
       inset 0 2px 4px #ffffff;
   }
 
@@ -2737,7 +2744,7 @@
               <svg class="tab-wave" viewBox="0 0 300 100" fill="none" preserveAspectRatio="none">
                 <defs>
                   <filter id="fSoftShadowL" x="-10%" y="-10%" width="120%" height="130%">
-                    <feDropShadow dx="0" dy="2" stdDeviation="2.5" flood-color="rgba(140, 160, 190, 0.35)"/>
+                    <feDropShadow dx="0" dy="2.5" stdDeviation="3" flood-color="rgba(80, 95, 120, 0.40)"/>
                   </filter>
                 </defs>
                 <!-- Top gloss crescent -->
@@ -2762,7 +2769,7 @@
               <svg class="tab-wave" viewBox="0 0 300 100" fill="none" preserveAspectRatio="none">
                 <defs>
                   <filter id="fSoftShadowF" x="-10%" y="-10%" width="120%" height="130%">
-                    <feDropShadow dx="0" dy="2" stdDeviation="2.5" flood-color="rgba(140, 160, 190, 0.35)"/>
+                    <feDropShadow dx="0" dy="2.5" stdDeviation="3" flood-color="rgba(80, 95, 120, 0.40)"/>
                   </filter>
                 </defs>
                 <!-- Top gloss crescent -->
@@ -2787,7 +2794,7 @@
               <svg class="tab-wave" viewBox="0 0 300 100" fill="none" preserveAspectRatio="none">
                 <defs>
                   <filter id="fSoftShadowN" x="-10%" y="-10%" width="120%" height="130%">
-                    <feDropShadow dx="0" dy="2" stdDeviation="2.5" flood-color="rgba(140, 160, 190, 0.35)"/>
+                    <feDropShadow dx="0" dy="2.5" stdDeviation="3" flood-color="rgba(80, 95, 120, 0.40)"/>
                   </filter>
                 </defs>
                 <!-- Top gloss crescent -->
