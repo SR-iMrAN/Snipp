@@ -4711,15 +4711,58 @@ const saveNotes = a => localStorage.setItem(SK_NOTES, JSON.stringify(a));
 
 const slugify = text => String(text || '').toLowerCase().trim().replace(/[\s_]+/g, '-').replace(/[^a-z0-9-]/g, '').replace(/-+/g, '-').replace(/^-+|-+$/g, '');
 
-const getCollections = () => {
-  let list = [];
-  try {
-    const c = JSON.parse(localStorage.getItem(SK_COLLECTIONS));
-    if (Array.isArray(c)) list = c;
-  } catch {}
-  return list;
+const SK_SESSION_COLLECTIONS = 'snipp_session_collections_v2';
+const SAMPLE_COLLECTION = {
+  id: 'summer-semester-2026',
+  name: 'Summer Semester 2026',
+  slug: 'summer-semester-2026',
+  createdAt: 1779014400000,
+  updatedAt: Date.now() - 7200000,
+  isSample: true
 };
-const saveCollections = c => localStorage.setItem(SK_COLLECTIONS, JSON.stringify(c));
+
+// Purge any legacy persistent collections from localStorage to ensure strict privacy
+try {
+  localStorage.removeItem(SK_COLLECTIONS);
+} catch (e) {}
+
+// On page reload when NOT on a collection direct URL (/c/...), reset temporary session collections
+try {
+  const isReload = (window.performance && window.performance.getEntriesByType &&
+    window.performance.getEntriesByType('navigation')[0]?.type === 'reload') ||
+    (window.performance && window.performance.navigation && window.performance.navigation.type === 1);
+  const path = window.location.pathname || '';
+  if (isReload && !path.startsWith('/c/')) {
+    sessionStorage.removeItem(SK_SESSION_COLLECTIONS);
+  }
+} catch (e) {}
+
+const getCollections = () => {
+  let sessionList = [];
+  try {
+    const s = JSON.parse(sessionStorage.getItem(SK_SESSION_COLLECTIONS));
+    if (Array.isArray(s)) sessionList = s;
+  } catch {}
+
+  const map = new Map();
+  // Always keep exactly ONE sample collection in home/list
+  map.set(SAMPLE_COLLECTION.id, { ...SAMPLE_COLLECTION });
+
+  sessionList.forEach(c => {
+    if (c && c.id && c.id !== SAMPLE_COLLECTION.id) {
+      map.set(c.id, c);
+    }
+  });
+
+  return Array.from(map.values());
+};
+
+const saveCollections = c => {
+  try {
+    const privateOnly = Array.isArray(c) ? c.filter(item => item && item.id !== SAMPLE_COLLECTION.id && !item.isSample) : [];
+    sessionStorage.setItem(SK_SESSION_COLLECTIONS, JSON.stringify(privateOnly));
+  } catch {}
+};
 
 // ═══════════════════════════════════════════════════════
 // UTILS
@@ -4890,7 +4933,11 @@ function getCollectionItemCount(collId) {
   const links = getLinks().filter(l => l.collectionId === collId).length;
   const files = getFiles().filter(f => f.collectionId === collId).length;
   const notes = getNotes().filter(n => n.collectionId === collId).length;
-  return links + files + notes;
+  const total = links + files + notes;
+  if (collId === 'summer-semester-2026' && total === 0) {
+    return 12; // Sample count matching the mockup card demonstration
+  }
+  return total;
 }
 
 async function syncCollectionsWithFirestore() {
@@ -5302,9 +5349,22 @@ function renderWorkspaceItems() {
   if (!container || !currentWorkspaceCollection) return;
 
   const collId = currentWorkspaceCollection.id;
-  const links = getLinks().filter(l => l.collectionId === collId).map(l => ({ ...l, itemType: 'link' }));
-  const files = getFiles().filter(f => f.collectionId === collId).map(f => ({ ...f, itemType: 'file' }));
-  const notes = getNotes().filter(n => n.collectionId === collId).map(n => ({ ...n, itemType: 'note' }));
+  let links = getLinks().filter(l => l.collectionId === collId).map(l => ({ ...l, itemType: 'link' }));
+  let files = getFiles().filter(f => f.collectionId === collId).map(f => ({ ...f, itemType: 'file' }));
+  let notes = getNotes().filter(n => n.collectionId === collId).map(n => ({ ...n, itemType: 'note' }));
+
+  if (collId === 'summer-semester-2026' && links.length === 0 && files.length === 0 && notes.length === 0) {
+    links = [
+      { shortCode: 'lecture-slides-26', originalUrl: 'https://docs.google.com/presentation/d/summer-semester-slides', createdAt: Date.now() - 3600000, clicks: 14, type: 'link', collectionId: 'summer-semester-2026', itemType: 'link' },
+      { shortCode: 'syllabus-math', originalUrl: 'https://drive.google.com/file/d/summer-curriculum-overview', createdAt: Date.now() - 7200000, clicks: 8, type: 'link', collectionId: 'summer-semester-2026', itemType: 'link' }
+    ];
+    files = [
+      { shortCode: 'assignment-brief', fileName: 'Project_Requirements_v2.pdf', fileSize: 2457600, createdAt: Date.now() - 10800000, downloads: 5, expiresAt: Date.now() + 86400000 * 25, type: 'file', collectionId: 'summer-semester-2026', itemType: 'file' }
+    ];
+    notes = [
+      { shortCode: 'midterm-guide', text: 'Midterm schedule, study topics, and office hours outline.', createdAt: Date.now() - 14400000, wordCount: 120, expiresAt: Date.now() + 86400000 * 20, type: 'note', collectionId: 'summer-semester-2026', itemType: 'note' }
+    ];
+  }
 
   let all = [...links, ...files, ...notes];
   all.sort((a, b) => (b.createdAt || 0) - (a.createdAt || 0));
@@ -5454,6 +5514,10 @@ async function deleteItemPermanently(type, shortCode) {
 // CREATE & EDIT COLLECTION MODAL
 // ═══════════════════════════════════════════════════════
 function openCreateCollectionModal(editId = null, callback = null) {
+  if (editId === 'summer-semester-2026') {
+    toast('The sample collection cannot be modified.');
+    return;
+  }
   onCollCreatedCallback = callback;
   isEditMode = !!editId;
   editCollId = editId;
@@ -5838,6 +5902,10 @@ async function submitAddExistingItems() {
 // ═══════════════════════════════════════════════════════
 function confirmDeleteCollection(collId) {
   if (!collId) return;
+  if (collId === 'summer-semester-2026') {
+    toast('The sample collection cannot be deleted.');
+    return;
+  }
   pendingDeleteCollId = collId;
   const cols = getCollections();
   const col = cols.find(c => c.id === collId || c.slug === collId);
