@@ -4685,8 +4685,8 @@ window.loadDotEnv = async function() {
 };
 window.loadDotEnv();
 </script>
-<script src="./firebase-env.js"></script>
-<script type="module" src="./firebase-setup.js"></script>
+<script src="/firebase-env.js"></script>
+<script type="module" src="/firebase-setup.js"></script>
 <script src="https://cdn.quilljs.com/1.3.7/quill.min.js"></script>
 <script>
 // ═══════════════════════════════════════════════════════
@@ -5702,10 +5702,21 @@ async function submitCreateCollection() {
     renderCollectionDropdowns();
     renderCollectionsBar();
 
+    // Auto-select the newly created collection in link/file/note creators on home
+    selectedLinkColl = newColl.id;
+    selectedFileColl = newColl.id;
+    selectedNoteColl = newColl.id;
+    renderCollectionDropdowns();
+
     if (onCollCreatedCallback) {
       onCollCreatedCallback(newColl);
-    } else {
+    } else if (currentView === 'collections') {
+      renderCollectionsListView();
+    } else if (currentView === 'workspace') {
       navigateTo(`/c/${slug}`, true);
+    } else {
+      // Stay on home short link page!
+      filterHistory();
     }
   }
 }
@@ -6267,10 +6278,22 @@ window.addEventListener('resize', setAllPrefixLabels);
 window.addEventListener('load', setAllPrefixLabels);
 
 // ═══════════════════════════════════════════════════════
+async function ensureDbReady(maxWaitMs = 5000) {
+  let waited = 0;
+  while ((!window.db || !window.setDoc || !window.doc) && waited < maxWaitMs) {
+    await delay(100);
+    waited += 100;
+  }
+  return !!(window.db && window.setDoc && window.doc);
+}
+
 // 1. LINK SHORTENER
 // ═══════════════════════════════════════════════════════
 async function handleGen() {
-  if (!window.db || !window.setDoc || !window.doc) { toast('Connecting to database... please try again'); return; }
+  if (!window.db || !window.setDoc || !window.doc) {
+    const ready = await ensureDbReady(4000);
+    if (!ready) { toast('Connecting to database... please check your connection and try again'); return; }
+  }
   const ui = document.getElementById('urlInput');
   const ci = document.getElementById('codeInput');
   const ue = document.getElementById('urlErr');
@@ -6507,7 +6530,10 @@ async function uploadToGoFile(file, onProgress) {
 }
 
 async function handleFileUpload() {
-  if (!window.db || !window.setDoc || !window.doc) { toast('Connecting to database... please try again'); return; }
+  if (!window.db || !window.setDoc || !window.doc) {
+    const ready = await ensureDbReady(4000);
+    if (!ready) { toast('Connecting to database... please check your connection and try again'); return; }
+  }
   if (!selectedFile) { toast('Please choose a file first'); return; }
 
   const ci = document.getElementById('fileCodeInput');
@@ -6649,7 +6675,10 @@ function updateNoteStats() {
 }
 
 async function handleNoteGen() {
-  if (!window.db || !window.setDoc || !window.doc) { toast('Connecting to database... please try again'); return; }
+  if (!window.db || !window.setDoc || !window.doc) {
+    const ready = await ensureDbReady(4000);
+    if (!ready) { toast('Connecting to database... please check your connection and try again'); return; }
+  }
   if (!quill) { toast('Editor is loading...'); return; }
   const html = quill.root.innerHTML;
   const text = quill.getText().trim();
