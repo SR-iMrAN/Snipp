@@ -5,7 +5,11 @@ import {
   setDoc,
   getDoc,
   updateDoc,
-  deleteDoc
+  deleteDoc,
+  collection,
+  query,
+  where,
+  getDocs
 } from "https://www.gstatic.com/firebasejs/12.0.0/firebase-firestore.js";
 
 let firebaseConfig;
@@ -35,3 +39,7 @@ window.setDoc = setDoc;
 window.getDoc = getDoc;
 window.updateDoc = updateDoc;
 window.deleteDoc = deleteDoc;
+window.collection = collection;
+window.query = query;
+window.where = where;
+window.getDocs = getDocs;
